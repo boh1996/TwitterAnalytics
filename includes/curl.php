@@ -363,7 +363,7 @@ class Connection {
 		if ( ! is_null($this->_request_cookies) ) {
 			$cookie_string = "";
 			foreach ( $this->_request_cookies as $key => $value ) {
-				$cookie_string += $key + "=" + $value + ";";
+				$cookie_string .= $key . "=" + $value . ";";
 			}
 
 			curl_setopt( $s, CURLOPT_COOKIE, $cookie_string);

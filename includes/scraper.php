@@ -18,12 +18,10 @@ class TwitterScraper {
 	protected $_headers = (
 		"accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
 		":host" => "twitter.com",
-		":method" => "POST",
 		":scheme" => "https",
 		":version" => "HTTP/1.1",
 		"accept-encodig" => "gzip,deflate,sdch",
 		"accept-language" => "da-DK,da;q=0.8,en-US;q=0.6,en;q=0.4",
-		"content-type" => "application/x-www-form-urlencoded",
 		"origin" => "https://twitter.com"
 	);
 
@@ -59,8 +57,26 @@ class TwitterScraper {
 		$this->_password = $password;
 	}
 
-	public function request () {
+	public function scrapeTweets () {
+		try {
+			$login_con = $this->_auth();
+		} catch (Exception $e) {
+			throw new Exception("Login failed!", 403);
+		}
 
+		$con = new Connection($this->_urls->TWITTER_FRONT_PAGE_URL);
+		$con->createCurl();
+	}
+
+	public function newTweets () {
+		try {
+			$login_con = $this->_auth();
+		} catch (Exception $e) {
+			throw new Exception("Login failed!", 403);
+		}
+
+		$con = new Connection($this->_urls->TWITTER_TIMELINE);
+		$con->createCurl();
 	}
 
 	/**
@@ -83,7 +99,7 @@ class TwitterScraper {
 
 		$con = new Connection($this->_urls->TWITTER_LOGIN_POST_URL);
 		$con->setReferer("https://twitter.com/login");
-		$con->setHeaders($this->_headers);
+		$con->setHeaders(array_merge($this->_headers, array(":path" => "/sessions",":method" => "POST", "content-type" => "application/x-www-form-urlencoded")));
 
 		if ( ! is_null($this->_username) ) {
 			$con->setPost(array(

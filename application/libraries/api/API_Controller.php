@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-require(APPPATH.'libraries/REST_Controller.php'); 
+require(APPPATH.'libraries/REST_Controller.php');
 
 /**
  * API Controller for CodeIgniter
@@ -33,9 +33,8 @@ class API_Controller extends REST_Controller{
 
 	/**
 	 * This function checks if the env key is set
-	 * 
 	 * @since 1.1
-	 * @access public 
+	 * @access public
 	 * @param  string $key The key to fetch
 	 * @return string|array|boolean
 	 */
@@ -60,7 +59,7 @@ class API_Controller extends REST_Controller{
 	 */
 	protected function before_output ( &$output ) {
 		header("Content-MD5: ".base64_encode(md5($output)));
-		header("Access-Control-Allow-Origin: *");	
+		header("Access-Control-Allow-Origin: *");
 
 		if ( count($this->headers) > 0 ) {
 			foreach ( $this->headers as $header => $value ) {
@@ -115,7 +114,6 @@ class API_Controller extends REST_Controller{
 
 	/**
 	 * Use this to retrieve a single file key or the whole $_FILES array
-	 * 
 	 * @since 1.1
 	 * @access public
 	 * @param  string $key The files key to retrieve
@@ -145,7 +143,6 @@ class API_Controller extends REST_Controller{
 
 	/**
 	 * Use this to retrieve the whole $_SESSION array, to retrieve a single key or to set a value
-	 * 
 	 * @since 1.1
 	 * @access public
 	 * @param  string $key   The key to set or fetch
@@ -164,7 +161,6 @@ class API_Controller extends REST_Controller{
 
 	/**
 	 * Use this function to get all request header, get one request header or set a response header
-	 * 
 	 * @since 1.1
 	 * @access public
 	 * @param  string $key   The key to set or fetch

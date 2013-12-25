@@ -21,11 +21,19 @@ class MY_Lang extends CI_Lang {
 		}
 
 		if (!is_null($params)){
-            $value = $this->_ni_line($value, $params); 
+            $value = $this->_ni_line($value, $params);
         }
 
 		return is_array($value) ? $value : addslashes($value);
 	}
+
+    /**
+     * Returns the langiage array
+     * @return array
+     */
+    public function export () {
+        return $this->language;
+    }
 
 	   /**
      * This function replaces the specified tokens in the language line
@@ -37,20 +45,20 @@ class MY_Lang extends CI_Lang {
      */
     private function _ni_line($str, $params){
         $return = $str;
-        
-        $params = is_array($params) ? $params : array($params);   
-        
+
+        $params = is_array($params) ? $params : array($params);
+
         $search = array();
         $cnt = 1;
         foreach($params as $param){
             $search[$cnt] = "/\\${$cnt}/";
             $cnt++;
         }
-                
+
         unset($search[0]);
-        
+
         $return = preg_replace($search, $params, $return);
-        
+
         return $return;
     }
 

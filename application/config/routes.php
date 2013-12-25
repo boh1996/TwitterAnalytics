@@ -41,6 +41,11 @@
 $route['default_controller'] = "user";
 $route['404_override'] = '';
 
+$route["sign_in"] = "login/sign_in_view";
+$route["sign_out"] = "login/sign_out";
+$route["sign_in/auth"] = "api/api_login/login";
+$route["sign_out/noui"] = "api/api_login/logout";
+
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

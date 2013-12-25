@@ -3,7 +3,13 @@ class User extends CI_Controller {
 
 	public function index () {
 		$this->lang->load("common");
-		$this->load->view("user");
+
+		if ( isset($_SESSION["signed_in"]) && $_SESSION["signed_in"] == true ) {
+			$data["signed_in"] = true;
+		} else {
+			$data["signed_in"] = false;
+		}
+		$this->load->view("user", $this->user_control->ControllerInfo($data));
 	}
 }
 ?>

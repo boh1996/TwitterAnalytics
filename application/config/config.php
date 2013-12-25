@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://127.0.0.1/';
+$config['base_url']	= 'http://127.0.0.1/twa/';
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +59,11 @@ $config['uri_protocol']	= 'AUTO';
 
 $config['url_suffix'] = '';
 
-$config["assets_path"] = $base_url . 'assets/';
+$config["asset_url"] = $config["base_url"] . 'assets/';
+
+$config["languages"] = array("english");
+
+$config["https"] = false;
 
 /*
 |--------------------------------------------------------------------------

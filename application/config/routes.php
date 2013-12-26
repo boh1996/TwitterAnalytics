@@ -45,6 +45,7 @@ $route["sign_in"] = "login/sign_in_view";
 $route["sign_out"] = "login/sign_out";
 $route["sign_in/auth"] = "api/api_login/login";
 $route["sign_out/noui"] = "api/api_login/logout";
+$route["admin/alerts"] = "admin/alerts_view";
 
 
 /* End of file routes.php */

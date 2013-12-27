@@ -24,47 +24,7 @@
 			<?= $this->user_control->LoadTemplate("alerts_view"); ?>
 		</div>
 
-		<!-- Static navbar -->
-		<div class="navbar navbar-default" role="navigation">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="sr-only"><?= $this->lang->line("toggle_navigation"); ?></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-				 	</button>
-				  	<a class="navbar-brand" href="#"><?= $this->lang->line("app_name"); ?></a>
-				</div>
-				<div class="navbar-collapse collapse">
-				  	<ul class="nav navbar-nav">
-				  		<li>
-							<a href="<?= $base_url ?>admin"><?= $this->lang->line("admin_settings"); ?></a>
-						</li>
-						<li>
-							<a href="<?= $base_url ?>admin/alerts"><?= $this->lang->line("alerts"); ?></a>
-						</li>
-						<li>
-							<a href="<?= $base_url ?>admin/topics"><?= $this->lang->line("admin_topics"); ?></a>
-						</li>
-						<li class="active">
-							<a href="<?= $base_url ?>admin/access/control"><?= $this->lang->line("admin_access_control"); ?></a>
-						</li>
-				  	</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="<?= $base_url ?>"><?= $this->lang->line("viewer_section"); ?></a>
-						</li>
-						<li class="active">
-							<a href="<?= $base_url ?>admin"><?= $this->lang->line("control_panel"); ?></a>
-						</li>
-						<li>
-							<a href="<?= $base_url ?>sign_out"><?= $this->lang->line("sign_out"); ?></a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+		<?= $this->user_control->LoadTemplate("nav_bar_view"); ?>
 
 		<div class="container">
 			<div class="well">
@@ -89,7 +49,7 @@
 					<div class="form-group">
 						<div class="col-sm-2 col-sm-offset-4">
 							<label class="control-label" for="<?= $page->page ?>">
-								<?= $this->lang->line("admin_page_" . $page->page); ?>
+								<?= $this->lang->line($page->admin_language_key); ?>
 							</label>
 						</div>
 						<div class="col-sm-6">
@@ -111,6 +71,7 @@
 
 		<script src="<?= $asset_url; ?>jquery.min.js"></script>
 		<script src="<?= $asset_url; ?>bootstrap/js/bootstrap.min.js"></script>
+		<script src="<?= $asset_url; ?>js/nav.js"></script>
 		<script src="<?= $asset_url; ?>js/bootstrap-checkbox.js"></script>
 		<script src="<?= $asset_url; ?>js/mustache.js"></script>
 		<script src="<?= $asset_url; ?>js/functions.js"></script>

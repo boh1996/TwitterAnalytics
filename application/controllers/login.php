@@ -12,7 +12,8 @@ class Login extends CI_Controller {
 
 		if ( ! $this->user_control->is_signed_in() ) {
 			$this->load->view("sign_in", $this->user_control->ControllerInfo(array(
-				"translations" => json_encode($this->lang->export())
+				"translations" => json_encode($this->lang->export()),
+				"current_section" => "login"
 			)));
 		} else {
 			redirect($this->config->item("base_url"));

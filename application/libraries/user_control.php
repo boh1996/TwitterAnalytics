@@ -31,7 +31,7 @@ class User_Control{
 	 * @access public
 	 * @var array
 	 */
-	public $languageFiles = array("common");
+	public $languageFiles = array("common", "admin");
 
 	/**
 	 * This function calls all the needed security functions
@@ -155,19 +155,21 @@ class User_Control{
 	 * @return array
 	 */
 	public function ControllerInfo ($params = null) {
+		$this->_CI->load->model("view_model");
+		$headers = $this->_CI->view_model->get_pages_ordered_in_sections();
 		$languages = $this->_CI->config->item("languages");
 		$settings = array(
 			"languages" => $languages,
 			"language" => $this->language,
 			"base_url" => $this->CheckHTTPS(base_url()),
 			"asset_url" => $this->CheckHTTPS($this->_CI->config->item("asset_url")),
-			"jquery_url" => $this->_CI->config->item("jquery_url"),
-			"jqueryui_version" => $this->_CI->config->item("jqueryui_version"),
+			"headers" => $headers,
+			"signed_in" => $this->is_signed_in()
 		);
-		if ( ! is_null($params) ) {
-			return array_unique(array_merge($params, $settings));
+ 		if ( ! is_null($params) ) {
+			return array_merge($params, $settings);
 		} else {
-			return array_unique($settings);
+			return $settings;
 		}
 	}
 }

@@ -22,33 +22,7 @@
 			<?= $this->user_control->LoadTemplate("alerts_view"); ?>
 		</div>
 
-		<!-- Static navbar -->
-		<div class="navbar navbar-default" role="navigation">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="sr-only"><?= $this->lang->line("toggle_navigation"); ?></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="#"><?= $this->lang->line("app_name"); ?></a>
-				</div>
-				<div class="navbar-collapse collapse">
-					<ul class="nav navbar-nav navbar-right">
-						<li>
-							<a href="<?= $base_url ?>"><?= $this->lang->line("viewer_section"); ?></a>
-						</li>
-						<li>
-							<a href="admin"><?= $this->lang->line("control_panel"); ?></a>
-						</li>
-						<li class="active" data-login="false">
-							<a href="sign_in"><?= $this->lang->line("sign_in"); ?></a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+		<?= $this->user_control->LoadTemplate("nav_bar_view"); ?>
 
 		<div class="container">
 			<form class="form-signin form-horizontal" id="login_form" role="form">
@@ -87,6 +61,7 @@
 
 		<script src="<?= $asset_url; ?>jquery.min.js"></script>
 		<script src="<?= $asset_url; ?>bootstrap/js/bootstrap.min.js"></script>
+		<script src="<?= $asset_url; ?>js/nav.js"></script>
 		<script src="<?= $asset_url; ?>js/mustache.js"></script>
 		<script src="<?= $asset_url; ?>js/functions.js"></script>
 		<script src="<?= $asset_url; ?>js/sign_in.js"></script>

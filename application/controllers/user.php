@@ -11,11 +11,9 @@ class User extends CI_Controller {
 			redirect(base_url() . "sign_in");
 		}
 
-		if ( $this->user_control->is_signed_in() ) {
-			$data["signed_in"] = true;
-		} else {
-			$data["signed_in"] = false;
-		}
+		$data = array(
+			"current_section" => "user"
+		);
 
 		$this->load->view("user", $this->user_control->ControllerInfo($data));
 	}

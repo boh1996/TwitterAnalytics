@@ -4,7 +4,7 @@ require(APPPATH.'libraries/api/T_API_Controller.php');
 
 /**
  *
- * The Access Control Controller/Endpoint
+ * The Settings Controller/Endpoint
  *
  * @uses 			API Controller
  * @package        	CodeIgniter
@@ -13,7 +13,7 @@ require(APPPATH.'libraries/api/T_API_Controller.php');
  * @author        	Bo Thomsen
  * @version 		1.0
  */
-class API_Access_Control extends T_API_Controller {
+class API_Settings extends T_API_Controller {
 
 	/**
 	 * This function is called on any request send to this endpoint,
@@ -23,14 +23,15 @@ class API_Access_Control extends T_API_Controller {
 	 */
 	public function __construct () {
 		parent::__construct();
-		$this->lang->load("admin");
 	}
 
 	/**
-	 * Saves the new access control settings
+	 * Updates the twitter account information
 	 */
-	public function save_post () {
-		if ( ! $this->post("pages") ) {
+	public function twitter_post () {
+		$this->load->model("settings_model");
+
+		if ( ! $this->post("twitter") ) {
 			$this->response(array(
 				"status" => false,
 				"error_messages" => array(
@@ -39,19 +40,39 @@ class API_Access_Control extends T_API_Controller {
 			), 400);
 		}
 
-		$this->load->model("access_model");
-
-		if ( $this->access_model->save_pages($this->post("pages")) ) {
-			$this->response(array(
-				"status" => true
-			), 200);
-		} else {
+		if ( ! $this->settings_model->save_twitter($this->post("twitter"))  ) {
 			$this->response(array(
 				"status" => false,
 				"error_messages" => array(
 					$this->lang->line("admin_post_data_error")
 				)
 			), 400);
+		} else {
+			$this->response(array(
+				"status" => true
+			), 200);
 		}
+	}
+
+	/**
+	 * Removes a twitter account
+	 */
+	public function remove_twitter_get () {
+		if ( ! $this->get("account") ) {
+			$this->response(array(
+				"status" => false,
+				"error_messages" => array(
+					$this->lang->line("admin_missing_account_id")
+				)
+			), 400);
+		}
+
+		$this->load->model("settings_model");
+
+		$this->settings_model->delete_twitter_account($this->get("account"));
+
+		$this->response(array(
+			"status" => true
+		), 200);
 	}
 }

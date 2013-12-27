@@ -1,3 +1,14 @@
 .hidden {
 	display: none;
 }
+
+.active-section-header {
+	border-bottom: 2px rgba(1, 169, 211, 1) solid !important;
+}
+
+html,
+body {
+	height: 100%;
+	background-color: #eee;
+	padding-top: 40px;
+}

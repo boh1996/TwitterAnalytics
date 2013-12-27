@@ -65,6 +65,9 @@ $config["languages"] = array("english");
 
 $config["https"] = false;
 
+$config["encrypt_key"] = "vLBLfhA6DNi1R2MFHO8IvFWr4Cn9665eHUF+L/sqAKM=";
+$config["encrypt_salt"] = "ea0jzpP58QY5LvLK58iNTbhEQHGlgUAPvHq0zXCQybwD83OQJuAXOojVMqCCaS0v";
+
 /*
 |--------------------------------------------------------------------------
 | Default Language

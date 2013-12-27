@@ -32,7 +32,7 @@ $(document).on("submit", "#login_form", function ( event ) {
 		if ( response.status == true ) {
 			console.log("response.token");
 			localStorage.setItem("twa_token", response.token);
-			alert(null, translations["sign_in_success_redirecting"] , "alertsSuccessTemplate", $("#errors"), "append", null, 4000);
+			alert(null, translations["sign_in_success_redirecting"] , "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
 
 			$("#alertsSuccessTemplateClone").bind("closed.bs.alert", function () {
 				window.location = base_url;

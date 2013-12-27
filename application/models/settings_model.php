@@ -135,4 +135,47 @@ class Settings_model extends CI_Model {
 
 		return $list;
 	}
+
+	/**
+	 * Creates or updates a key in the settings database
+	 * @param string $key   The key name
+	 * @param string $value The key value
+	 */
+	public function set_setting ( $key, $value ) {
+		if ( $this->exists("settings", array("key" => $key)) ) {
+			$this->db->where(array("key" => $key))->update("settings", array(
+				"updated_at" => mktime(),
+				"value" => $value
+			));
+		} else {
+			$this->db->insert("settings", array(
+				"key" => $key,
+				"value" => $value,
+				"updated_at" => mktime()
+			));
+		}
+
+		return true;
+	}
+
+	/**
+	 * Retrieves a settings value
+	 * @param  string $key The key to retrieve
+	 * @return boolean|object
+	 */
+	public function get_setting ( $key ) {
+		return $this->select("settings", array(
+			"key" => $key
+		));
+	}
+
+	/**
+	 * Removes a setting
+	 * @param  string $key The key to remove
+	 */
+	public function delete_setting ( $key ) {
+		$this->db->where(array(
+			"key" => $key
+		))->delete("settings");
+	}
 }

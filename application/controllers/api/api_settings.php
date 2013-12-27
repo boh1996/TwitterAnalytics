@@ -75,4 +75,74 @@ class API_Settings extends T_API_Controller {
 			"status" => true
 		), 200);
 	}
+
+	public function settings_post () {
+
+	}
+
+	/**
+	 * Removes a settings key
+	 */
+	public function setting_delete () {
+		if ( ! $this->get("key") ) {
+			$this->response(array(
+				"status" => false,
+				"error_messages" => array(
+					$this->lang->line("admin_missing_key_name")
+				)
+			), 400);
+		}
+
+		$this->load->model("settings_model");
+
+		$this->settings_model->delete_setting($this->get("key"));
+
+		$this->response(array(
+			"status" => true
+		), 200);
+	}
+
+	/**
+	 * Retrieves a settings value
+	 */
+	public function setting_get () {
+		if ( ! $this->get("key") ) {
+			$this->response(array(
+				"status" => false,
+				"error_messages" => array(
+					$this->lang->line("admin_missing_key_name")
+				)
+			), 400);
+		}
+
+		$this->load->model("settings_model");
+
+		$this->settings_model->get_setting($this->get("key"));
+
+		$this->response(array(
+			"status" => true
+		), 200);
+	}
+
+	/**
+	 * Updates a setting
+	 */
+	public function setting_post () {
+		if ( ! $this->get("key") ) {
+			$this->response(array(
+				"status" => false,
+				"error_messages" => array(
+					$this->lang->line("admin_missing_key_name")
+				)
+			), 400);
+		}
+
+		$this->load->model("settings_model");
+
+		$this->settings_model->set_setting($this->get("key"));
+
+		$this->response(array(
+			"status" => true
+		), 200);
+	}
 }

@@ -31,6 +31,7 @@
 				<form class="form-signin form-horizontal" id="access_control_form" role="form">
 					<div class="col-sm-10 col-sm-offset-4">
 						<h2 class="form-signin-heading"><?= $this->lang->line("admin_access_control_pages"); ?></h2>
+						<small class="text-muted"><i><?= $this->lang->line("admin_access_control_description"); ?></i></small>
 					</div>
 
 					<div class="form-group">

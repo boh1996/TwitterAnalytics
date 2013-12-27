@@ -17,8 +17,11 @@ $lang["admin_remove_account"]= "Remove account";
 $lang["admin_twitter_removed"] = "Account removed!";
 $lang["admin_missing_account_id"] = "Missing account id";
 $lang["add_account"] = "Add account";
+$lang["admin_access_control_description"] = "If the checkbox is checked, login is required!";
+$lang["admin_urls"] = "URLs";
+$lang["admin_missing_key_name"] = "Missing key name";
 
-$lang["admin_page_admin_home"] = "Admin";
+$lang["admin_page_admin_home"] = "Settings";
 $lang["admin_page_user_home"] = "Analytics";
 $lang["admin_page_admin_alerts"] = "Alerts control";
 $lang["admin_page_admin_access_control"] = "Access control";
@@ -26,6 +29,7 @@ $lang["admin_page_topics"] = "Topics";
 $lang["admin_please_log_in"] = "Please log in to use this feature!";
 $lang["admin_page_blocked_words"] = "Blocked words";
 $lang["admin_page_strings"] = "Strings to remove";
+$lang["admin_page_urls"] = "URLs";
 
 $lang["admin_missing_post_data"] = "Missing post data!";
 $lang["admin_post_data_error"] = "Wrong post data structure!";

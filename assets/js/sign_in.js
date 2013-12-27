@@ -30,6 +30,8 @@ $(document).on("submit", "#login_form", function ( event ) {
 	} ).success( function ( xhr, status, data ) {
 		var response = $.parseJSON(data.responseText);
 		if ( response.status == true ) {
+			console.log("response.token");
+			localStorage.setItem("twa_token", response.token);
 			alert(null, translations["sign_in_success_redirecting"] , "alertsSuccessTemplate", $("#errors"), "append", null, 4000);
 
 			$("#alertsSuccessTemplateClone").bind("closed.bs.alert", function () {

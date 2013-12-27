@@ -98,6 +98,33 @@ class User_Control{
 	}
 
 	/**
+	 * Checks if the user is signed in
+	 * @return boolean
+	 */
+	public function is_signed_in () {
+		if ( ! isset($_SESSION["signed_in"]) || ( isset($_SESSION["signed_in"]) && $_SESSION["signed_in"] == false ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * This function checks if the current page requires security and if the level of security is full-filled.
+	 * @param  string $page The current page
+	 * @return boolean       "true" is autherized and "false" is not autherized for the page
+	 */
+	public function check_security ( $page ) {
+		$this->_CI->load->model("access_model");
+
+		if ( $this->_CI->access_model->page_requires_login($page) ) {
+			return ( $this->is_signed_in() === true ) ? true : false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
 	 * This function checks if http should be enabled
 	 * @since 1.0
 	 * @access public

@@ -3,14 +3,13 @@ class Admin extends CI_Controller {
 
 	/**
 	 * Shows the admin settings planel
-	 * @return [type] [description]
 	 */
 	public function index () {
 		$this->lang->load("common");
 		$this->lang->load("admin");
 
-		if ( ! isset($_SESSION["signed_in"]) || ( isset($_SESSION["signed_in"]) && $_SESSION["signed_in"] == false ) ) {
-			redirect(base_url());
+		if ( ! $this->user_control->check_security("admin_home") ) {
+			redirect(base_url() . "sign_in");
 		}
 
 		$this->load->view("admin", $this->user_control->ControllerInfo());
@@ -23,11 +22,28 @@ class Admin extends CI_Controller {
 		$this->lang->load("common");
 		$this->lang->load("admin");
 
-		if ( ! isset($_SESSION["signed_in"]) || ( isset($_SESSION["signed_in"]) && $_SESSION["signed_in"] == false ) ) {
-			redirect(base_url());
+		if ( ! $this->user_control->check_security("admin_alerts") ) {
+			redirect(base_url() . "sign_in");
 		}
 
 		$this->load->view("admin_alert_words", $this->user_control->ControllerInfo());
+	}
+
+	/**
+	 * Shows the access control management page
+	 */
+	public function access_control_view () {
+		$this->lang->load("admin");
+		$this->load->model("access_model");
+
+		if ( ! $this->user_control->check_security("admin_access_control") ) {
+			redirect(base_url() . "sign_in");
+		}
+
+		$this->load->view("admin_access_control", $this->user_control->ControllerInfo(array(
+			"pages" => $this->access_model->get_pages(),
+			"translations" => json_encode($this->lang->export())
+		)));
 	}
 }
 ?>

@@ -46,7 +46,10 @@ $route["sign_out"] = "login/sign_out";
 $route["sign_in/auth"] = "api/api_login/login";
 $route["sign_out/noui"] = "api/api_login/logout";
 $route["admin/alerts"] = "admin/alerts_view";
-
+$route["alerts"] = "user/alerts_view";
+$route["admin/topics"] = "admin_topics_view";
+$route["admin/access/control"] = "admin/access_control_view";
+$route["admin/access/control/save"] = "api/api_access_control/save";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

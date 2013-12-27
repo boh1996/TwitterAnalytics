@@ -29,9 +29,6 @@
 							<a href="<?= $base_url ?>followers"><?= $this->lang->line("followers"); ?></a>
 						</li>
 						<li>
-							<a href="<?= $base_url ?>topics"><?= $this->lang->line("topics"); ?></a>
-						</li>
-						<li>
 							<a href="<?= $base_url ?>alerts"><?= $this->lang->line("alerts"); ?></a>
 						</li>
 				  	</ul>

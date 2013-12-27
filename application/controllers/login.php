@@ -10,7 +10,7 @@ class Login extends CI_Controller {
 
 		$this->lang->load("login");
 
-		if ( ( isset($_SESSION["signed_in"]) && $_SESSION["signed_in"] == false ) || ! isset($_SESSION["signed_in"]) ) {
+		if ( ! $this->user_control->is_signed_in() ) {
 			$this->load->view("sign_in", $this->user_control->ControllerInfo(array(
 				"translations" => json_encode($this->lang->export())
 			)));

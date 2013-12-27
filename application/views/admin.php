@@ -33,6 +33,12 @@
 						<li>
 							<a href="<?= $base_url ?>admin/alerts"><?= $this->lang->line("alerts"); ?></a>
 						</li>
+						<li>
+							<a href="<?= $base_url ?>admin/topics"><?= $this->lang->line("admin_topics"); ?></a>
+						</li>
+						<li>
+							<a href="<?= $base_url ?>admin/access/control"><?= $this->lang->line("admin_access_control"); ?></a>
+						</li>
 				  	</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li>

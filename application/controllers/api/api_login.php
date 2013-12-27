@@ -4,7 +4,7 @@ require(APPPATH.'libraries/api/T_API_Controller.php');
 
 /**
  *
- * The Logib  Controller/Endpoint
+ * The Login  Controller/Endpoint
  *
  * @uses 			API Controller
  * @package        	CodeIgniter

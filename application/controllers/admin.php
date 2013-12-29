@@ -33,13 +33,20 @@ class Admin extends CI_Controller {
 	public function alerts_view () {
 		$this->lang->load("common");
 		$this->lang->load("admin");
+		$this->load->model("settings_model");
+		$this->load->model("alert_model");
 
 		if ( ! $this->user_control->check_security("admin_alerts") ) {
 			redirect(base_url() . "sign_in");
 		}
 
+		$alerts = $this->alert_model->get_list("alert_strings");
+
 		$this->load->view("admin_alerts", $this->user_control->ControllerInfo(array(
-			"current_section" => "admin"
+			"current_section" => "admin",
+			"translations" => json_encode($this->lang->export()),
+			"settings" => $this->settings_model->check_defaults("alerts",$this->settings_model->get_settings("alerts")),
+			"alerts" => ( $alerts !== false ) ? $alerts : array()
 		)));
 	}
 

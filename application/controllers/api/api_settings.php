@@ -76,8 +76,34 @@ class API_Settings extends T_API_Controller {
 		), 200);
 	}
 
+	/**
+	 * Batch insert/update settings
+	 */
 	public function settings_post () {
+		if ( ! $this->post("keys") ) {
+			$this->response(array(
+				"status" => false,
+				"error_messages" => array(
+					$this->lang->line("admin_missing_post_data")
+				)
+			), 400);
+		}
 
+		$this->load->model("settings_model");
+
+		foreach ( $this->post("keys") as $key) {
+			$type = "text";
+
+			if ( isset($key["type"]) ) {
+				$type = $key["type"];
+			}
+
+			$this->settings_model->set_setting($key["key"], $key["value"], $key["section"], $type);
+		}
+
+		$this->response(array(
+			"status" => true
+		), 200);
 	}
 
 	/**
@@ -128,7 +154,7 @@ class API_Settings extends T_API_Controller {
 	 * Updates a setting
 	 */
 	public function setting_post () {
-		if ( ! $this->get("key") ) {
+		if ( ! $this->get("key") || ! $this->post("value") ) {
 			$this->response(array(
 				"status" => false,
 				"error_messages" => array(
@@ -139,7 +165,13 @@ class API_Settings extends T_API_Controller {
 
 		$this->load->model("settings_model");
 
-		$this->settings_model->set_setting($this->get("key"));
+		$type = "text";
+
+		if ( $this->post("type") ) {
+			$type = $this->post("type");
+		}
+
+		$this->settings_model->set_setting($this->get("key"), $this->post("value"), $this->post("section"), $type);
 
 		$this->response(array(
 			"status" => true

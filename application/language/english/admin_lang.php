@@ -20,6 +20,12 @@ $lang["add_account"] = "Add account";
 $lang["admin_access_control_description"] = "If the checkbox is checked, login is required!";
 $lang["admin_urls"] = "URLs";
 $lang["admin_missing_key_name"] = "Missing key name";
+$lang["admin_saved_successfully"] = "Data saved successfully";
+$lang["alert_strings"] = "Alert strings!";
+$lang["alert_string"] = "Add new alert string";
+$lang["admin_remove_string"] = "Remove";
+$lang["admin_missing_id"] = "Missing object id!";
+$lang["admin_alert_deleted"] = "Alert string deleted successfully";
 
 $lang["admin_page_admin_home"] = "Settings";
 $lang["admin_page_user_home"] = "Analytics";

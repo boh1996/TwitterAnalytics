@@ -56,22 +56,22 @@ $(document).on("click", "button.remove-button", function ( event ) {
 	event.preventDefault();
 
 	if ( ! localStorage.getItem("twa_token") === false ) {
-			$.ajax({
-				type : "GET",
-				url : base_url + "admin/twitter/remove/" + $(this).attr("data-id") + "?token=" + localStorage.getItem("twa_token"),
-			}).success( function ( xhr, status, data ) {
-				alert(null, translations["admin_twitter_removed"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
+		$.ajax({
+			type : "GET",
+			url : base_url + "admin/twitter/remove/" + $(this).attr("data-id") + "?token=" + localStorage.getItem("twa_token"),
+		}).success( function ( xhr, status, data ) {
+			alert(null, translations["admin_twitter_removed"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
 
-				$("#alertsSuccessTemplateClone").bind("closed.bs.alert", function () {
-					window.location = window.location;
-				});
-			} ).error( function ( xhr, status, data ) {
-				var response = $.parseJSON(xhr.responseText);
-				for ( var index in response.error_messages ) {
-					alert(null, response.error_messages[index] , "alertsErrorTemplate", $("#errors"), "append", null, 5000);
-				}
-			} );
-		} else {
-			alert(null, translations["admin_please_log_in"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
-		}
+			$("#alertsSuccessTemplateClone").bind("closed.bs.alert", function () {
+				window.location = window.location;
+			});
+		} ).error( function ( xhr, status, data ) {
+			var response = $.parseJSON(xhr.responseText);
+			for ( var index in response.error_messages ) {
+				alert(null, response.error_messages[index] , "alertsErrorTemplate", $("#errors"), "append", null, 5000);
+			}
+		} );
+	} else {
+		alert(null, translations["admin_please_log_in"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
+	}
 } );

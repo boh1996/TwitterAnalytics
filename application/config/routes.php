@@ -55,6 +55,8 @@ $route["admin/twitter/save"] = "api/api_settings/twitter";
 $route["admin/twitter/remove/(:num)"] = "api/api_settings/remove_twitter/account/$1";
 $route["admin/settings/save"] = "api/api_settings/settings";
 $route["admin/setting/(:any)"] = "api/api_settings/setting/key/$1";
+$route["admin/alert/(:num)"] = "api/api_alerts/alert_string/id/$1";
+$route["admin/alerts/save"] = "api/api_alerts/save_alerts";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

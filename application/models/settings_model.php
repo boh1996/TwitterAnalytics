@@ -1,5 +1,5 @@
 <?php
-class Settings_model extends CI_Model {
+class Settings_model extends Base_model {
 
 	public function __construct () {
 		parent::__construct();
@@ -91,31 +91,33 @@ class Settings_model extends CI_Model {
 	}
 
 	/**
-	 * Checks if a row exists
-	 * @param  string $table The table to look in
-	 * @param  array $where The where clause
-	 * @return boolean        True means the row exists
+	 * Returns a list of settings, use the parameters to control which settings are returned
+	 * @param  string $section The section to return settings for
+	 * @param  array $keys    A list of keys to return
+	 * @return array<Object>
 	 */
-	public function exists ( $table, $where ) {
-		$query = $this->db->where($where)->get($table);
-
-		return ( $query->num_rows() > 0 ) ? true : false;
-	}
-
-	/**
-	 * Returns the first row of the query
-	 * @param  string $table The table to select from
-	 * @param  array $where The query
-	 * @return object
-	 */
-	public function select ( $table, $where ) {
-		$query = $this->db->where($where)->get($table);
-
-		if ( ! $query->num_rows() ) {
-			return false;
+	public function get_settings ( $section = null, $keys = null ) {
+		if ( ! is_null($section) ) {
+			$this->db->where(array(
+				"section" => $section
+			));
 		}
 
-		return $query->row();
+		if ( ! is_null($keys) ) {
+			$this->where_in("key", $keys);
+		}
+
+		$query = $this->db->get("settings");
+
+		if ( ! $query->num_rows() ) return false;
+
+		$list = array();
+
+		foreach ( $query->result() as $row ) {
+			$list[$row->key] = $row;
+		}
+
+		return $list;
 	}
 
 	/**
@@ -140,18 +142,24 @@ class Settings_model extends CI_Model {
 	 * Creates or updates a key in the settings database
 	 * @param string $key   The key name
 	 * @param string $value The key value
+	 * @param string $section The section where the setting belongs
+	 * @param string $type The data type
 	 */
-	public function set_setting ( $key, $value ) {
+	public function set_setting ( $key, $value, $section, $type = "text" ) {
 		if ( $this->exists("settings", array("key" => $key)) ) {
 			$this->db->where(array("key" => $key))->update("settings", array(
 				"updated_at" => mktime(),
-				"value" => $value
+				"value" => $value,
+				"type" => $type,
+				"section" => $section
 			));
 		} else {
 			$this->db->insert("settings", array(
 				"key" => $key,
 				"value" => $value,
-				"updated_at" => mktime()
+				"updated_at" => mktime(),
+				"type" => $type,
+				"section" => $section
 			));
 		}
 
@@ -177,5 +185,28 @@ class Settings_model extends CI_Model {
 		$this->db->where(array(
 			"key" => $key
 		))->delete("settings");
+	}
+
+	/**
+	 * Matches the user settings, with the default settings
+	 * @param  string $section The section to check for
+	 * @param   $data    The user data
+	 * @return array<Objet>
+	 */
+	public function check_defaults ( $section = null, $data ) {
+		$this->config->load("defaults");
+
+		foreach ( $this->config->item("settings") as $key => $array ) {
+			if ( $section === null || ( ! is_null($section) && $array["section"] == $section ) ) {
+				if ( ! isset($data[$key]) ) {
+					$data[$key] =  (object) $array;
+				}
+			}
+
+			$data[$key]->language_key = $array["language_key"];
+			$data[$key]->placeholder = $array["placeholder"];
+		}
+
+		return $data;
 	}
 }

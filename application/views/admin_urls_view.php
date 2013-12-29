@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  	<head>
+	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,6 +10,7 @@
 		<link href="<?= $asset_url; ?>css/style.css" rel="stylesheet">
 		<link href="<?= $asset_url; ?>css/admin.css" rel="stylesheet">
 	</head>
+
 	<body>
 
 		<script type="text/javascript">
@@ -25,46 +26,22 @@
 		<?= $this->user_control->LoadTemplate("nav_bar_view"); ?>
 
 		<div class="container">
-			<form class="form-signin form-horizontal" id="alert_settings_form" role="form">
-				<div class="col-sm-10 col-sm-offset-4">
-					<h2 class="form-signin-heading"><?= $this->lang->line("alert_settings"); ?></h2>
-				</div>
-
-				<div class="form-group">
-					<div class="col-sm-offset-3 col-sm-8" id="errors">
+			<div id="urls">
+				<form class="form-signin form-horizontal list-input-form" role="form" data-array-name="list" data-placeholder-text="<?= $this->lang->line("admin_new_url"); ?>" data-item-endpoint="admin/url/" data-save-endpoint="admin/urls/save">
+					<div class="col-sm-10 col-sm-offset-4">
+						<h2 class="form-signin-heading"><?= $this->lang->line("admin_urls_add"); ?></h2>
 					</div>
-				</div>
 
-				<?php foreach ( $settings as $key => $object ): ?>
 					<div class="form-group">
-						<label for="<?= $key; ?>" class="col-sm-2 control-label col-sm-offset-2"><?= $this->lang->line($object->language_key); ?></label>
-						<div class="col-sm-6">
-							<input data-setting="<?= $key; ?>" type="text" id="<?= $key; ?>" value="<?= $object->value; ?>" name="<?= $key; ?>" class="form-control" placeholder="<?= $this->lang->line($object->placeholder); ?>" required>
+						<div class="col-sm-offset-3 col-sm-8" id="errors">
 						</div>
 					</div>
-				<?php endforeach; ?>
 
-				<div class="form-group">
-					<div class="col-sm-offset-4 col-sm-6">
-						<button class="btn btn-lg btn-primary btn-block" id="alert_settings_save" type="submit"><?= $this->lang->line("admin_save"); ?></button>
-					</div>
-				</div>
-			</form>
-
-			<div class="col-sm-10 col-sm-offset-4">
-				<h2 class="form-signin-heading"><?= $this->lang->line("alert_strings"); ?></h2>
-			</div>
-
-			<hr>
-
-			<div id="alert_strings">
-				<form class="form-signin form-horizontal list-input-form" id="alert_string_form" role="form" data-array-name="alerts" data-placeholder-text="<?= $this->lang->line("alert_string"); ?>" data-item-endpoint="admin/alert/" data-save-endpoint="admin/alerts/save">
-
-					<?php foreach ( $alerts as $alert ) : ?>
+					<?php foreach ( $objects as $object ) : ?>
 						<div class="form-group">
 							<div class="col-sm-offset-4 col-sm-6">
 								<div class="input-group">
-									<input data-id="<?= $alert->id; ?>" data-value="<?= $alert->value ?>" type="text" class="form-control list-input" value="<?= $alert->value ?>">
+									<input data-id="<?= $object->id; ?>" data-value="<?= $object->value ?>" type="text" class="form-control list-input" value="<?= $object->value ?>">
 									<span class="input-group-btn">
 	      								<button class="btn btn-lg btn-danger button-addon remove-input" type="button"><?= $this->lang->line("admin_remove_string"); ?></button>
 	      							</span>
@@ -76,7 +53,7 @@
 					<div class="form-group">
 							<div class="col-sm-offset-4 col-sm-6">
 								<div class="input-group">
-									<input type="text" class="form-control list-input" placeholder="<?= $this->lang->line("alert_string"); ?>">
+									<input type="text" class="form-control list-input" placeholder="<?= $this->lang->line("admin_new_url"); ?>">
 									<span class="input-group-btn">
 	      								<button class="btn btn-lg btn-danger button-addon remove-input" type="button"><?= $this->lang->line("admin_remove_string"); ?></button>
 	      							</span>
@@ -88,18 +65,17 @@
 
 					<div class="form-group">
 						<div class="col-sm-offset-4 col-sm-6">
-							<button class="btn btn-lg btn-primary btn-block" id="alert_strings_save" type="submit"><?= $this->lang->line("admin_save"); ?></button>
+							<button class="btn btn-lg btn-primary btn-block" id="topics_save" type="submit"><?= $this->lang->line("admin_save"); ?></button>
 						</div>
 					</div>
 				</form>
 			</div>
-		<div>
+		</div>
 
 		<script src="<?= $asset_url; ?>jquery.min.js"></script>
 		<script src="<?= $asset_url; ?>bootstrap/js/bootstrap.min.js"></script>
 		<script src="<?= $asset_url; ?>js/nav.js"></script>
 		<script src="<?= $asset_url; ?>js/functions.js"></script>
 		<script src="<?= $asset_url; ?>js/list-input.js"></script>
-		<script src="<?= $asset_url; ?>js/alerts.js"></script>
 	</body>
 </html>

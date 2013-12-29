@@ -43,20 +43,37 @@ $route['404_override'] = '';
 
 $route["sign_in"] = "login/sign_in_view";
 $route["sign_out"] = "login/sign_out";
-$route["sign_in/auth"] = "api/api_login/login";
-$route["sign_out/noui"] = "api/api_login/logout";
 $route["admin/alerts"] = "admin/alerts_view";
 $route["alerts"] = "user/alerts_view";
 $route["admin/topics"] = "admin_topics_view";
 $route["admin/access/control"] = "admin/access_control_view";
-$route["admin/access/control/save"] = "api/api_access_control/save";
 $route["admin/topics"] = "admin/topics_view";
+$route["admin/blocked/words"] = "admin/blocked_words_view";
+$route["admin/strings"] = "admin/strings_to_remove_view";
+$route["admin/urls"] = "admin/urls_view";
+
+#### API #####
 $route["admin/twitter/save"] = "api/api_settings/twitter";
+$route["sign_in/auth"] = "api/api_login/login";
+$route["sign_out/noui"] = "api/api_login/logout";
 $route["admin/twitter/remove/(:num)"] = "api/api_settings/remove_twitter/account/$1";
+$route["admin/access/control/save"] = "api/api_access_control/save";
 $route["admin/settings/save"] = "api/api_settings/settings";
 $route["admin/setting/(:any)"] = "api/api_settings/setting/key/$1";
 $route["admin/alert/(:num)"] = "api/api_alerts/alert_string/id/$1";
 $route["admin/alerts/save"] = "api/api_alerts/save_alerts";
+$route["admin/topic/(:num)"] = "api/api_topics/topic/id/$1";
+$route["admin/topics/save"] = "api/api_topics/save_topics";
+
+$route["admin/remove/string/(:num)"] = "api/api_list/object/id/$1/db/removed_strings";
+$route["admin/remove/strings/save"] = "api/api_list/save_list/db/removed_strings";
+
+$route["admin/url/(:num)"] = "api/api_list/object/id/$1/db/urls";
+$route["admin/urls/save"] = "api/api_list/save_list/db/urls";
+
+$route["admin/blocked/word/(:num)"] = "api/api_list/object/id/$1/db/blocked_words";
+$route["admin/blocked/words/save"] = "api/api_list/save_list/db/blocked_words";
+
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

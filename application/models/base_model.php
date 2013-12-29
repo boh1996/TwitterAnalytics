@@ -101,6 +101,20 @@ class Base_model extends CI_Model {
 	}
 
 	/**
+	 * Deletes an object
+	 * @param  integer $id The object id
+	 * @param string $table The object table
+	 * @return boolean
+	 */
+	public function delete ( $id, $table ) {
+		$this->db->where(array(
+			"id" => $id
+		))->delete($table);
+
+		return true;
+	}
+
+	/**
 	 * Unsets all values in the unique array
 	 * @param  Object|Array $element The element
 	 * @param  Array $unique  The keys to unset
@@ -167,7 +181,7 @@ class Base_model extends CI_Model {
 			if ( $this->element_exist($table, $element, $unique, $multiple) ) {
 				if ( ! $multiple ) {
 					$element = $this->_set($element, "updated_at", mktime());
-					$this->db->where($this->_create_unique_pair($element, $unique))->update($table, $element);
+					$this->db->where($this->_create_unique_pair($element, array("id")))->update($table, $element);
 				}
 			} else{
 				$element = $this->_set($element, "updated_at", mktime());

@@ -69,6 +69,63 @@ class Admin extends CI_Controller {
 	}
 
 	/**
+	 * Shows the list of words, that will block a tweet view
+	 */
+	public function blocked_words_view () {
+		$this->lang->load("admin");
+
+		if ( ! $this->user_control->check_security("admin_topics") ) {
+			redirect(base_url() . "sign_in");
+		}
+
+		$objects = $this->base_model->get_list("blocked_words");
+
+		$this->load->view("admin_blocked_words_view", $this->user_control->ControllerInfo(array(
+			"translations" => json_encode($this->lang->export()),
+			"current_section" => "admin",
+			"objects" => ( $objects !== false ) ? $objects : array()
+		)));
+	}
+
+	/**
+	 * Shows the view, where the string to remove is selected
+	 */
+	public function strings_to_remove_view () {
+		$this->lang->load("admin");
+
+		if ( ! $this->user_control->check_security("admin_topics") ) {
+			redirect(base_url() . "sign_in");
+		}
+
+		$objects = $this->base_model->get_list("removed_strings");
+
+		$this->load->view("admin_strings_to_remove_view", $this->user_control->ControllerInfo(array(
+			"translations" => json_encode($this->lang->export()),
+			"current_section" => "admin",
+			"objects" => ( $objects !== false ) ? $objects : array()
+		)));
+	}
+
+	/**
+	 * Shows the URLs view
+	 */
+	public function urls_view () {
+		$this->lang->load("admin");
+
+		if ( ! $this->user_control->check_security("admin_topics") ) {
+			redirect(base_url() . "sign_in");
+		}
+
+		$objects = $this->base_model->get_list("urls");
+
+		$this->load->view("admin_urls_view", $this->user_control->ControllerInfo(array(
+			"translations" => json_encode($this->lang->export()),
+			"current_section" => "admin",
+			"objects" => ( $objects !== false ) ? $objects : array()
+		)));
+	}
+
+	/**
 	 * Shows the topics admin view
 	 */
 	public function topics_view () {
@@ -78,9 +135,12 @@ class Admin extends CI_Controller {
 			redirect(base_url() . "sign_in");
 		}
 
+		$topics = $this->base_model->get_list("topics");
+
 		$this->load->view("admin_topics_view", $this->user_control->ControllerInfo(array(
 			"translations" => json_encode($this->lang->export()),
-			"current_section" => "admin"
+			"current_section" => "admin",
+			"topics" => ( $topics !== false ) ? $topics : array()
 		)));
 	}
 }

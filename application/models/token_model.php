@@ -31,7 +31,7 @@ class Token_Model extends CI_Model {
 			"ip_address" => $_SERVER['REMOTE_ADDR'],
 			"is_private_key" => false,
 			"user_id" => $user_id,
-			"created_at" => mktime(),
+			"created_at" => time(),
 			"token" => $token
 		);
 

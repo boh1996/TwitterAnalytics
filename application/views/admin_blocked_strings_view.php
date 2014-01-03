@@ -26,10 +26,10 @@
 		<?= $this->user_control->LoadTemplate("nav_bar_view"); ?>
 
 		<div class="container">
-			<div id="blocked_words">
-				<form class="form-signin form-horizontal list-input-form" role="form" data-array-name="list" data-placeholder-text="<?= $this->lang->line("admin_new_blocked_word"); ?>" data-item-endpoint="admin/blocked/word/" data-save-endpoint="admin/blocked/words/save">
+			<div id="blocked_strings">
+				<form class="form-signin form-horizontal list-input-form" role="form" data-array-name="list" data-placeholder-text="<?= $this->lang->line("admin_new_blocked_string"); ?>" data-item-endpoint="admin/blocked/string/" data-save-endpoint="admin/blocked/strings/save">
 					<div class="col-sm-10 col-sm-offset-4">
-						<h2 class="form-signin-heading"><?= $this->lang->line("admin_blocked_words"); ?></h2>
+						<h2 class="form-signin-heading"><?= $this->lang->line("admin_blocked_strings"); ?></h2>
 					</div>
 
 					<div class="form-group">
@@ -53,7 +53,7 @@
 					<div class="form-group">
 							<div class="col-sm-offset-4 col-sm-6">
 								<div class="input-group">
-									<input type="text" class="form-control list-input" placeholder="<?= $this->lang->line("admin_new_blocked_word"); ?>">
+									<input type="text" class="form-control list-input" placeholder="<?= $this->lang->line("admin_new_blocked_string"); ?>">
 									<span class="input-group-btn">
 	      								<button class="btn btn-lg btn-danger button-addon remove-input" type="button"><?= $this->lang->line("admin_remove_string"); ?></button>
 	      							</span>

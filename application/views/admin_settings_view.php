@@ -25,9 +25,9 @@
 		<?= $this->user_control->LoadTemplate("nav_bar_view"); ?>
 
 		<div class="container">
-			<form class="form-signin form-horizontal settings-form" data-section="alerts" role="form">
+			<form class="form-signin form-horizontal settings-form" data-section="scraper" role="form">
 				<div class="col-sm-10 col-sm-offset-4">
-					<h2 class="form-signin-heading"><?= $this->lang->line("alert_settings"); ?></h2>
+					<h2 class="form-signin-heading"><?= $this->lang->line("scraper_settings"); ?></h2>
 				</div>
 
 				<div class="form-group">
@@ -50,49 +50,6 @@
 					</div>
 				</div>
 			</form>
-
-			<div class="col-sm-10 col-sm-offset-4">
-				<h2 class="form-signin-heading"><?= $this->lang->line("alert_strings"); ?></h2>
-			</div>
-
-			<hr>
-
-			<div id="alert_strings">
-				<form class="form-signin form-horizontal list-input-form" id="alert_string_form" role="form" data-array-name="alerts" data-placeholder-text="<?= $this->lang->line("alert_string"); ?>" data-item-endpoint="admin/alert/" data-save-endpoint="admin/alerts/save">
-
-					<?php foreach ( $alerts as $alert ) : ?>
-						<div class="form-group">
-							<div class="col-sm-offset-4 col-sm-6">
-								<div class="input-group">
-									<input data-id="<?= $alert->id; ?>" data-value="<?= $alert->value ?>" type="text" class="form-control list-input" value="<?= $alert->value ?>">
-									<span class="input-group-btn">
-	      								<button class="btn btn-lg btn-danger button-addon remove-input" type="button"><?= $this->lang->line("admin_remove_string"); ?></button>
-	      							</span>
-								</div>
-							</div>
-						</div>
-					<?php endforeach; ?>
-
-					<div class="form-group">
-							<div class="col-sm-offset-4 col-sm-6">
-								<div class="input-group">
-									<input type="text" class="form-control list-input" placeholder="<?= $this->lang->line("alert_string"); ?>">
-									<span class="input-group-btn">
-	      								<button class="btn btn-lg btn-danger button-addon remove-input" type="button"><?= $this->lang->line("admin_remove_string"); ?></button>
-	      							</span>
-								</div>
-							</div>
-						</div>
-
-					<hr>
-
-					<div class="form-group">
-						<div class="col-sm-offset-4 col-sm-6">
-							<button class="btn btn-lg btn-primary btn-block" id="alert_strings_save" type="submit"><?= $this->lang->line("admin_save"); ?></button>
-						</div>
-					</div>
-				</form>
-			</div>
 		<div>
 
 		<script src="<?= $asset_url; ?>jquery.min.js"></script>

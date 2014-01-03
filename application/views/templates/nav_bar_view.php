@@ -13,20 +13,22 @@
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
 				<?php foreach ( $headers["headers"] as $section => $header ): ?>
+					<?php $header_urls = explode(";", $header->url); ?>
 					<?php if ( count($headers["pages"][$header->section]) > 1 ): ?>
 						<li class="dropdown" data-section="<?= $header->section; ?>" <?= ( $current_section == $header->section ) ? 'data-class="active active-section-header"' : "" ?>>
-							<a href="<?= $base_url . $header->url ?>" class="dropdown-toggle" data-toggle="dropdown"><?= $this->lang->line($header->header_language_key); ?><b class="caret"></b></a>
+							<a href="<?= $base_url . $header_urls[0] ?>" class="dropdown-toggle" data-toggle="dropdown"><?= $this->lang->line($header->header_language_key); ?><b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<?php foreach ( $headers["pages"][$header->section] as $page ): ?>
-									<li <?= ( ltrim(uri_string(), "/") == $page->url ) ? 'class="active active-page-header"' : "" ?>>
-										<a href="<?= $base_url . $page->url ?>"><?= $this->lang->line($page->language_key); ?></a>
+									<?php $page_urls = explode(";", $page->url); ?>
+									<li <?= ( in_array(ltrim(uri_string(), "/"), explode(";", $page->url)) ) ? 'class="active active-page-header"' : "" ?>>
+										<a href="<?= $base_url . $page_urls[0] ?>"><?= $this->lang->line($page->language_key); ?></a>
 									</li>
 								<?php endforeach; ?>
 							</ul>
 						</li>
 					<?php else: ?>
 						<li <?= ( $current_section == $header->section ) ? 'class="active active-section-header"' : "" ?>>
-							<a href="<?= $base_url . $header->url ?>"><?= $this->lang->line($header->language_key); ?></a>
+							<a href="<?= $base_url . $header_urls[0] ?>"><?= $this->lang->line($header->language_key); ?></a>
 						</li>
 					<?php endif; ?>
 				<?php endforeach; ?>

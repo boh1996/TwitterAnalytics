@@ -48,9 +48,14 @@ $route["alerts"] = "user/alerts_view";
 $route["admin/topics"] = "admin_topics_view";
 $route["admin/access/control"] = "admin/access_control_view";
 $route["admin/topics"] = "admin/topics_view";
-$route["admin/blocked/words"] = "admin/blocked_words_view";
+$route["admin/blocked/strings"] = "admin/blocked_strings_view";
 $route["admin/strings"] = "admin/strings_to_remove_view";
 $route["admin/urls"] = "admin/urls_view";
+
+$route["admin"] = "admin/status_view";
+$route["admin/status"] = "admin/status_view";
+$route["admin/settings"] = "admin/settings_view";
+$route["admin/twitter"] = "admin/twitter_view";
 
 #### API #####
 $route["admin/twitter/save"] = "api/api_settings/twitter";
@@ -71,8 +76,12 @@ $route["admin/remove/strings/save"] = "api/api_list/save_list/db/removed_strings
 $route["admin/url/(:num)"] = "api/api_list/object/id/$1/db/urls";
 $route["admin/urls/save"] = "api/api_list/save_list/db/urls";
 
-$route["admin/blocked/word/(:num)"] = "api/api_list/object/id/$1/db/blocked_words";
-$route["admin/blocked/words/save"] = "api/api_list/save_list/db/blocked_words";
+$route["admin/blocked/string/(:num)"] = "api/api_list/object/id/$1/db/blocked_strings";
+$route["admin/blocked/strings/save"] = "api/api_list/save_list/db/blocked_strings";
+
+$route["scrape/topics"] = "api/api_scraper/topics";
+$route["scrape/urls"] = "api/api_scraper/urls";
+$route["scrape/users"] = "api/api_scraper/users";
 
 
 /* End of file routes.php */

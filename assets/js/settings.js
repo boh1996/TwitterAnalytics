@@ -1,4 +1,4 @@
-$(document).on("submit", "#alert_settings_form", function () {
+$(document).on("submit", ".settings-form", function () {
 	event.preventDefault();
 
 	if ( ! localStorage.getItem("twa_token") === false ) {
@@ -27,7 +27,7 @@ $(document).on("submit", "#alert_settings_form", function () {
 					"key" : key,
 					"value" : value,
 					"type" : type,
-					"section" : "alerts"
+					"section" : $(".settings-form").attr("data-section")
 				});
 			}
 		} );

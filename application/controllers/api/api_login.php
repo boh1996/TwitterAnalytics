@@ -153,7 +153,7 @@ class API_Login extends T_API_Controller {
 		$_SESSION["data"] = array(
 			"token" => $token,
 			"user_id" => $user->id,
-			"signed_in_at" => mktime()
+			"signed_in_at" => time()
 		);
 
 		$this->response(array(

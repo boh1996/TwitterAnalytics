@@ -34,6 +34,16 @@ class Base_model extends CI_Model {
 	}
 
 	/**
+	 * Performs an update query
+	 * @param  string $tabel The database tabel
+	 * @param  array $data  The rows and new data
+	 * @param  array $where The where caluse
+	 */
+	public function update_element ( $tabel, $data, $where ) {
+		$this->db->where($where)->update($tabel, $where);
+	}
+
+	/**
 	 * Fetches a list of objects
 	 * @param  string $table The database tabel to fetch from
 	 * @param  array $where An optional where clause
@@ -180,16 +190,34 @@ class Base_model extends CI_Model {
 		foreach ( $list as $element ) {
 			if ( $this->element_exist($table, $element, $unique, $multiple) ) {
 				if ( ! $multiple ) {
-					$element = $this->_set($element, "updated_at", mktime());
+					$element = $this->_set($element, "updated_at", time());
 					$this->db->where($this->_create_unique_pair($element, array("id")))->update($table, $element);
 				}
 			} else{
-				$element = $this->_set($element, "updated_at", mktime());
-				$element = $this->_set($element, "created_at", mktime());
+				$element = $this->_set($element, "updated_at", time());
+				$element = $this->_set($element, "created_at", time());
 				$this->db->insert($table, $element);
 			}
 		}
 
 		return true;
+	}
+
+	/**
+	 * Retrieves the id of a row
+	 * @param  string $table The table to select from
+	 * @param  array $where The where clause
+	 * @return boolean|integer
+	 */
+	public function get_id ( $table, $where ) {
+		$query = $this->db->select("id")->where($where)->get($table);
+
+		if ( $query->num_rows() > 0 ) {
+			$row = $query->row();
+
+			return $row->id;
+		} else {
+			return false;
+		}
 	}
 }

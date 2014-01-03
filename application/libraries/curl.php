@@ -6,6 +6,13 @@
  * @uses cURL Uses the cURL library
  */
 class Connection {
+
+	/**
+	 * The response headers
+	 * @var array
+	 */
+	protected $_response_headers = null;
+
 	/**
 	 * The desired user agent for the requests
 	 * @var string
@@ -111,7 +118,7 @@ class Connection {
 	 * @access protected
 	 * @internal An interval boolean, storing if headers should be sent
 	 */
-	protected $_includeHeader;
+	protected $_includeHeader = true;
 
 	/**
 	 * The response cookies from the last request
@@ -220,7 +227,7 @@ class Connection {
 	 * @access public
 	 */
 	public function setHeaders ( $headers = array() ) {
-		$this->_headers() = $headers;
+		$this->_headers = $headers;
 	}
 
 	/**
@@ -319,11 +326,19 @@ class Connection {
 		$s = curl_init();
 
 		curl_setopt($s,CURLOPT_URL,$this->_url);
-		curl_setopt($s,CURLOPT_HTTPHEADER,$this->_headers);
+
+		if ( is_array($this->_headers) ) {
+			curl_setopt($s,CURLOPT_HTTPHEADER,$this->_headers);
+		}
+
 		curl_setopt($s,CURLOPT_TIMEOUT,$this->_timeout);
 		curl_setopt($s,CURLOPT_MAXREDIRS,$this->_maxRedirects);
 		curl_setopt($s,CURLOPT_RETURNTRANSFER,true);
 		curl_setopt($s,CURLOPT_FOLLOWLOCATION,$this->_followlocation);
+
+		curl_setopt($s, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($s, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($s, CURLOPT_VERBOSE, 1);
 		curl_setopt($s,CURLOPT_COOKIEJAR,$this->_cookieFileLocation);
 		curl_setopt($s,CURLOPT_COOKIEFILE,$this->_cookieFileLocation);
 
@@ -345,16 +360,10 @@ class Connection {
 
 		}
 
-		if ( $this->_includeHeader ) {
-			curl_setopt($s,CURLOPT_HEADER,true);
-		}
+		curl_setopt($s,CURLOPT_HEADER,true);
 
 		if ( $this->_noBody ) {
 			curl_setopt($s,CURLOPT_NOBODY,true);
-		}
-
-		if ( $this->_binary) {
-			curl_setopt($s,CURLOPT_BINARYTRANSFER,true);
 		}
 
 		curl_setopt($s,CURLOPT_USERAGENT,$this->_useragent);
@@ -369,12 +378,22 @@ class Connection {
 			curl_setopt( $s, CURLOPT_COOKIE, $cookie_string);
 		}
 
-		$this->_webpage = curl_exec($s);
+		$response = curl_exec($s);
 		$this->_status = curl_getinfo($s,CURLINFO_HTTP_CODE);
 
-		preg_match('/^Set-Cookie:\s*([^;]*)/mi', $this->_webpage, $m);
+		$header_size = curl_getinfo($s, CURLINFO_HEADER_SIZE);
+		$headers = substr($response, 0, $header_size);
+		$body = substr($response, $header_size);
 
-		parse_str($m[1], $this->_response_cookies);
+		$this->_response_headers = explode("\r\n", $headers);
+
+		$this->_webpage = $body;
+
+		preg_match('/^Set-Cookie:\s*([^;]*)/mi', $headers, $m);
+
+		if ( is_array($m) && count($m) > 0 ) {
+			parse_str($m[1], $this->_response_cookies);
+		}
 
 		curl_close($s);
 	}
@@ -397,6 +416,10 @@ class Connection {
 	 */
    	public function __tostring () {
 		return $this->_webpage;
+   	}
+
+   	public function webpage () {
+   		return $this->_webpage;
    	}
 }
 ?>

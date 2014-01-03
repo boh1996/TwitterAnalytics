@@ -14,4 +14,5 @@ $lang["username"] = "Username";
 $lang["sign_in_page"] = "Sign In";
 $lang["password"] = "Password";
 $lang["admin_page"] = "Admin page!";
+$lang["error_inserting_tweet"] = "Can't insert tweet {{tweet_id}} into database!";
 ?>

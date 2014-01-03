@@ -9,18 +9,57 @@ class Admin extends CI_Controller {
 	}
 
 	/**
-	 * Shows the admin settings planel
+	 * Shows the scraper status view
 	 */
-	public function index () {
+	public function status_view () {
+		$this->lang->load("admin");
+
+		if ( ! $this->user_control->check_security("admin_status") ) {
+			redirect(base_url() . "sign_in");
+		}
+
+		$this->load->model("status_model");
+		$errors = $this->status_model->get_errors();
+
+		$this->load->view("admin_status_view", $this->user_control->ControllerInfo(array(
+			"translations" => json_encode($this->lang->export()),
+			"current_section" => "admin",
+			"errors" => ( $errors !== false ) ? $errors : array()
+		)));
+	}
+
+	/**
+	 * Shows the scraper/system settings view
+	 */
+	public function settings_view () {
 		$this->lang->load("common");
 		$this->lang->load("admin");
 		$this->load->model("settings_model");
 
-		if ( ! $this->user_control->check_security("admin_home") ) {
+		if ( ! $this->user_control->check_security("admin_settings") ) {
 			redirect(base_url() . "sign_in");
 		}
 
-		$this->load->view("admin_settings", $this->user_control->ControllerInfo(array(
+		$this->load->view("admin_settings_view", $this->user_control->ControllerInfo(array(
+			"current_section" => "admin",
+			"translations" => json_encode($this->lang->export()),
+			"settings" => $this->settings_model->check_defaults("scraper",$this->settings_model->get_settings("scraper")),
+		)));
+	}
+
+	/**
+	 * Shows the admin twitter planel
+	 */
+	public function twitter_view () {
+		$this->lang->load("common");
+		$this->lang->load("admin");
+		$this->load->model("settings_model");
+
+		if ( ! $this->user_control->check_security("admin_twitter") ) {
+			redirect(base_url() . "sign_in");
+		}
+
+		$this->load->view("admin_twitter", $this->user_control->ControllerInfo(array(
 			"current_section" => "admin",
 			"accounts" => $this->settings_model->get_twitter_users(),
 			"translations" => json_encode($this->lang->export()),
@@ -71,16 +110,16 @@ class Admin extends CI_Controller {
 	/**
 	 * Shows the list of words, that will block a tweet view
 	 */
-	public function blocked_words_view () {
+	public function blocked_strings_view () {
 		$this->lang->load("admin");
 
 		if ( ! $this->user_control->check_security("admin_topics") ) {
 			redirect(base_url() . "sign_in");
 		}
 
-		$objects = $this->base_model->get_list("blocked_words");
+		$objects = $this->base_model->get_list("blocked_strings");
 
-		$this->load->view("admin_blocked_words_view", $this->user_control->ControllerInfo(array(
+		$this->load->view("admin_blocked_strings_view", $this->user_control->ControllerInfo(array(
 			"translations" => json_encode($this->lang->export()),
 			"current_section" => "admin",
 			"objects" => ( $objects !== false ) ? $objects : array()

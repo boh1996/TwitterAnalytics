@@ -148,7 +148,7 @@ class Settings_model extends Base_model {
 	public function set_setting ( $key, $value, $section, $type = "text" ) {
 		if ( $this->exists("settings", array("key" => $key)) ) {
 			$this->db->where(array("key" => $key))->update("settings", array(
-				"updated_at" => mktime(),
+				"updated_at" => time(),
 				"value" => $value,
 				"type" => $type,
 				"section" => $section
@@ -157,7 +157,7 @@ class Settings_model extends Base_model {
 			$this->db->insert("settings", array(
 				"key" => $key,
 				"value" => $value,
-				"updated_at" => mktime(),
+				"updated_at" => time(),
 				"type" => $type,
 				"section" => $section
 			));
@@ -201,10 +201,10 @@ class Settings_model extends Base_model {
 				if ( ! isset($data[$key]) ) {
 					$data[$key] =  (object) $array;
 				}
-			}
 
-			$data[$key]->language_key = $array["language_key"];
-			$data[$key]->placeholder = $array["placeholder"];
+				$data[$key]->language_key = $array["language_key"];
+				$data[$key]->placeholder = $array["placeholder"];
+			}
 		}
 
 		return $data;

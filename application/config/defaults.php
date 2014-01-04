@@ -8,7 +8,7 @@ $config["settings"] = array(
 		"language_key" 	=> "alerts_count",
 		"placeholder"	=> "number_of_alerts"
 	),
-	"setting_max_liftime" 	=> array(
+	"setting_max_lifetime" 	=> array(
 		"value" 		=> 86000,
 		"key" 			=> "settings_max_life_time",
 		"section" 		=> "scraper",

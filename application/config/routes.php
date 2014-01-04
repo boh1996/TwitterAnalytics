@@ -57,6 +57,14 @@ $route["admin/status"] = "admin/status_view";
 $route["admin/settings"] = "admin/settings_view";
 $route["admin/twitter"] = "admin/twitter_view";
 
+$route["admin/history"] = "admin/history_view";
+$route["admin/scrapers"] = "admin/scrapers_view";
+$route["admin/errors"] = "admin/errors_view";
+$route["admin/active/scrapers"] = "admin/active_scrapers_view";
+
+$route["user/words/temp"] = "user/words_view";
+$route["user/alerts/temp"] = "user/alerts_view";
+
 #### API #####
 $route["admin/twitter/save"] = "api/api_settings/twitter";
 $route["sign_in/auth"] = "api/api_login/login";

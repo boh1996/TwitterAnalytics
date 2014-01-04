@@ -6,9 +6,39 @@
 	border-bottom: 2px rgba(1, 169, 211, 1) solid !important;
 }
 
+.table-header {
+	background-color: rgba(227, 227, 227, 1);
+}
+
+body {
+	overflow-x:hidden;
+}
+
 html,
 body {
 	height: 100%;
 	background-color: #eee;
 	padding-top: 40px;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: 0;
+}
+
+*:focus {
+    outline: 0;
+}
+
+input,
+select,
+textarea,
+button {
+    outline: 0;
+}
+
+* {
+	outline: 0;
 }

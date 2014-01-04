@@ -29,17 +29,20 @@
 
 		<div class="container">
 			<div class="well" style="height:auto !important; min-height:150px;">
-				<div class="page-header col-sm-8 col-sm-offset-3">
-					<h1><?= $this->lang->line("admin_scraper_status"); ?> <small><i><?= $this->lang->line("admin_scraper_status_description"); ?></i></small></h1>
+				<div class="page-header text-center col-sm-8 col-sm-offset-2">
+					<h1><?= $this->lang->line("admin_scraper_status"); ?></h1>
 				</div>
 			</div>
 
-			<div class="bs-example bs-example-tabs" class="col-sm-12">
+			<div class="col-sm-12 errors-container" id="errors">
+			</div>
+
+			<div class="bs-example bs-example-tab">
 				<div id="scrapers" style="display:inline-block;width:100%;">
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs">
 						<li class="active">
-							<a href="#errors" data-toggle="tab"><?= $this->lang->line("admin_status_errors"); ?></a>
+							<a href="#errors_list" data-toggle="tab"><?= $this->lang->line("admin_status_errors"); ?></a>
 						</li>
 						<li>
 							<a href="#history" data-toggle="tab"><?= $this->lang->line("admin_status_history"); ?></a>
@@ -47,52 +50,27 @@
 						<li>
 							<a href="#active" data-toggle="tab"><?= $this->lang->line("admin_status_active"); ?></a>
 						</li>
+						<li>
+							<a href="#listscrapers" data-toggle="tab"><?= $this->lang->line("admin_status_scrapers"); ?></a>
+						</li>
+						<li>
+							<a data-refresh="true" href="#"><?= $this->lang->line("admin_refresh"); ?></a>
+						</li>
 					</ul>
 
 					<!-- Tab panes -->
 					<div class="tab-content col-sm-10 col-sm-offset-1">
-						<div class="tab-pane active" id="errors">
-							<?php if ( count($errors) > 0 ): ?>
-								<div class="table-responsive">
-									<table class="table table-striped table-hover">
-										<thead>
-											<th>#</th>
-											<th><?= $this->lang->line("admin_error_created_time"); ?></th>
-											<th><?= $this->lang->line("admin_error_string"); ?></th>
-											<th><?= $this->lang->line("admin_error_url"); ?></th>
-											<th><?= $this->lang->line("admin_error_item_type"); ?></th>
-										</thead>
-
-										<?php $index = 0; ?>
-										<?php foreach ( $errors as $error ): ?>
-											<?php $index = $index+1; ?>
-											<tr>
-												<td><strong><?= $index; ?></strong></th>
-												<td><i><time datetime="<?= strftime( "%Y-%m-%dT%H:%M:%SZ" , $error->created_at) ?>"><?= strftime( "%d / %m / %Y - %H:%M:%S" , $error->created_at) ?></time></i></td>
-												<td><?= $error->error_string; ?></td>
-												<td><?= $error->url; ?></td>
-												<td><?= $error->item_type; ?></td>
-											</tr>
-										<?php endforeach; ?>
-
-										<tfoot>
-											<th>#</th>
-											<th><?= $this->lang->line("admin_error_created_time"); ?></th>
-											<th><?= $this->lang->line("admin_error_string"); ?></th>
-											<th><?= $this->lang->line("admin_error_url"); ?></th>
-											<th><?= $this->lang->line("admin_error_item_type"); ?></th>
-										</tfoot>
-									</table>
-								</div>
-							<?php else: ?>
-								<p><?= $this->lang->line("admin_status_no_errors"); ?><p>
-							<?php endif; ?>
+						<div class="tab-pane active" id="errors_list">
+							<?= $this->user_control->LoadTemplate("status_errors_view"); ?>
 						</div>
 						<div class="tab-pane" id="history">
-							...
+							<?= $this->user_control->LoadTemplate("status_history_view"); ?>
 						</div>
 						<div class="tab-pane" id="active">
-							...
+							<?= $this->user_control->LoadTemplate("status_active_scrapers_view"); ?>
+						</div>
+						<div class="tab-pane" id="listscrapers">
+							<?= $this->user_control->LoadTemplate("status_scrapers_view"); ?>
 						</div>
 					</div>
 				</div>
@@ -105,5 +83,6 @@
 		<script src="<?= $asset_url; ?>js/bootstrap-checkbox.js"></script>
 		<script src="<?= $asset_url; ?>js/mustache.js"></script>
 		<script src="<?= $asset_url; ?>js/functions.js"></script>
+		<script src="<?= $asset_url; ?>js/status.js"></script>
 	</body>
 </html>

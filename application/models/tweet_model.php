@@ -63,7 +63,7 @@ class Tweet_model extends Base_model {
 	public function maxTime () {
 		$this->load->model("settings_model");
 		$data = $this->settings_model->check_defaults("scraper",$this->settings_model->get_settings("scraper"));
-		return $data["setting_max_liftime"]->value;
+		return $data["setting_max_lifetime"]->value;
 	}
 
 	/**

@@ -168,8 +168,8 @@ class API_Scraper extends T_API_Controller {
 							}
 						}
 					} else {
-						if ( ! in_array($error_types, array("tweet_exists", "to_old")) ) {
-							$this->scrape_model->create_error(str_replace("{{tweet_id}}}", $tweet["tweet_id"], $this->lang->line("error_inserting_tweet")), $url, $uuid, $item_type, $object->id );
+						if ( count(array_intersect($error_type, array("tweet_exists", "to_old"))) == 0 ) {
+							$this->scrape_model->create_error(str_replace("{{tweet_id}}", $tweet["tweet_id"], $this->lang->line("error_inserting_tweet")), $url, $uuid, $item_type, $object->id );
 						}
 					}
 				} else {

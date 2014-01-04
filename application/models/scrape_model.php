@@ -122,7 +122,8 @@ class Scrape_model extends Base_model {
 			"type" => $type,
 			"run_uuid" => $uuid,
 			"start_microtime" => $microtime,
-			"item_count" => $item_count
+			"item_count" => $item_count,
+			"created_at" => time()
 		));
 	}
 

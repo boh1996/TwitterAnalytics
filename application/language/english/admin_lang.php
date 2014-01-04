@@ -38,14 +38,10 @@ $lang["admin_strings_to_remove"] = "Strings to remove";
 $lang["admin_object_deleted"] = "Object successfully deleted";
 $lang["settings_max_life_time"] = "Max tweet age";
 $lang["admin_max_age"] = "Max age(seconds)";
-$lang["admin_tweet_max_age"] = "Tweet mage age";
-$lang["scraper_settings"] = "Scraper settings";
-$lang["admin_status"] = "Status";
-$lang["admin_scraper_status"] = "Scraper status";
-$lang["admin_scraper_status_description"] = "Monitor the different scrapers";
-$lang["admin_status_no_errors"] = "No errors found";
+$lang["admin_tweet_max_age"] = "Tweet max age";
 
 $lang["admin_settings"] = "Settings";
+$lang["admin_scaper_started_at"] = "Started at";
 
 $lang["settings_word_charsets"] = "Characters accepted in words too";
 $lang["admin_word_extra_chars"] = "Extra word chars";
@@ -61,17 +57,46 @@ $lang["admin_page_topics"] = "Topics";
 $lang["admin_please_log_in"] = "Please log in to use this feature!";
 $lang["admin_page_blocked_strings"] = "Blocked strings";
 $lang["admin_page_strings"] = "Strings to remove";
+$lang["admin_status_no_active_scrapers"] = "No active scrapers";
 $lang["admin_page_urls"] = "URLs";
+$lang["admin_refresh"] = "Refresh";
 
 $lang["admin_missing_post_data"] = "Missing post data!";
 $lang["admin_post_data_error"] = "Wrong post data structure!";
 $lang["admin_control_post_success"] = "Data saved successfully!";
 
 $lang["admin_status_errors"] = "Errors";
+$lang["admin_scaper"] = "Scraper";
+$lang["admin_tweets_fetched"] = "Tweets fetched";
+$lang["admin_tweets_created"] = "Tweets created";
+$lang["admin_tweets_blocked"] = "Tweets blocked";
+$lang["admin_item_count"] = "Items";
 $lang["admin_status_history"] = "History";
 $lang["admin_status_active"] = "Active";
 $lang["admin_error_created_time"] = "Time";
 $lang["admin_error_url"] = "URL";
+$lang["admin_url"] = "URL";
 $lang["admin_error_string"] = "Error";
 $lang["admin_error_item_type"] = "Type";
+$lang["scraper_settings"] = "Scraper settings";
+$lang["admin_status"] = "Status";
+$lang["admin_scraper_status"] = "Scraper status";
+$lang["admin_scraper_status_description"] = "Monitor the different scrapers";
+$lang["admin_status_no_errors"] = "No errors found";
+$lang["admin_status_no_history"] = "No scraper runs";
+$lang["admin_status_scrapers"] = "Scrapers";
+$lang["admin_action"] = "Action";
+$lang["admin_status_no_scrapers"] = "No available scrapers";
+$lang["admin_run"] = "Run";
+$lang["admin_scraper_finished"] = "Scraper finished successfully!";
+$lang["admin_scraper_started"] = "Scraper started";
+$lang["admin_scraper_failed"] = "Scraper failed";
+$lang["admin_item_type"] = "Type";
+$lang["admin_item_status"] = "Status";
+$lang["admin_last_feched_time"] = "Last item fetched at";
+
+# Scrapers #
+$lang["admin_scraper_users"] = "Users";
+$lang["admin_scraper_urls"] = "URLs";
+$lang["admin_scraper_topics"] = "Topics";
 ?>

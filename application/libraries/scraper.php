@@ -99,7 +99,7 @@ class Scraper {
 				break;
 
 			case 'profile':
-				$url = 'https://twitter.com/i/profiles/show/' . $data["user"] . '/timeline?include_available_features=1&include_entities=1&last_note_ts=0&max_id' . $cursor;
+				$url = 'https://twitter.com/i/profiles/show/' . $data["user"] . '/timeline?include_available_features=1&include_entities=1&last_note_ts=0';
 				if ( ! is_null($cursor) ) {
 					return  $url . '&max_id=' . $cursor;
 				}
@@ -176,6 +176,16 @@ class Scraper {
 		foreach ( pq('.js-stream-tweet[data-tweet-id]') as $tweet ) {
 			$tweet = pq($tweet);
 
+			$time = "";
+
+			$relative = $tweet->find(".js-relative-timestamp")->attr("data-time");
+
+			if ( ! empty($relative) ) {
+				$time = $tweet->find(".js-relative-timestamp")->attr("data-time");
+			} else {
+				$time = $tweet->find(".js-short-timestamp")->attr("data-time");
+			}
+
 			$tweet_array = array(
 				"urls" => array(),
 				"mentions" => array(),
@@ -188,7 +198,7 @@ class Scraper {
 				"user_id" => $tweet->attr("data-user-id"),
 				"screen_name" => $tweet->attr("data-screen-name"),
 				"display_name" => $tweet->attr("data-name"),
-				"created_at" => $tweet->find(".js-relative-timestamp")->attr("data-time"),
+				"created_at" => $time,
 				"uri" => $tweet->find(".js-details")->attr("href")
 			);
 

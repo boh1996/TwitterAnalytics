@@ -9,6 +9,86 @@ class Admin extends CI_Controller {
 	}
 
 	/**
+	 * Shows the history template view
+	 */
+	public function history_view () {
+		$this->lang->load("admin");
+
+		if ( ! $this->user_control->check_security("admin_status") ) {
+			redirect(base_url() . "sign_in");
+		}
+
+		$this->load->model("status_model");
+		$history = $this->status_model->get_history();
+
+		$this->load->view("templates/status_history_view", $this->user_control->ControllerInfo(array(
+			"translations" => json_encode($this->lang->export()),
+			"current_section" => "admin",
+			"history" => ( $history !== false ) ? $history : array(),
+		)));
+	}
+
+	/**
+	 * Get active scrapers template view
+	 */
+	public function active_scrapers_view () {
+		$this->lang->load("admin");
+
+		if ( ! $this->user_control->check_security("admin_status") ) {
+			redirect(base_url() . "sign_in");
+		}
+
+		$this->load->model("status_model");
+		$active = $this->status_model->get_active_scrapers();
+
+		$this->load->view("templates/status_active_scrapers_view", $this->user_control->ControllerInfo(array(
+			"translations" => json_encode($this->lang->export()),
+			"current_section" => "admin",
+			"active" => ( $active !== false ) ? $active : array(),
+		)));
+	}
+
+	/**
+	 * Shows the scrapers part of the status viewn
+	 */
+	public function scrapers_view () {
+		$this->lang->load("admin");
+
+		if ( ! $this->user_control->check_security("admin_status") ) {
+			redirect(base_url() . "sign_in");
+		}
+
+		$this->load->model("status_model");
+		$scrapers = $this->status_model->get_scrapers();
+
+		$this->load->view("templates/status_scrapers_view", $this->user_control->ControllerInfo(array(
+			"translations" => json_encode($this->lang->export()),
+			"current_section" => "admin",
+			"scrapers" => ( $scrapers !== false ) ? $scrapers : array(),
+		)));
+	}
+
+	/**
+	 * Shows the errors template view
+	 */
+	public function errors_view () {
+		$this->lang->load("admin");
+
+		if ( ! $this->user_control->check_security("admin_status") ) {
+			redirect(base_url() . "sign_in");
+		}
+
+		$this->load->model("status_model");
+		$errors = $this->status_model->get_errors();
+
+		$this->load->view("templates/status_errors_view", $this->user_control->ControllerInfo(array(
+			"translations" => json_encode($this->lang->export()),
+			"current_section" => "admin",
+			"errors" => ( $errors !== false ) ? $errors : array(),
+		)));
+	}
+
+	/**
 	 * Shows the scraper status view
 	 */
 	public function status_view () {
@@ -20,11 +100,17 @@ class Admin extends CI_Controller {
 
 		$this->load->model("status_model");
 		$errors = $this->status_model->get_errors();
+		$history = $this->status_model->get_history();
+		$scrapers = $this->status_model->get_scrapers();
+		$active = $this->status_model->get_active_scrapers();
 
 		$this->load->view("admin_status_view", $this->user_control->ControllerInfo(array(
 			"translations" => json_encode($this->lang->export()),
 			"current_section" => "admin",
-			"errors" => ( $errors !== false ) ? $errors : array()
+			"errors" => ( $errors !== false ) ? $errors : array(),
+			"history" => ( $history !== false ) ? $history : array(),
+			"scrapers" => ( $scrapers !== false ) ? $scrapers : array(),
+			"active" => ( $active !== false ) ? $active : array(),
 		)));
 	}
 

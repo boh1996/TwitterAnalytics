@@ -92,7 +92,7 @@ class Scraper {
 				$url = 'https://twitter.com/i/search/timeline?q=' . $data["q"] .  '&src=tren&include_available_features=1&include_entities=1&last_note_ts=0';
 
 				if ( ! is_null($cursor) ) {
-					return  $url . '&&last_note_ts=0&scroll_cursor=TWEET-=' . $cursor;
+					return  $url . '&scroll_cursor=TWEET-=' . $cursor;
 				}
 
 				return $url;
@@ -254,6 +254,9 @@ class Scraper {
 
 		if ( $not_first == false && property_exists($object, "refresh_cursor") ) {
 			$refresh_cursor = $object->refresh_cursor;
+		} else if ( $not_first == false && in_array($type, array("profile", "timeline")) ) {
+			$first = current($tweets);
+			$refresh_cursor = $first["tweet_id"];
 		}
 
 		// If more pages available that are newer then the last fetched and newer then the maxed save time, set the next cursor

@@ -183,6 +183,8 @@ class API_Scraper extends T_API_Controller {
 			$tweets_created = $tweets_created + $local_tweets_created;
 			$tweets_blocked = $tweets_blocked + $local_tweets_blocked;
 
+			var_dump($new_lastest_cursor);
+
 			// Set latest cursor
 			$this->base_model->update_element($table, array("latest_cursor" => $new_lastest_cursor), array("id" => $object->id));
 		}
@@ -191,6 +193,7 @@ class API_Scraper extends T_API_Controller {
 
 		// Inserts the row the "sets" the scraping as finished
 		$this->scrape_model->create_history_item($tweets_created, $scraper, $tweets_fetched, $tweets_blocked, $uuid, $microtime );
+		die();
 	}
 
 	/**

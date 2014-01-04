@@ -26,7 +26,8 @@ class Tweet_model extends Base_model {
 				"twitter_user_id" => $tweet["user_id"],
 				"username" => $tweet["screen_name"],
 				"user_title" => $tweet["display_name"],
-				"tweet_source_url" => $tweet["tweet_source_url"]
+				"tweet_source_url" => $tweet["tweet_source_url"],
+				"inserted_at" => time()
 			);
 
 			if ( isset($tweet["tweet_topic_id"]) ) {

@@ -2,7 +2,9 @@
 class User extends CI_Controller {
 
 	public function index () {
-		
+		$this->load->dbforge();
+
+		$this->dbforge->create_database('twitter_analytics')
 	}
 }
 ?>

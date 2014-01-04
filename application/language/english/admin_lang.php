@@ -39,6 +39,8 @@ $lang["admin_object_deleted"] = "Object successfully deleted";
 $lang["settings_max_life_time"] = "Max tweet age";
 $lang["admin_max_age"] = "Max age(seconds)";
 $lang["admin_tweet_max_age"] = "Tweet max age";
+$lang["admin_words_shown"] = "Words shown";
+$lang["admin_standard_rows_shown"] = "Standard number of rows";
 
 $lang["admin_settings"] = "Settings";
 $lang["admin_scaper_started_at"] = "Started at";
@@ -60,6 +62,7 @@ $lang["admin_page_strings"] = "Strings to remove";
 $lang["admin_status_no_active_scrapers"] = "No active scrapers";
 $lang["admin_page_urls"] = "URLs";
 $lang["admin_refresh"] = "Refresh";
+$lang["admin_page_user_alerts"] = "Alerts";
 
 $lang["admin_missing_post_data"] = "Missing post data!";
 $lang["admin_post_data_error"] = "Wrong post data structure!";

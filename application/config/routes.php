@@ -63,7 +63,9 @@ $route["admin/errors"] = "admin/errors_view";
 $route["admin/active/scrapers"] = "admin/active_scrapers_view";
 
 $route["user/words/temp"] = "user/words_view";
-$route["user/alerts/temp"] = "user/alerts_view";
+$route["user/alerts/temp/list"] = "user/alerts_list_view";
+$route["user/alerts/temp"] = "user/alerts_box_view";
+$route["user/alerts"] = "user/alerts_view";
 
 #### API #####
 $route["admin/twitter/save"] = "api/api_settings/twitter";

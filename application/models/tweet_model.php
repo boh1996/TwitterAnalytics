@@ -222,7 +222,8 @@ class Tweet_model extends Base_model {
 	public function tweet_matched_alert ( $tweet_id, $alert_string_id ) {
 		$this->db->insert("tweet_alert_strings", array(
 			"tweet_id" => $tweet_id,
-			"alert_string_id" => $alert_string_id
+			"alert_string_id" => $alert_string_id,
+			"created_at" => time()
 		));
 	}
 }

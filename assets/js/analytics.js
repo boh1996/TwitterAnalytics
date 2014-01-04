@@ -1,5 +1,5 @@
 function refresh () {
-	$(".table").floatThead({
+	$(".table-scroll-header").floatThead({
 		scrollingTop : 52,
 		useAbsolutePositioning: false
 	});
@@ -22,6 +22,13 @@ function words () {
 		$("#words").html(data);
 		refresh();
 	} );
+
+	$.ajax({
+		url : base_url + "user/alerts/temp?limit=" + $("#limit").val() + "&date=" + $("#date").val()
+	}).success( function ( data ) {
+		$("#alert_strings").html(data);
+		refresh();
+	} );
 }
 
 $(document).ready( function () {
@@ -33,6 +40,17 @@ $(document).on("change", "#limit", function () {
 } );
 
 $(document).on("change", "#date", function () {
-	console.log("HERE");
 	words();
 } );
+
+$('[data-clampedwidth]').each(function () {
+    var elem = $(this);
+    var parentPanel = elem.data('clampedwidth');
+    var resizeFn = function () {
+        var sideBarNavWidth = $(parentPanel).width() - parseInt(elem.css('paddingLeft')) - parseInt(elem.css('paddingRight')) - parseInt(elem.css('marginLeft')) - parseInt(elem.css('marginRight')) - parseInt(elem.css('borderLeftWidth')) - parseInt(elem.css('borderRightWidth'));
+        elem.css('width', sideBarNavWidth);
+    };
+
+    resizeFn();
+    $(window).resize(resizeFn);
+});

@@ -27,13 +27,13 @@
 		<?= $this->user_control->LoadTemplate("nav_bar_view"); ?>
 		<div class="container" style="padding:0px 10px 0px 10px; width:100%; display:inline-block;">
 			<div class="row">
-				<div class="col-sm-8 col-sm-offset-1 well">
+				<div class="col-sm-10 col-sm-offset-1 well">
 					<form class="form-inline" role="form">
 						<div class="form-group col-sm-3">
 							<label for="limit" class="control-label"><?= $this->lang->line("user_rows"); ?></label>
 							<select class="selectpicker" id="limit">
-								<?php foreach ( $limits as $key => $value ): ?>
-								<option <?= ( $key == "value" ) ? "selected=selected" : "" ?> value="<?= $value; ?>"><?= $value; ?></option>
+								<?php foreach ( $limits as $value ): ?>
+								<option value="<?= $value; ?>"><?= $value; ?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>
@@ -48,14 +48,8 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-8 col-sm-offset-1 well" id="words">
-					<?= $this->user_control->LoadTemplate("analytics_words_view"); ?>
-				</div>
-
-				<div class="col-sm-3 push-left sidebar">
-					<div id="alert_strings" data-spy="affix" data-offset-top="90" data-offset-bottom="200" data-clampedwidth=".sidebar">
-						<?= $this->user_control->LoadTemplate("analytics_alerts_view"); ?>
-					</div>
+				<div class="col-sm-10 col-sm-offset-1 well" id="strings">
+					<?= $this->user_control->LoadTemplate("analytics_alerts_list_view"); ?>
 				</div>
 			</div>
 		</div>
@@ -68,6 +62,6 @@
 		<script src="<?= $asset_url; ?>js/moment-with-langs.min.js"></script>
 		<script src="<?= $asset_url; ?>js/daterangepicker.js"></script>
 		<script src="<?= $asset_url; ?>js/jquery.floatThead.min.js"></script>
-		<script src="<?= $asset_url; ?>js/analytics.js"></script>
+		<script src="<?= $asset_url; ?>js/alerts_list.js"></script>
 	</body>
 </html>

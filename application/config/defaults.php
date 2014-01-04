@@ -24,5 +24,23 @@ $config["settings"] = array(
 		"language_key" 	=> "admin_word_extra_characters",
 		"placeholder"	=> "admin_word_extra_chars"
 	),
+	"setting_words_shown" => array(
+		"value" 		=> 50,
+		"key" 			=> "settings_words_shown",
+		"section" 		=> "scraper",
+		"type" 			=> "text",
+		"language_key" 	=> "admin_standard_rows_shown",
+		"placeholder"	=> "admin_words_shown"
+	),
 );
+
+$config["limit_values"] = array(
+	50,
+	100,
+	500,
+	1000
+);
+
+// Number of words shown
+// Number of connected words, with special alert strings, shown
 ?>

@@ -12,11 +12,12 @@ class Admin extends CI_Controller {
 	 * Shows the history template view
 	 */
 	public function history_view () {
-		$this->lang->load("admin");
-
 		if ( ! $this->user_control->check_security("admin_status") ) {
-			redirect(base_url() . "sign_in");
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
 		}
+
+		$this->lang->load("admin");
 
 		$this->load->model("status_model");
 		$history = $this->status_model->get_history();
@@ -35,7 +36,8 @@ class Admin extends CI_Controller {
 		$this->lang->load("admin");
 
 		if ( ! $this->user_control->check_security("admin_status") ) {
-			redirect(base_url() . "sign_in");
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
 		}
 
 		$this->load->model("status_model");
@@ -55,7 +57,8 @@ class Admin extends CI_Controller {
 		$this->lang->load("admin");
 
 		if ( ! $this->user_control->check_security("admin_status") ) {
-			redirect(base_url() . "sign_in");
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
 		}
 
 		$this->load->model("status_model");
@@ -75,7 +78,8 @@ class Admin extends CI_Controller {
 		$this->lang->load("admin");
 
 		if ( ! $this->user_control->check_security("admin_status") ) {
-			redirect(base_url() . "sign_in");
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
 		}
 
 		$this->load->model("status_model");
@@ -95,7 +99,7 @@ class Admin extends CI_Controller {
 		$this->lang->load("admin");
 
 		if ( ! $this->user_control->check_security("admin_status") ) {
-			redirect(base_url() . "sign_in");
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
 		}
 
 		$this->load->model("status_model");
@@ -118,13 +122,14 @@ class Admin extends CI_Controller {
 	 * Shows the scraper/system settings view
 	 */
 	public function settings_view () {
+		if ( ! $this->user_control->check_security("admin_settings") ) {
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
+		}
+
 		$this->lang->load("common");
 		$this->lang->load("admin");
 		$this->load->model("settings_model");
-
-		if ( ! $this->user_control->check_security("admin_settings") ) {
-			redirect(base_url() . "sign_in");
-		}
 
 		$this->load->view("admin_settings_view", $this->user_control->ControllerInfo(array(
 			"current_section" => "admin",
@@ -137,13 +142,14 @@ class Admin extends CI_Controller {
 	 * Shows the admin twitter planel
 	 */
 	public function twitter_view () {
+		if ( ! $this->user_control->check_security("admin_twitter") ) {
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
+		}
+
 		$this->lang->load("common");
 		$this->lang->load("admin");
 		$this->load->model("settings_model");
-
-		if ( ! $this->user_control->check_security("admin_twitter") ) {
-			redirect(base_url() . "sign_in");
-		}
 
 		$this->load->view("admin_twitter", $this->user_control->ControllerInfo(array(
 			"current_section" => "admin",
@@ -156,14 +162,15 @@ class Admin extends CI_Controller {
 	 * Shows the settings page for the alert words
 	 */
 	public function alerts_view () {
+		if ( ! $this->user_control->check_security("admin_alerts") ) {
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
+		}
+
 		$this->lang->load("common");
 		$this->lang->load("admin");
 		$this->load->model("settings_model");
 		$this->load->model("alert_model");
-
-		if ( ! $this->user_control->check_security("admin_alerts") ) {
-			redirect(base_url() . "sign_in");
-		}
 
 		$alerts = $this->alert_model->get_list("alert_strings");
 
@@ -179,12 +186,13 @@ class Admin extends CI_Controller {
 	 * Shows the access control management page
 	 */
 	public function access_control_view () {
+		if ( ! $this->user_control->check_security("admin_access_control") ) {
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
+		}
+
 		$this->lang->load("admin");
 		$this->load->model("access_model");
-
-		if ( ! $this->user_control->check_security("admin_access_control") ) {
-			redirect(base_url() . "sign_in");
-		}
 
 		$this->load->view("admin_access_control", $this->user_control->ControllerInfo(array(
 			"pages" => $this->access_model->get_pages(),
@@ -197,11 +205,12 @@ class Admin extends CI_Controller {
 	 * Shows the list of words, that will block a tweet view
 	 */
 	public function blocked_strings_view () {
-		$this->lang->load("admin");
-
 		if ( ! $this->user_control->check_security("admin_topics") ) {
-			redirect(base_url() . "sign_in");
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
 		}
+
+		$this->lang->load("admin");
 
 		$objects = $this->base_model->get_list("blocked_strings");
 
@@ -216,11 +225,12 @@ class Admin extends CI_Controller {
 	 * Shows the view, where the string to remove is selected
 	 */
 	public function strings_to_remove_view () {
-		$this->lang->load("admin");
-
 		if ( ! $this->user_control->check_security("admin_topics") ) {
-			redirect(base_url() . "sign_in");
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
 		}
+
+		$this->lang->load("admin");
 
 		$objects = $this->base_model->get_list("removed_strings");
 
@@ -235,11 +245,12 @@ class Admin extends CI_Controller {
 	 * Shows the URLs view
 	 */
 	public function urls_view () {
-		$this->lang->load("admin");
-
 		if ( ! $this->user_control->check_security("admin_topics") ) {
-			redirect(base_url() . "sign_in");
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
 		}
+
+		$this->lang->load("admin");
 
 		$objects = $this->base_model->get_list("urls");
 
@@ -254,11 +265,12 @@ class Admin extends CI_Controller {
 	 * Shows the topics admin view
 	 */
 	public function topics_view () {
-		$this->lang->load("admin");
-
 		if ( ! $this->user_control->check_security("admin_topics") ) {
-			redirect(base_url() . "sign_in");
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
 		}
+
+		$this->lang->load("admin");
 
 		$topics = $this->base_model->get_list("topics");
 

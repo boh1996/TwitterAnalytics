@@ -9,6 +9,7 @@ class User extends CI_Controller {
 
 	public function __construct () {
 		parent::__construct();
+
 		$this->load->model("settings_model");
 		$this->settings["scaper"] = $this->settings_model->check_defaults("scraper",$this->settings_model->get_settings("scraper"));
 		$this->settings["alerts"] = $this->settings_model->check_defaults("alerts",$this->settings_model->get_settings("alerts"));
@@ -18,16 +19,16 @@ class User extends CI_Controller {
 	 * Shows the alert box template view
 	 */
 	public function alerts_box_view () {
+		if ( ! $this->user_control->check_security("user_home") ) {
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+		}
+
 		if ( $this->input->get("limit") ) {
 			$this->limit = $this->input->get("limit");
 		}
 
 		$this->lang->load("common");
 		$this->load->model("analytics_model");
-
-		if ( ! $this->user_control->check_security("user_home") ) {
-			redirect(base_url() . "sign_in");
-		}
 
 		$alert_strings = $this->analytics_model->fetch_alert_box($this->limit, $this->settings["alerts"]["setting_alert_words"]->value, $this->date);
 
@@ -44,16 +45,16 @@ class User extends CI_Controller {
 	 * Shows the user analytics view
 	 */
 	public function index () {
+		if ( ! $this->user_control->check_security("user_home") ) {
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+		}
+
 		if ( $this->input->get("limit") ) {
 			$this->limit = $this->input->get("limit");
 		}
 
 		$this->lang->load("common");
 		$this->load->model("analytics_model");
-
-		if ( ! $this->user_control->check_security("user_home") ) {
-			redirect(base_url() . "sign_in");
-		}
 
 		$words = $this->analytics_model->fetch_words($this->limit, $this->date);
 		$alert_strings = $this->analytics_model->fetch_alert_box($this->limit, $this->settings["alerts"]["setting_alert_words"]->value, $this->date);
@@ -81,7 +82,7 @@ class User extends CI_Controller {
 		$this->load->model("analytics_model");
 
 		if ( ! $this->user_control->check_security("user_alerts") ) {
-			redirect(base_url() . "sign_in");
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
 		}
 
 		$alerts = $this->analytics_model->fetch_alert_words($this->limit, $this->date);
@@ -108,7 +109,7 @@ class User extends CI_Controller {
 		$this->load->model("analytics_model");
 
 		if ( ! $this->user_control->check_security("user_alerts") ) {
-			redirect(base_url() . "sign_in");
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
 		}
 
 		$alerts = $this->analytics_model->fetch_alert_words($this->limit, $this->date);
@@ -126,6 +127,10 @@ class User extends CI_Controller {
 	 * Shows the words templates view
 	 */
 	public function words_view () {
+		if ( ! $this->user_control->check_security("user_home") ) {
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+		}
+
 		if ( $this->input->get("limit") ) {
 			$this->limit = $this->input->get("limit");
 		}
@@ -135,10 +140,6 @@ class User extends CI_Controller {
 		}
 
 		$this->load->model("analytics_model");
-
-		if ( ! $this->user_control->check_security("user_home") ) {
-			redirect(base_url() . "sign_in");
-		}
 
 		$words = $this->analytics_model->fetch_words($this->limit, $this->date);
 

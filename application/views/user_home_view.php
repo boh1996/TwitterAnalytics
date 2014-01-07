@@ -29,7 +29,7 @@
 			<div class="row">
 				<div class="col-sm-8 col-sm-offset-1 well">
 					<form class="form-inline" role="form">
-						<div class="form-group col-sm-3">
+						<div class="form-group col-sm-4">
 							<label for="limit" class="control-label"><?= $this->lang->line("user_rows"); ?></label>
 							<select class="selectpicker" id="limit">
 								<?php foreach ( $limits as $key => $value ): ?>
@@ -38,7 +38,7 @@
 							</select>
 						</div>
 
-						<div class="form-group col-sm-5">
+						<div class="form-group col-sm-6">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 								<input type="text" class="form-control" id="date" data-type="daterange">

@@ -11,7 +11,7 @@ function refresh () {
 		timePicker12Hour : false,
 		dateLimit : 0
 	}, function () {
-		$("#date").trigger("change");
+		words();
 	} );
 }
 
@@ -40,6 +40,10 @@ $(document).on("change", "#limit", function () {
 } );
 
 $(document).on("change", "#date", function () {
+	words();
+} );
+
+$(document).on("click", ".refresh-list", function () {
 	words();
 } );
 

@@ -44,6 +44,10 @@
 								<input type="text" class="form-control" id="date" data-type="daterange">
 							</div>
 						</div>
+
+						<div class="form-group col-sm-2">
+							<a href="#" class="btn btn-default refresh-list"><?= $this->lang->line("user_refresh"); ?></a>
+						</div>
 					</form>
 				</div>
 			</div>

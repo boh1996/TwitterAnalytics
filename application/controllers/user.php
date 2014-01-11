@@ -13,6 +13,14 @@ class User extends CI_Controller {
 		$this->load->model("settings_model");
 		$this->settings["scaper"] = $this->settings_model->check_defaults("scraper",$this->settings_model->get_settings("scraper"));
 		$this->settings["alerts"] = $this->settings_model->check_defaults("alerts",$this->settings_model->get_settings("alerts"));
+
+		if ( $this->input->get("limit") ) {
+			$this->limit = $this->input->get("limit");
+		}
+
+		if ( $this->input->get("date") ) {
+			$this->date = $this->input->get("date");
+		}
 	}
 
 	/**
@@ -21,10 +29,6 @@ class User extends CI_Controller {
 	public function alerts_box_view () {
 		if ( ! $this->user_control->check_security("user_home") ) {
 			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
-		}
-
-		if ( $this->input->get("limit") ) {
-			$this->limit = $this->input->get("limit");
 		}
 
 		$this->lang->load("common");
@@ -49,10 +53,6 @@ class User extends CI_Controller {
 			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
 		}
 
-		if ( $this->input->get("limit") ) {
-			$this->limit = $this->input->get("limit");
-		}
-
 		$this->lang->load("common");
 		$this->load->model("analytics_model");
 
@@ -74,10 +74,6 @@ class User extends CI_Controller {
 	 * Shows the alerts page view
 	 */
 	public function alerts_view () {
-		if ( $this->input->get("limit") ) {
-			$this->limit = $this->input->get("limit");
-		}
-
 		$this->lang->load("common");
 		$this->load->model("analytics_model");
 
@@ -101,9 +97,6 @@ class User extends CI_Controller {
 	 * Shows the alerts list view
 	 */
 	public function alerts_list_view () {
-		if ( $this->input->get("limit") ) {
-			$this->limit = $this->input->get("limit");
-		}
 
 		$this->lang->load("common");
 		$this->load->model("analytics_model");
@@ -129,14 +122,6 @@ class User extends CI_Controller {
 	public function words_view () {
 		if ( ! $this->user_control->check_security("user_home") ) {
 			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
-		}
-
-		if ( $this->input->get("limit") ) {
-			$this->limit = $this->input->get("limit");
-		}
-
-		if ( $this->input->get("date") ) {
-			$this->date = $this->input->get("date");
 		}
 
 		$this->load->model("analytics_model");

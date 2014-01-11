@@ -4,32 +4,34 @@ $(document).on("submit", ".settings-form", function () {
 	if ( ! localStorage.getItem("twa_token") === false ) {
 		var data = [];
 
-		$('[data-setting]').each( function ( index, element ) {
-			var key = $(element).attr("data-setting");
-			var value = null;
-			var type = "";
-			if ( $(element).is("input:text") ) {
-				if ( $(element).val() != "" ) {
-					value = $(element).val();
-					type = "text";
+		$(".settings-form").each( function ( index, form ) {
+			$(form).find('[data-setting]').each( function ( index, element ) {
+				var key = $(element).attr("data-setting");
+				var value = null;
+				var type = "";
+				if ( $(element).is("input:text") ) {
+					if ( $(element).val() != "" ) {
+						value = $(element).val();
+						type = "text";
+					}
+				} else if ( $(element).is(":checkbox") ) {
+					type = "checkbox"
+					if ( $(element).attr("data-checked") !== undefined ) {
+						value = $(element).attr("data-checked");
+					} else {
+						value = $(element).is(':checked');
+					}
 				}
-			} else if ( $(element).is(":checkbox") ) {
-				type = "checkbox"
-				if ( $(element).attr("data-checked") !== undefined ) {
-					value = $(element).attr("data-checked");
-				} else {
-					value = $(element).is(':checked');
-				}
-			}
 
-			if ( value !== null ) {
-				data.push({
-					"key" : key,
-					"value" : value,
-					"type" : type,
-					"section" : $(".settings-form").attr("data-section")
-				});
-			}
+				if ( value !== null ) {
+					data.push({
+						"key" : key,
+						"value" : value,
+						"type" : type,
+						"section" : $(form).attr("data-section")
+					});
+				}
+			} );
 		} );
 
 		$.ajax({

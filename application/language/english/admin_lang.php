@@ -41,8 +41,12 @@ $lang["admin_max_age"] = "Max age(seconds)";
 $lang["admin_tweet_max_age"] = "Tweet max age";
 $lang["admin_words_shown"] = "Words shown";
 $lang["admin_standard_rows_shown"] = "Standard number of rows";
+$lang["admin_settings_alert_connetion_words_shown"] = "Connection words shown";
+$lang["admin_connection_words_shown"] = "Shown words";
 
 $lang["admin_settings"] = "Settings";
+$lang["admin_analytics_settings"] = "Analytics settings";
+$lang["scraper_settings"] = "Scraper settings";
 $lang["admin_scaper_started_at"] = "Started at";
 
 $lang["settings_word_charsets"] = "Characters accepted in words too";
@@ -81,7 +85,7 @@ $lang["admin_error_url"] = "URL";
 $lang["admin_url"] = "URL";
 $lang["admin_error_string"] = "Error";
 $lang["admin_error_item_type"] = "Type";
-$lang["scraper_settings"] = "Scraper settings";
+$lang["admin_settings"] = "Settings";
 $lang["admin_status"] = "Status";
 $lang["admin_scraper_status"] = "Scraper status";
 $lang["admin_scraper_status_description"] = "Monitor the different scrapers";

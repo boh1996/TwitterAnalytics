@@ -263,7 +263,7 @@ class Scraper {
 		$last_element = end($tweets);
 		if ( $last_element["created_at"] > (time() - $max_timestamp) ) {
 			if ( ! empty($last_inserted_cursor) && property_exists($object, "scroll_cursor") ) {
-				if ( $this->_cursor_different($object->scroll_cursor, $last_inserted_cursor, $oldest) ) {
+				if ( $this->_cursor_different($object->scroll_cursor, $last_inserted_cursor, $oldest) && $last_element["created_at"] > ( time() - $max_timestamp ) ) {
 					$next_page_cursor = $oldest;
 				}
 			} else {
@@ -277,13 +277,13 @@ class Scraper {
 					if ( $current_request_max_cursor > $last_inserted_cursor ) {
 						$next_page_cursor = $current_request_max_cursor;
 					}
-				} else if ( $last_element["created_at"] > (time() - $max_timestamp) ) {
+				}/* else if ( $last_element["created_at"] > (time() - $max_timestamp) ) {
 					if ( property_exists($object, "scroll_cursor") ) {
 						$next_page_cursor = $object->scroll_cursor;
 					} else {
 						$next_page_cursor = $last_element["tweet_id"];
 					}
-				}
+				}*/
 			}
 		}
 

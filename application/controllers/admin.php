@@ -134,7 +134,8 @@ class Admin extends CI_Controller {
 		$this->load->view("admin_settings_view", $this->user_control->ControllerInfo(array(
 			"current_section" => "admin",
 			"translations" => json_encode($this->lang->export()),
-			"settings" => $this->settings_model->check_defaults("scraper",$this->settings_model->get_settings("scraper")),
+			"scraper_settings" => $this->settings_model->check_defaults("scraper",$this->settings_model->get_settings("scraper")),
+			"analytics_settings" => $this->settings_model->check_defaults("analytics",$this->settings_model->get_settings("analytics")),
 		)));
 	}
 

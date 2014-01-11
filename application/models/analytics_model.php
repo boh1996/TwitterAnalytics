@@ -5,12 +5,89 @@ class Analytics_model extends Base_model {
 	}
 
 	/**
+	 * Returns an array of all the tweets connected to an alert string
+	 * @param  integer $alert_string_id The alert string id
+	 * @return array<Integer>
+	 */
+	public function get_alert_connection_tweets ( $alert_string_id ) {
+		$tweets = $this->select("tweet_alert_strings", array(
+			"alert_string_id" => $alert_string_id
+		));
+
+		if ( $tweets === false ) return false;
+
+		$list = array();
+
+		foreach ( $tweets as $row ) {
+			$list[] = $row->tweet_id;
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Selects the connected word, to an alert string
+	 * @param  integer  $alert_id The alert string id
+	 * @param  integer $limit    The max number of words, returned
+	 * @param string $date $date query
+	 * @return array<Object>
+	 */
+	public function get_alert_connection_words ( $alert_id, $limit = 3, $date = null ) {
+		$where = "";
+		if ( ! is_null($date) ) {
+			preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches);
+			$start = date_create($matches["start"]);
+			$end = date_create($matches["end"]);
+			if ( is_object($start) && is_object($end) ) {
+				$where = ' AND created_at >=' . $this->db->escape($start->getTimestamp()) . ' AND created_at <= ' . $this->db->escape($end->getTimestamp());
+			}
+		}
+
+		$limit = intval($limit);
+		$alert_id = intval($alert_id);
+
+		$query = $this->db->query('
+			SELECT
+			    COUNT(tw.word_id) AS word_count,
+			    tw.word_id,
+			    GROUP_CONCAT(DISTINCT tweet_id ORDER BY tweet_id DESC) as tweets,
+			    word
+			FROM tweet_words tw
+			INNER JOIN (
+			    SELECT
+			        word,
+			        id
+			    FROM words
+			) words_table ON words_table.id = tw.word_id
+			WHERE tweet_id IN (
+			    SELECT tweet_id
+			    FROM tweet_alert_strings
+			    WHERE alert_string_id = ?
+			) ' . $where . '
+			GROUP BY word_id
+			ORDER BY word_count DESC
+			LIMIT ?
+		', array($alert_id, $limit));
+
+		if ( ! $query->num_rows() ) return false;
+
+		$list = array();
+
+		foreach ( $query->result() as $row ) {
+			$list[] = $row;
+		}
+
+		return $list;
+	}
+
+	/**
 	 * Fetches top alert words
 	 * @param  integer $limit The max number of rows to fetch
 	 * @param  string $date  Date/time range string
 	 * @return array
 	 */
 	public function fetch_alert_words ( $limit = 10, $date = nulll ) {
+		$this->load->model("settings_model");
 		$where = "";
 		if ( ! is_null($date) ) {
 			preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches);
@@ -25,14 +102,14 @@ class Analytics_model extends Base_model {
 		$query = $this->db->query('SELECT
     		ast.value as word,
     		twast.*
- 		FROM alert_strings ast
-	 	INNER JOIN(
-	    SELECT COUNT(alert_string_id) AS word_count,
-	    GROUP_CONCAT(tweet_id) as tweets,
-	    alert_string_id,
-	    COUNT(DISTINCT tweet_id) as unique_tweets
-	    FROM tweet_alert_strings' . $where . ' GROUP BY alert_string_id)
-		twast ON ast.id = twast.alert_string_id ORDER BY word_count DESC LIMIT ?
+	 		FROM alert_strings ast
+		 	INNER JOIN(
+		    SELECT COUNT(alert_string_id) AS word_count,
+		    GROUP_CONCAT(tweet_id) as tweets,
+		    alert_string_id,
+		    COUNT(DISTINCT tweet_id) as unique_tweets
+		    FROM tweet_alert_strings' . $where . ' GROUP BY alert_string_id)
+			twast ON ast.id = twast.alert_string_id ORDER BY word_count DESC LIMIT ?
 		', array($limit));
 
 		if ( ! $query->num_rows() ) return false;
@@ -41,6 +118,7 @@ class Analytics_model extends Base_model {
 
 		foreach ( $query->result() as $row ) {
 			$row->tweets = explode(",", $row->tweets);
+			$row->connected = $this->get_alert_connection_words($row->alert_string_id, $this->settings_model->fetch_setting("setting_alert_connection_words_shown", 3, "alerts"));
 			$list[] = $row;
 		}
 
@@ -54,7 +132,7 @@ class Analytics_model extends Base_model {
 	public function limits () {
 		$this->config->load("defaults");
 		$this->load->model("settings_model");
-		$settings = $this->settings_model->check_defaults("scraper",$this->settings_model->get_settings("scraper"));
+		$settings = $this->settings_model->check_defaults("analytics",$this->settings_model->get_settings("analytics"));
 
 		$limits = $this->config->item("limit_values");
 
@@ -139,6 +217,7 @@ class Analytics_model extends Base_model {
 
 		foreach ( $query->result() as $row ) {
 			$row->tweets = explode(",", $row->tweets);
+			$row->connected = $this->get_alert_connection_words($row->word_id, $this->settings_model->fetch_setting("setting_alert_connection_words_shown", 3, "alerts"));
 			$list[] = $row;
 		}
 
@@ -164,6 +243,15 @@ class Analytics_model extends Base_model {
 
 		$limit = intval($limit);
 		$query = $this->db->query("SELECT * FROM (
+			SELECT
+				word,
+				word_id,
+				created_at,
+				tweets,
+				unique_tweets,
+				word_count,
+				type
+			 FROM (
 			    SELECT
 			        w.word,
 			        w.id as word_id,
@@ -204,7 +292,8 @@ class Analytics_model extends Base_model {
 			        FROM tweet_alert_strings
 			        GROUP BY alert_string_id
 			    ) twast ON ast.id = twast.alert_string_id
-			) words
+				ORDER BY type
+			) words GROUP BY word ) result
 			" . $where . "
 			ORDER BY word_count DESC
 			LIMIT ?"

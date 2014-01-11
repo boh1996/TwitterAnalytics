@@ -6,6 +6,22 @@ class Settings_model extends Base_model {
 	}
 
 	/**
+	 * Returns a settings key
+	 * @param  string $key     The settings key
+	 * @param  string|integer $default The default value
+	 * @param string $section The settings section
+	 * @return string|integer|array
+	 */
+	public function fetch_setting ( $key, $default, $section ) {
+		$settings = $this->check_defaults($section, $this->get_settings($section));
+
+		if ( ! isset($settings[$key]) ) return $default;
+
+		return $settings[$key]->value;
+	}
+
+
+	/**
 	 * Saves the twitter account data
 	 * @param  array $accounts An array of accounts
 	 * @return boolean

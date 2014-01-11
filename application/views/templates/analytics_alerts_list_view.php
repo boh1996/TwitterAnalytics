@@ -9,6 +9,7 @@
 							<th><?= $this->lang->line("user_word"); ?></th>
 							<th><?= $this->lang->line("user_count"); ?></th>
 							<th><?= $this->lang->line("user_unique_tweets"); ?></th>
+							<th><?= $this->lang->line("user_connected_words"); ?></th>
 						</tr>
 					</thead>
 
@@ -21,6 +22,17 @@
 								<td><?= $alert->word; ?></td>
 								<td><?= $alert->word_count; ?></td>
 								<td><?= $alert->unique_tweets; ?></td>
+								<td>
+									<?php if ( ! empty($alert->connected) ): ?>
+										<?php $connected = array(); ?>
+										<?php foreach ( $alert->connected as $row ): ?>
+											<?php $connected[] = '<small><i><a href="#">' . $row->word . '</a>[' . $row->word_count . ']</i></small>'; ?>
+										<?php endforeach; ?>
+										<?= implode($connected, ", "); ?>
+									<?php else: ?>
+										<?= $this->lang->line("user_no_connected_words"); ?>
+									<?php endif; ?>
+								</td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>
@@ -31,6 +43,7 @@
 							<th><?= $this->lang->line("user_word"); ?></th>
 							<th><?= $this->lang->line("user_count"); ?></th>
 							<th><?= $this->lang->line("user_unique_tweets"); ?></th>
+							<th><?= $this->lang->line("user_connected_words"); ?></th>
 						</tr>
 					</tfoot>
 				</table>

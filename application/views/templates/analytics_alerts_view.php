@@ -11,7 +11,7 @@
 						<th>#</th>
 						<th><?= $this->lang->line("user_word"); ?></th>
 						<th><?= $this->lang->line("user_count"); ?></th>
-						<th><?= $this->lang->line("user_unique_tweets"); ?></th>
+						<th><?= $this->lang->line("user_connected_words"); ?></th>
 					</tr>
 				</thead>
 
@@ -23,7 +23,17 @@
 							<td><?= $index ?></td>
 							<td><?= $string->word; ?></td>
 							<td><?= $string->word_count; ?></td>
-							<td><?= $string->unique_tweets; ?></td>
+							<td>
+								<?php if ( ! empty($string->connected) ): ?>
+									<?php $connected = array(); ?>
+									<?php foreach ( $string->connected as $row ): ?>
+										<?php $connected[] = '<small><i><a href="#">' . $row->word . '</a>[' . $row->word_count . ']</i></small>'; ?>
+									<?php endforeach; ?>
+									<?= implode($connected, ", "); ?>
+								<?php else: ?>
+									<?= $this->lang->line("user_no_connected_words"); ?>
+								<?php endif; ?>
+							</td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -32,7 +42,7 @@
 					<th>#</th>
 					<th><?= $this->lang->line("user_word"); ?></th>
 					<th><?= $this->lang->line("user_count"); ?></th>
-					<th><?= $this->lang->line("user_unique_tweets"); ?></th>
+					<th><?= $this->lang->line("user_connected_words"); ?></th>
 				</tfoot>
 			</table>
 		</div>

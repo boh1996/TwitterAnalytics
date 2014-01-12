@@ -133,6 +133,8 @@ class Settings_model extends Base_model {
 			$list[$row->key] = $row;
 		}
 
+		array_multisort($list);
+
 		return $list;
 	}
 
@@ -159,14 +161,12 @@ class Settings_model extends Base_model {
 	 * @param string $key   The key name
 	 * @param string $value The key value
 	 * @param string $section The section where the setting belongs
-	 * @param string $type The data type
 	 */
-	public function set_setting ( $key, $value, $section, $type = "text" ) {
+	public function set_setting ( $key, $value, $section ) {
 		if ( $this->exists("settings", array("key" => $key)) ) {
 			$this->db->where(array("key" => $key))->update("settings", array(
 				"updated_at" => time(),
 				"value" => $value,
-				"type" => $type,
 				"section" => $section
 			));
 		} else {
@@ -174,7 +174,6 @@ class Settings_model extends Base_model {
 				"key" => $key,
 				"value" => $value,
 				"updated_at" => time(),
-				"type" => $type,
 				"section" => $section
 			));
 		}
@@ -212,7 +211,9 @@ class Settings_model extends Base_model {
 	public function check_defaults ( $section = null, $data ) {
 		$this->config->load("defaults");
 
-		foreach ( $this->config->item("settings") as $key => $array ) {
+		$settings = $this->config->item("settings");
+
+		foreach ( $settings as $key => $array ) {
 			if ( $section === null || ( ! is_null($section) && $array["section"] == $section ) ) {
 				if ( ! isset($data[$key]) ) {
 					$data[$key] =  (object) $array;
@@ -220,8 +221,23 @@ class Settings_model extends Base_model {
 
 				$data[$key]->language_key = $array["language_key"];
 				$data[$key]->placeholder = $array["placeholder"];
+				$data[$key]->type = $array["type"];;
 			}
 		}
+
+		foreach ( $data as $key => $object ) {
+			if ( isset( $settings[$key] ) ) {
+				if ( $settings[$key]["section"] != $object->section ) {
+					$data[$key] = (object) $settings[$key];
+					$this->set_setting($key, $object->value, $settings[$key]["section"]);
+				}
+			} else {
+				$this->delete_setting($key);
+				unset($data[$key]);
+			}
+		}
+
+		array_multisort($data);
 
 		return $data;
 	}

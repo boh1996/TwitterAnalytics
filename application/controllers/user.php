@@ -1,12 +1,44 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * @author Bo Thomsen <bo@illution.dk>
+ * @package Twitter Analytics
+ * @category Analytics
+ * @uses Codeigniter Uses the Codeigniter Framework
+ * @copyright mettesolsikke@live.dk, 2014
+ * @subpackage User Analytics Viewer
+ * @license Microsoft Reference License
+ * @version 1.0
+ * @filesource
+ */
 class User extends CI_Controller {
 
+	/**
+	 * A variable storing the limit,
+	 * and initialized by the constructor
+	 * @var integer
+	 * @since 1.0
+	 */
 	public $limit = 50;
 
+	/**
+	 * A variable storing the possible selected date string
+	 * @var string
+	 * @since 1.0
+	 */
 	public $date = null;
 
+	/**
+	 * Users/default settings container
+	 * @var array
+	 * @since 1.0
+	 */
 	public $settings = array();
 
+	/**
+	 * Constructor function
+	 * @since 1.0
+	 * @uses setings_model Uses the settings model to retrieve user settings
+	 */
 	public function __construct () {
 		parent::__construct();
 
@@ -25,6 +57,8 @@ class User extends CI_Controller {
 
 	/**
 	 * Shows the alert box template view
+	 * @uses user_control Uses the user_control library to check for security
+	 * @uses analytics_model Uses the analytics model to fetch alerts
 	 */
 	public function alerts_box_view () {
 		if ( ! $this->user_control->check_security("user_home") ) {

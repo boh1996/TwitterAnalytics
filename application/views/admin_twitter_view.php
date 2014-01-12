@@ -33,8 +33,10 @@
 
 		<div class="container">
 			<form class="form-signin form-horizontal" id="twitter_settings_form" role="form">
-				<div class="col-sm-10 col-sm-offset-4">
-					<h2 class="form-signin-heading"><?= $this->lang->line("enter_twitter_details"); ?></h2>
+				<div class="col-sm-10 col-sm-offset-2">
+					<div class="page-header">
+						<h2><?= $this->lang->line("enter_twitter_details"); ?><small> <?= $this->lang->line("admin_twitter_details_description"); ?></small></h2>
+					</div>
 				</div>
 
 				<div class="form-group">

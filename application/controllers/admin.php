@@ -1,4 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * @author Bo Thomsen <bo@illution.dk>
+ * @package Twitter Analytics
+ * @category Analytics
+ * @uses Codeigniter Uses the Codeigniter Framework
+ * @copyright mettesolsikke@live.dk, 2014
+ * @subpackage Control Panel
+ * @license Microsoft Reference License
+ * @version 1.0
+ * @filesource
+ */
 class Admin extends CI_Controller {
 
 	/**
@@ -152,7 +163,7 @@ class Admin extends CI_Controller {
 		$this->lang->load("admin");
 		$this->load->model("settings_model");
 
-		$this->load->view("admin_twitter", $this->user_control->ControllerInfo(array(
+		$this->load->view("admin_twitter_view", $this->user_control->ControllerInfo(array(
 			"current_section" => "admin",
 			"accounts" => $this->settings_model->get_twitter_users(),
 			"translations" => json_encode($this->lang->export()),
@@ -175,7 +186,7 @@ class Admin extends CI_Controller {
 
 		$alerts = $this->alert_model->get_list("alert_strings");
 
-		$this->load->view("admin_alerts", $this->user_control->ControllerInfo(array(
+		$this->load->view("admin_alerts_view", $this->user_control->ControllerInfo(array(
 			"current_section" => "admin",
 			"translations" => json_encode($this->lang->export()),
 			"settings" => $this->settings_model->check_defaults("alerts",$this->settings_model->get_settings("alerts")),
@@ -195,7 +206,7 @@ class Admin extends CI_Controller {
 		$this->lang->load("admin");
 		$this->load->model("access_model");
 
-		$this->load->view("admin_access_control", $this->user_control->ControllerInfo(array(
+		$this->load->view("admin_access_control_view", $this->user_control->ControllerInfo(array(
 			"pages" => $this->access_model->get_pages(),
 			"translations" => json_encode($this->lang->export()),
 			"current_section" => "admin"

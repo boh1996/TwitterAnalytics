@@ -1,4 +1,16 @@
 <?php
+/**
+ * @author Bo Thomsen <bo@illution.dk>
+ * @package Twitter Analytics
+ * @category Analytics
+ * @uses Codeigniter Uses the Codeigniter Framework
+ * @copyright mettesolsikke@live.dk, 2014
+ * @subpackage Access Control
+ * @license Microsoft Reference License
+ * @extends Base_model
+ * @version 1.0
+ * @filesource
+ */
 class Token_Model extends CI_Model {
 
 	/**

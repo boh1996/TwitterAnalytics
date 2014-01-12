@@ -1,4 +1,16 @@
 <?php
+/**
+ * @author Bo Thomsen <bo@illution.dk>
+ * @package Twitter Analytics
+ * @category Analytics
+ * @uses Codeigniter Uses the Codeigniter Framework
+ * @copyright mettesolsikke@live.dk, 2014
+ * @subpackage User Control
+ * @license Microsoft Reference License
+ * @extends CI_Model
+ * @version 1.0
+ * @filesource
+ */
 class User_model extends CI_Model {
 
 	public function __construct () {

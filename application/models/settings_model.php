@@ -1,4 +1,16 @@
 <?php
+/**
+ * @author Bo Thomsen <bo@illution.dk>
+ * @package Twitter Analytics
+ * @category Analytics
+ * @uses Codeigniter Uses the Codeigniter Framework
+ * @copyright mettesolsikke@live.dk, 2014
+ * @subpackage User Analytics Viewer
+ * @license Microsoft Reference License
+ * @version 1.0
+ * @filesource
+ * @uses Base_model Uses the base model to do simple operations
+ */
 class Settings_model extends Base_model {
 
 	public function __construct () {
@@ -221,7 +233,8 @@ class Settings_model extends Base_model {
 
 				$data[$key]->language_key = $array["language_key"];
 				$data[$key]->placeholder = $array["placeholder"];
-				$data[$key]->type = $array["type"];;
+				$data[$key]->help_text = $array["help_text"];
+				$data[$key]->type = $array["type"];
 			}
 		}
 

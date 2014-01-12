@@ -28,8 +28,10 @@
 		<div class="container">
 			<div id="topics">
 				<form class="form-signin form-horizontal list-input-form" id="topics_form" role="form" data-array-name="topics" data-placeholder-text="<?= $this->lang->line("admin_new_topic"); ?>" data-item-endpoint="admin/topic/" data-save-endpoint="admin/topics/save">
-					<div class="col-sm-10 col-sm-offset-4">
-						<h2 class="form-signin-heading"><?= $this->lang->line("admin_topics_add"); ?></h2>
+					<div class="col-sm-10 col-sm-offset-3">
+						<div class="page-header">
+							<h1><?= $this->lang->line("admin_topics_add"); ?><small> <?= $this->lang->line("admin_topics_description"); ?></small></h1>
+						</div>
 					</div>
 
 					<div class="form-group">

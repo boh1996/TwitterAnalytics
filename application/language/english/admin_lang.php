@@ -1,5 +1,5 @@
 <?php
-$lang["enter_twitter_details"] = "Enter your Twitter credidentials here!";
+$lang["enter_twitter_details"] = "Twitter credidentials";
 $lang["admin_save"] = "Save";
 $lang["admin_twitter"] = "Twitter";
 $lang["alert_settings"] = "Alert settings!";
@@ -43,6 +43,20 @@ $lang["admin_words_shown"] = "Words shown";
 $lang["admin_standard_rows_shown"] = "Standard number of rows";
 $lang["admin_settings_alert_connetion_words_shown"] = "Connection words shown";
 $lang["admin_connection_words_shown"] = "Shown words";
+$lang["admin_blocked_strings_description"] = "Will block tweets from being saved!";
+$lang["admin_strings_to_remove_description"] = "Strings that should be removed from tweets!";
+$lang["admin_alert_words_help"] = "The number of alerts shown in the alert box!";
+$lang["admin_max_life_time_help"] = "Tweets older then this in (seconds) will be deleted!";
+$lang["admin_word_charset_help"] = "Extra characters that can be included in words";
+$lang["admin_words_shown_help"] = "The standard number of words shown, in the analytics view";
+$lang["admin_alert_connection_words_help"] = "The number of connected words, for an alert, that will be shown!";
+$lang["admin_topics_description"] = "Twitter search terms, that will be analyzed for tweets!";
+$lang["admin_alerts_description"] = "Words, if found in tweet that will be shown in the alerts list!";
+$lang["admin_twitter_details_description"] = "Tweets from these accounts followers will be analyzed!";
+$lang["scraper_settings_description"] = "Settings that will affect the result of the scraper!";
+$lang["admin_analytics_settings_description"] = "Settings regarding the analytics viewer";
+$lang["admin_urls_description"] = "Twitter URLs that will be analyzed for tweets!";
+$lang["admin_alerts_settings_description"] = "Settings regarded to the alerts viewer!";
 
 $lang["admin_settings"] = "Settings";
 $lang["admin_analytics_settings"] = "Analytics settings";

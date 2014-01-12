@@ -1,4 +1,16 @@
 <?php
+/**
+ * @author Bo Thomsen <bo@illution.dk>
+ * @package Twitter Analytics
+ * @category Analytics
+ * @uses Codeigniter Uses the Codeigniter Framework
+ * @copyright mettesolsikke@live.dk, 2014
+ * @subpackage Database Operations
+ * @extends CI_Model
+ * @license Microsoft Reference License
+ * @version 1.0
+ * @filesource
+ */
 class Base_model extends CI_Model {
 
 	public function __construct () {

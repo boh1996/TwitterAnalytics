@@ -28,8 +28,10 @@
 		<div class="container">
 			<div id="blocked_strings">
 				<form class="form-signin form-horizontal list-input-form" role="form" data-array-name="list" data-placeholder-text="<?= $this->lang->line("admin_new_blocked_string"); ?>" data-item-endpoint="admin/blocked/string/" data-save-endpoint="admin/blocked/strings/save">
-					<div class="col-sm-10 col-sm-offset-4">
-						<h2 class="form-signin-heading"><?= $this->lang->line("admin_blocked_strings"); ?></h2>
+					<div class="col-sm-10 col-sm-offset-3">
+						<div class="page-header">
+							<h1><?= $this->lang->line("admin_blocked_strings"); ?><small> <?= $this->lang->line("admin_blocked_strings_description"); ?></small></h1>
+						</div>
 					</div>
 
 					<div class="form-group">

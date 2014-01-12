@@ -1,4 +1,15 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');  
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * @author Bo Thomsen <bo@illution.dk>
+ * @package Twitter Analytics
+ * @category Analytics
+ * @uses Codeigniter Uses the Codeigniter Framework
+ * @copyright Bo Thomsen, 2014
+ * @subpackage Login Secutiry
+ * @license Microsoft Reference License
+ * @version 1.0
+ * @filesource
+ */
 class Login_Security{
 
 	/**

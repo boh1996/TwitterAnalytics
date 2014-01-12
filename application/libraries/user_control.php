@@ -1,4 +1,15 @@
 <?php
+/**
+ * @author Bo Thomsen <bo@illution.dk>
+ * @package Twitter Analytics
+ * @category Analytics
+ * @uses Codeigniter Uses the Codeigniter Framework
+ * @copyright Bo Thomsen, 2014
+ * @subpackage User mMnagement
+ * @license Microsoft Reference License
+ * @version 1.0
+ * @filesource
+ */
 class User_Control{
 
 	/**

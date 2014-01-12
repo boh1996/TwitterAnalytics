@@ -28,8 +28,10 @@
 		<div class="container">
 			<div id="strings">
 				<form class="form-signin form-horizontal list-input-form" role="form" data-array-name="list" data-placeholder-text="<?= $this->lang->line("admin_new_remove_string"); ?>" data-item-endpoint="admin/remove/string/" data-save-endpoint="admin/remove/strings/save">
-					<div class="col-sm-10 col-sm-offset-4">
-						<h2 class="form-signin-heading"><?= $this->lang->line("admin_strings_to_remove"); ?></h2>
+					<div class="col-sm-10 col-sm-offset-3">
+						<div class="page-header">
+							<h1><?= $this->lang->line("admin_strings_to_remove"); ?><small> <?= $this->lang->line("admin_blocked_strings_description"); ?></small></h1>
+						</div>
 					</div>
 
 					<div class="form-group">

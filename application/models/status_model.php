@@ -1,4 +1,16 @@
 <?php
+/**
+ * @author Bo Thomsen <bo@illution.dk>
+ * @package Twitter Analytics
+ * @category Analytics
+ * @uses Codeigniter Uses the Codeigniter Framework
+ * @copyright mettesolsikke@live.dk, 2014
+ * @subpackage Control Panel
+ * @license Microsoft Reference License
+ * @extends Base_model
+ * @version 1.0
+ * @filesource
+ */
 class Status_model extends Base_model {
 
 	public function __construct () {

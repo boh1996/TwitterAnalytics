@@ -26,8 +26,10 @@
 
 		<div class="container">
 			<form class="form-signin form-horizontal settings-form" data-section="alerts" role="form">
-				<div class="col-sm-10 col-sm-offset-4">
-					<h2 class="form-signin-heading"><?= $this->lang->line("alert_settings"); ?></h2>
+				<div class="col-sm-10 col-sm-offset-3">
+					<div class="page-header">
+						<h1><?= $this->lang->line("alert_settings"); ?><small> <?= $this->lang->line("admin_alerts_settings_description"); ?></small></h1>
+					</div>
 				</div>
 
 				<div class="form-group">
@@ -40,6 +42,7 @@
 						<label for="<?= $key; ?>" class="col-sm-2 control-label col-sm-offset-2"><?= $this->lang->line($object->language_key); ?></label>
 						<div class="col-sm-6">
 							<input data-setting="<?= $key; ?>" type="text" id="<?= $key; ?>" value="<?= $object->value; ?>" name="<?= $key; ?>" class="form-control" placeholder="<?= $this->lang->line($object->placeholder); ?>" required>
+							<span class="help-block"><?= $this->lang->line($object->help_text); ?></span>
 						</div>
 					</div>
 				<?php endforeach; ?>
@@ -51,8 +54,10 @@
 				</div>
 			</form>
 
-			<div class="col-sm-10 col-sm-offset-4">
-				<h2 class="form-signin-heading"><?= $this->lang->line("alert_strings"); ?></h2>
+			<div class="col-sm-10 col-sm-offset-3">
+				<div class="page-header">
+					<h1><?= $this->lang->line("alert_strings"); ?><small> <?= $this->lang->line("admin_alerts_description"); ?></small></h1>
+				</div>
 			</div>
 
 			<hr>

@@ -28,8 +28,10 @@
 		<div class="container">
 			<div id="urls">
 				<form class="form-signin form-horizontal list-input-form" role="form" data-array-name="list" data-placeholder-text="<?= $this->lang->line("admin_new_url"); ?>" data-item-endpoint="admin/url/" data-save-endpoint="admin/urls/save">
-					<div class="col-sm-10 col-sm-offset-4">
-						<h2 class="form-signin-heading"><?= $this->lang->line("admin_urls_add"); ?></h2>
+					<div class="col-sm-10 col-sm-offset-3">
+						<div class="page-header">
+							<h1><?= $this->lang->line("admin_urls_add"); ?><small> <?= $this->lang->line("admin_urls_description"); ?></small></h1>
+						</div>
 					</div>
 
 					<div class="form-group">

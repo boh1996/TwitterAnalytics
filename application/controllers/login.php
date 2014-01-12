@@ -1,4 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * @author Bo Thomsen <bo@illution.dk>
+ * @package Twitter Analytics
+ * @category Analytics
+ * @uses Codeigniter Uses the Codeigniter Framework
+ * @copyright mettesolsikke@live.dk, 2014
+ * @subpackage Login System
+ * @license Microsoft Reference License
+ * @version 1.0
+ * @filesource
+ */
 class Login extends CI_Controller {
 
 	public function index () {}
@@ -11,7 +22,7 @@ class Login extends CI_Controller {
 		$this->lang->load("login");
 
 		if ( $this->user_control->is_signed_in() === false ) {
-			$this->load->view("sign_in", $this->user_control->ControllerInfo(array(
+			$this->load->view("sign_in_view", $this->user_control->ControllerInfo(array(
 				"translations" => json_encode($this->lang->export()),
 				"current_section" => "login"
 			)));

@@ -30,7 +30,7 @@
 				<form class="form-signin form-horizontal list-input-form" role="form" data-array-name="list" data-placeholder-text="<?= $this->lang->line("admin_new_remove_string"); ?>" data-item-endpoint="admin/remove/string/" data-save-endpoint="admin/remove/strings/save">
 					<div class="col-sm-10 col-sm-offset-3">
 						<div class="page-header">
-							<h1><?= $this->lang->line("admin_strings_to_remove"); ?><small> <?= $this->lang->line("admin_blocked_strings_description"); ?></small></h1>
+							<h1><?= $this->lang->line("admin_strings_to_remove"); ?><small> <?= $this->lang->line("admin_strings_to_remove_description"); ?></small></h1>
 						</div>
 					</div>
 

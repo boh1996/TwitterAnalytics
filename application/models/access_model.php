@@ -23,12 +23,18 @@ class Access_model extends CI_Model {
 	 * @return boolean
 	 */
 	public function page_requires_login ( $page ) {
+		$this->load->model("view_model");
 		$this->config->load("login");
 		$query = $this->db->from("access_control")->where(array(
 			"page" => $page
 		))->get();
 
 		if ( ! $query->num_rows() ) {
+			$pages = $this->view_model->get_pages();
+			if ( isset($pages[$page]) ) {
+				return $pages[$page]->mode;
+			}
+
 			return ( $this->config->item("standard_access_control_mode") == "login" ) ? true : false;
 		}
 
@@ -42,17 +48,8 @@ class Access_model extends CI_Model {
 	 * @return Array
 	 */
 	public function get_pages () {
-		$query = $this->db->get("access_control");
-
-		$list = array();
-
-		if ( ! $query->num_rows() ) return false;
-
-		foreach ( $query->result() as $row ) {
-			$list[] = $row;
-		}
-
-		return $list;
+		$this->load->model("view_model");
+		return $this->view_model->get_pages();
 	}
 
 	/**

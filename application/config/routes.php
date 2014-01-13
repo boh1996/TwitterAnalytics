@@ -56,6 +56,7 @@ $route["admin"] = "admin/status_view";
 $route["admin/status"] = "admin/status_view";
 $route["admin/settings"] = "admin/settings_view";
 $route["admin/twitter"] = "admin/twitter_view";
+$route["admin/hidden/words"] = "admin/hidden_words_view";
 
 $route["admin/history"] = "admin/history_view";
 $route["admin/scrapers"] = "admin/scrapers_view";
@@ -86,12 +87,23 @@ $route["admin/remove/strings/save"] = "api/api_list/save_list/db/removed_strings
 $route["admin/url/(:num)"] = "api/api_list/object/id/$1/db/urls";
 $route["admin/urls/save"] = "api/api_list/save_list/db/urls";
 
+$route["admin/hidden/word/(:num)"] = "api/api_list/object/id/$1/db/hidden_connected_words";
+$route["admin/hidden/words/save"] = "api/api_list/save_list/db/hidden_connected_words";
+
 $route["admin/blocked/string/(:num)"] = "api/api_list/object/id/$1/db/blocked_strings";
 $route["admin/blocked/strings/save"] = "api/api_list/save_list/db/blocked_strings";
+
+$route["admin/hide/word/(:num)"] = "api/api_list/object/id/$1/db/hidden_words";
+$route["admin/hide/words/save"] = "api/api_list/save_list/db/hidden_words";
 
 $route["scrape/topics"] = "api/api_scraper/topics";
 $route["scrape/urls"] = "api/api_scraper/urls";
 $route["scrape/users"] = "api/api_scraper/users";
+
+$route["admin/alerts/template/strings"] = "admin/alerts_strings_template_view";
+$route["admin/alerts/template/connected"] = "admin/alerts_hidden_connected_words_template_view";
+$route["admin/alerts/template/settings"] = "admin/alerts_settings_template_view";
+$oute["admin/hidden/words/template"] = "admin/hidden_words_template_view";
 
 
 /* End of file routes.php */

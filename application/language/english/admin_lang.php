@@ -81,6 +81,7 @@ $lang["admin_status_no_active_scrapers"] = "No active scrapers";
 $lang["admin_page_urls"] = "URLs";
 $lang["admin_refresh"] = "Refresh";
 $lang["admin_page_user_alerts"] = "Alerts";
+$lang["admin_page_hidden_words"] = "Hidden words";
 
 $lang["admin_missing_post_data"] = "Missing post data!";
 $lang["admin_post_data_error"] = "Wrong post data structure!";
@@ -120,4 +121,18 @@ $lang["admin_last_feched_time"] = "Last item fetched at";
 $lang["admin_scraper_users"] = "Users";
 $lang["admin_scraper_urls"] = "URLs";
 $lang["admin_scraper_topics"] = "Topics";
+
+# Setings #
+$lang["admin_alerts_settings_nav_title"] = "Settings";
+$lang["admin_hidden_words_title"] = "Hidden words";
+$lang["admin_add_hidden_word"] = "Hide word";
+$lang["admin_alerts_strings_nav_title"] = "Strings";
+$lang["admin_hidden_words_description"] = "Hiddes words from the main view";
+$lang["admin_alerts_connected_hidden_nav_title"] = "Hidden connected words";
+$lang["alert_hidden_connected_words"] = "Hidden connected words";
+$lang["alert_hidden_connected_words_description"] = "Following words will not be shown as connected";
+$lang["admin_remove_hidden_word"] = "Unhide";
+$lang["admin_hidden_word"] = "Hidden word";
+$lang["admin_hidden_words"] = "Hidden words";
+$lang["admin_strings_to_remove_description"] = "Will remove strings from the tweets!";
 ?>

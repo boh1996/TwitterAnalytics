@@ -24,7 +24,7 @@ class Analytics_model extends Base_model {
 	public function get_alert_connection_tweets ( $alert_string_id ) {
 		$tweets = $this->select("tweet_alert_strings", array(
 			"alert_string_id" => $alert_string_id
-		));
+		))->get();
 
 		if ( $tweets === false ) return false;
 
@@ -32,6 +32,40 @@ class Analytics_model extends Base_model {
 
 		foreach ( $tweets as $row ) {
 			$list[] = $row->tweet_id;
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Retrieves the list of connected words that should be hidden.
+	 * @param  boolean $only_id If only the id row should be returned
+	 * @return array<Object>|array<Integer>
+	 */
+	public function get_hidden_connected_words ( $only_id = false ) {
+		$query = $this->db->query('
+			SELECT
+			    value,
+			    word_id
+			FROM hidden_connected_words
+			INNER JOIN (
+			    SELECT
+			        id as word_id,
+			        word
+			    FROM words
+			) w ON w.word = hidden_connected_words.value COLLATE utf8_general_ci
+		');
+
+		if ( ! $query->num_rows() ) return false;
+
+		$list = array();
+
+		foreach ( $query->result() as $row ) {
+			if ( $only_id === true ) {
+				$list[] = intval($row->word_id);
+			} else {
+				$list[] = $row;
+			}
 		}
 
 		return $list;
@@ -58,6 +92,13 @@ class Analytics_model extends Base_model {
 		$limit = intval($limit);
 		$alert_id = intval($alert_id);
 
+		$hidden = $this->get_hidden_connected_words(true);
+		if ( $hidden !== false && count($hidden) > 0 ) {
+			$hidden_string = " AND word_id NOT IN (" . implode(",",$hidden) . ")";
+		} else {
+			$hidden_string = "";
+		}
+
 		$query = $this->db->query('
 			SELECT
 			    COUNT(tw.word_id) AS word_count,
@@ -76,7 +117,7 @@ class Analytics_model extends Base_model {
 			    FROM tweet_alert_strings
 			    WHERE alert_string_id = ?
 			    ' . $where . '
-			)
+			)' . $hidden_string . '
 			GROUP BY word_id
 			ORDER BY word_count DESC
 			LIMIT ?

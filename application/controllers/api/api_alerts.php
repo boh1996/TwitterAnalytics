@@ -53,7 +53,13 @@ class API_Alerts extends T_API_Controller {
 			), 400);
 		}
 
-		$this->alert_model->save_list("alert_strings", $this->post("alerts") ,array("id", "value"));
+		$list = $this->post("alerts");
+
+		foreach ( $list as $key => $value ) {
+			$list[$key]["value"] = strtolower($value["value"]);
+ 		}
+
+		$this->alert_model->save_list("alert_strings", $list ,array("id", "value"));
 
 		$this->response(array(
 			"status" => true

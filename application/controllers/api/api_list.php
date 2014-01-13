@@ -51,8 +51,13 @@ class API_List extends T_API_Controller {
 				)
 			), 400);
 		}
+		$list = $this->post("list");
 
-		$this->base_model->save_list($this->get("db"), $this->post("list") ,array("id", "value"));
+		foreach ( $list as $key => $value ) {
+			$list[$key]["value"] = strtolower($value["value"]);
+ 		}
+
+		$this->base_model->save_list($this->get("db"), $list ,array("id", "value"));
 
 		$this->response(array(
 			"status" => true

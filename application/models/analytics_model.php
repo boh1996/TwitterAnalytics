@@ -72,6 +72,40 @@ class Analytics_model extends Base_model {
 	}
 
 	/**
+	 * Selects the hidden words
+	 * @param  boolean $only_id If only the ids should be in the list
+	 * @return array<Object>|array<Integer>
+	 */
+	public function get_hidden_words ( $only_id = false ) {
+		$query = $this->db->query('
+			SELECT
+			    value,
+			    word_id
+			FROM hidden_words
+			INNER JOIN (
+			    SELECT
+			        id as word_id,
+			        word
+			    FROM words
+			) w ON w.word = hidden_words.value COLLATE utf8_general_ci
+		');
+
+		if ( ! $query->num_rows() ) return false;
+
+		$list = array();
+
+		foreach ( $query->result() as $row ) {
+			if ( $only_id === true ) {
+				$list[] = intval($row->word_id);
+			} else {
+				$list[] = $row;
+			}
+		}
+
+		return $list;
+	}
+
+	/**
 	 * Selects the connected word, to an alert string
 	 * @param  integer  $alert_id The alert string id
 	 * @param  integer $limit    The max number of words, returned
@@ -128,6 +162,7 @@ class Analytics_model extends Base_model {
 		$list = array();
 
 		foreach ( $query->result() as $row ) {
+			$row->word = ucfirst($row->word);
 			$list[] = $row;
 		}
 
@@ -176,6 +211,7 @@ class Analytics_model extends Base_model {
 		$list = array();
 
 		foreach ( $query->result() as $row ) {
+			$row->word = ucfirst($row->word);
 			$row->tweets = explode(",", $row->tweets);
 			$row->connected = $this->get_alert_connection_words($row->alert_string_id, $this->settings_model->fetch_setting("setting_alert_connection_words_shown", 3, "alerts"), $date);
 			$list[] = $row;
@@ -220,6 +256,13 @@ class Analytics_model extends Base_model {
 			}
 		}
 
+		$hidden = $this->get_hidden_words(true);
+		if ( $hidden !== false && count($hidden) > 0 ) {
+			$hidden_string = " WHERE word_id NOT IN (" . implode(",",$hidden) . ")";
+		} else {
+			$hidden_string = "";
+		}
+
 		$limit = intval($limit);
 		$word_limit = intval($word_limit);
 		$query = $this->db->query("SELECT * FROM (
@@ -245,6 +288,7 @@ class Analytics_model extends Base_model {
 		                    FROM tweet_words
 		                    " . $where . "
                 		) where_tweet_words
+						" . $hidden_string .  "
 				        GROUP BY word_id
 				    )tw
 				    ON w.id = tw.word_id
@@ -260,12 +304,12 @@ class Analytics_model extends Base_model {
 				    FROM alert_strings ast
 				    INNER JOIN
 				    (
-				        SELECT 
-                    COUNT(alert_string_id) AS word_count,
-                    GROUP_CONCAT(DISTINCT tweet_id ORDER BY tweet_id ASC) as tweets,
-                    alert_string_id,
-                    created_at,
-                    COUNT(DISTINCT tweet_id) as unique_tweets
+				        SELECT
+		                    COUNT(alert_string_id) AS word_count,
+		                    GROUP_CONCAT(DISTINCT tweet_id ORDER BY tweet_id ASC) as tweets,
+		                    alert_string_id,
+		                    created_at,
+		                    COUNT(DISTINCT tweet_id) as unique_tweets
 				        FROM (
                     SELECT *
                     FROM tweet_alert_strings
@@ -284,6 +328,7 @@ class Analytics_model extends Base_model {
 		$list = array();
 
 		foreach ( $query->result() as $row ) {
+			$row->word = ucfirst($row->word);
 			$row->tweets = explode(",", $row->tweets);
 			$row->connected = $this->get_alert_connection_words($row->word_id, $this->settings_model->fetch_setting("setting_alert_connection_words_shown", 3, "alerts"), $date);
 			$list[] = $row;
@@ -307,6 +352,13 @@ class Analytics_model extends Base_model {
 			if ( is_object($start_time) && is_object($end_time) ) {
 				$where = ' WHERE created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
 			}
+		}
+
+		$hidden = $this->get_hidden_words(true);
+		if ( $hidden !== false && count($hidden) > 0 ) {
+			$hidden_string = " WHERE word_id NOT IN (" . implode(",",$hidden) . ")";
+		} else {
+			$hidden_string = "";
 		}
 
 		$limit = intval($limit);
@@ -342,6 +394,7 @@ class Analytics_model extends Base_model {
 				        	FROM tweet_words
 				       		" . $where . "
 				       	) wheretweets
+						" . $hidden_string . "
 				        GROUP BY word_id
 				    ) tw
 				    ON w.id = tw.word_id
@@ -383,6 +436,7 @@ class Analytics_model extends Base_model {
 		$list = array();
 
 		foreach ( $query->result() as $row ) {
+			$row->word = ucfirst($row->word);
 			$row->tweets = explode(",", $row->tweets);
 			$list[] = $row;
 		}

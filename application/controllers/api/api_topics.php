@@ -53,7 +53,13 @@ class API_Topics extends T_API_Controller {
 			), 400);
 		}
 
-		$this->base_model->save_list("topics", $this->post("topics") ,array("id", "value"));
+		$list = $this->post("topics");
+
+		foreach ( $list as $key => $value ) {
+			$list[$key]["value"] = strtolower($value["value"]);
+ 		}
+
+		$this->base_model->save_list("topics", $list ,array("id", "value"));
 
 		$this->response(array(
 			"status" => true

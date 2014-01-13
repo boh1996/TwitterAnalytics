@@ -186,6 +186,8 @@ class Tweet_model extends Base_model {
 			$GLOBALS["words"] = array();
 		}
 
+		$word["word"] = strtolower($word["word"]);
+
 		if ( ! isset($GLOBALS["words"][$word["word"]]) ) {
 			$word_id = $this->create_word($word["word"]);
 			$GLOBALS["words"][$word["word"]] = $word_id;
@@ -214,7 +216,7 @@ class Tweet_model extends Base_model {
 		));
 		if ( $id === false ) {
 			$this->db->insert("words", array(
-				"word" => $word,
+				"word" => strtolower($word),
 				"created_at" => time()
 			));
 

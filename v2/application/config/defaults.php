@@ -1,56 +1,41 @@
 <?php
-$config["settings"] = array(
-	"setting_alert_words" 	=> array(
-		"value" 		=> 5,
-		"key" 			=> "setting_alert_words",
-		"section" 		=> "alerts",
-		"type" 			=> "text",
-		"language_key" 	=> "alerts_count",
-		"placeholder"	=> "number_of_alerts",
-		"help_text"		=> "admin_alert_words_help"
+$config["intervals"] = array(
+	"per_year" => array(
+		"value" => 31557600,
+		"language_key" => "sort_per_year"
 	),
-	"setting_max_lifetime" 	=> array(
-		"value" 		=> 86000,
-		"key" 			=> "settings_max_life_time",
-		"section" 		=> "scraper",
-		"type" 			=> "text",
-		"language_key" 	=> "admin_max_age",
-		"placeholder"	=> "admin_tweet_max_age",
-		"help_text"		=> "admin_max_life_time_help"
+	"per_month" => array(
+		"value" => 2678400,
+		"language_key" => "sort_per_month"
 	),
-	"settings_word_charset" => array(
-		"value" 		=> "_#@[]{}()&:'",
-		"key" 			=> "settings_word_charsets",
-		"section" 		=> "scraper",
-		"type" 			=> "text",
-		"language_key" 	=> "admin_word_extra_characters",
-		"placeholder"	=> "admin_word_extra_chars",
-		"help_text"		=> "admin_word_charset_help"
+	"per_week" => array(
+		"value" => 604800,
+		"language_key" => "sort_per_week"
 	),
-	"setting_words_shown" => array(
-		"value" 		=> 50,
-		"key" 			=> "settings_words_shown",
-		"section" 		=> "analytics",
-		"type" 			=> "text",
-		"language_key" 	=> "admin_standard_rows_shown",
-		"placeholder"	=> "admin_words_shown",
-		"help_text"		=> "admin_words_shown_help"
-	),
-	"setting_alert_connection_words_shown" => array(
-		"value" 		=> 3,
-		"key" 			=> "setting_alert_connection_words_shown",
-		"section" 		=> "alerts",
-		"type" 			=> "text",
-		"language_key" 	=> "admin_settings_alert_connetion_words_shown",
-		"placeholder"	=> "admin_connection_words_shown",
-		"help_text"		=> "admin_alert_connection_words_help"
-	),
-);
-
-$config["limit_values"] = array(
-	50,
-	100,
-	500,
-	1000
+	"per_day" => array(
+		"value" => 86400,
+		"language_key" => "sort_per_day"
+ 	),
+ 	"per_half_day" => array(
+ 		"value" => 43200,
+ 		"language_key" => "sort_per_half_day"
+ 	),
+ 	"per_quater_of_a_day" => array(
+ 		"value" => 21600,
+ 		"language_key" => "sort_per_quater_of_day"
+ 	),
+ 	"per_tree_hour" => array(
+ 		"value" => 10800,
+ 		"language_key" => "sort_per_tree_hour"
+ 	),
+ 	"per_hour" => array(
+ 		"value" => 3600,
+ 		"language_key" => "sort_per_hour"
+ 	),
+ 	"per_half_hour" => array(
+ 		"value" => 1800,
+ 		"language_key" => "sort_per_half_hour"
+ 	),
+ 	"per_fifthteen_minutes" => 
 );
 ?>

@@ -105,7 +105,7 @@ $route["scrape/users"] = "api/api_scraper/users";
 $route["admin/alerts/template/strings"] = "admin/alerts_strings_template_view";
 $route["admin/alerts/template/connected"] = "admin/alerts_hidden_connected_words_template_view";
 $route["admin/alerts/template/settings"] = "admin/alerts_settings_template_view";
-$oute["admin/hidden/words/template"] = "admin/hidden_words_template_view";
+$route["admin/hidden/words/template"] = "admin/hidden_words_template_view";
 
 
 /* End of file routes.php */

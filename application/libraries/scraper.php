@@ -277,13 +277,7 @@ class Scraper {
 					if ( $current_request_max_cursor > $last_inserted_cursor ) {
 						$next_page_cursor = $current_request_max_cursor;
 					}
-				}/* else if ( $last_element["created_at"] > (time() - $max_timestamp) ) {
-					if ( property_exists($object, "scroll_cursor") ) {
-						$next_page_cursor = $object->scroll_cursor;
-					} else {
-						$next_page_cursor = $last_element["tweet_id"];
-					}
-				}*/
+				}
 			}
 		}
 

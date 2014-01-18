@@ -29,6 +29,8 @@ class API_Scraper extends T_API_Controller {
 	 * Loads the neede dependencies
 	 */
 	public function __construct () {
+		set_time_limit(999999999999);
+		ini_set('max_execution_time', 999999999999);
 		parent::__construct();
 		$this->load->library("scraper");
 		$this->load->library("urls");

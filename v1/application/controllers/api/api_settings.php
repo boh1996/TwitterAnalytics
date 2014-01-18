@@ -26,6 +26,30 @@ class API_Settings extends T_API_Controller {
 	}
 
 	/**
+	 *    Empties all the system databases
+	 *
+	 */
+	public function empty_get () {
+		$databases = array(
+			"errors",
+			"scraper_runs",
+			"history",
+			"scrape_statistics",
+			"tweet_words",
+			"tweets",
+			"tweet_hashtags",
+			"tweet_alert_strings",
+			"tweet_mentions",
+			"tweet_urls",
+			"tweet_media"
+		);
+
+		$this->load->model("cleanup_model");
+
+		$this->cleanup_model->empty_databases($databases);
+	}
+
+	/**
 	 * Updates the twitter account information
 	 */
 	public function twitter_post () {

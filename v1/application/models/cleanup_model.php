@@ -31,5 +31,18 @@ class Cleanup_model extends Base_model {
 			))->delete();
 		}
 	}
+
+	/**
+	 *    Removes all content, in the selected databases
+	 *
+	 *    @param array $databases The databases to empty
+	 *
+	 */
+	public function empty_databases ( $databases ) {
+		foreach ( $databases as $database) {
+			$this->db->truncate($database);
+			$this->db->query("ALTER TABLE " . $database . " AUTO_INCREMENT= 1;");
+		}
+	}
 }
 ?>

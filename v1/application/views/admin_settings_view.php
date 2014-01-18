@@ -25,15 +25,32 @@
 		<?= $this->user_control->LoadTemplate("nav_bar_view"); ?>
 
 		<div class="container">
-			<form class="form-signin form-horizontal settings-form" data-section="scraper" role="form">
+			<div class="form-group">
+				<div class="col-sm-offset-3 col-sm-8" id="errors">
+				</div>
+			</div>
+
+			<form class="form-signin form-horizontal" role="form">
 				<div class="col-sm-10 col-sm-offset-3">
 					<div class="page-header">
-						<h1><?= $this->lang->line("scraper_settings"); ?><small> <?= $this->lang->line("scraper_settings_description"); ?></small></h1>
+						<h1><?= $this->lang->line("admin_cleanup"); ?><small> <?= $this->lang->line("cleanup_description"); ?></small></h1>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<div class="col-sm-offset-3 col-sm-8" id="errors">
+					<div class="col-sm-offset-4 col-sm-3">
+						<button class="btn btn-lg btn-primary btn-block" id="run_cleanup" type="submit"><?= $this->lang->line("admin_run_cleanup"); ?></button>
+					</div>
+					<div class="col-sm-3">
+						<button class="btn btn-lg btn-primary btn-block" id="run_empty" type="submit"><?= $this->lang->line("admin_empty_database"); ?></button>
+					</div>
+				</div>
+			</form>
+
+			<form class="form-signin form-horizontal settings-form" data-section="scraper" role="form">
+				<div class="col-sm-10 col-sm-offset-3">
+					<div class="page-header">
+						<h1><?= $this->lang->line("scraper_settings"); ?><small> <?= $this->lang->line("scraper_settings_description"); ?></small></h1>
 					</div>
 				</div>
 
@@ -90,5 +107,6 @@
 		<script src="<?= $asset_url; ?>js/functions.js"></script>
 		<script src="<?= $asset_url; ?>js/list-input.js"></script>
 		<script src="<?= $asset_url; ?>js/settings.js"></script>
+		<script src="<?= $asset_url; ?>js/cleanup.js"></script>
 	</body>
 </html>

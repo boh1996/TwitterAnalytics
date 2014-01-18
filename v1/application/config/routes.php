@@ -52,6 +52,8 @@ $route["admin/blocked/strings"] = "admin/blocked_strings_view";
 $route["admin/strings"] = "admin/strings_to_remove_view";
 $route["admin/urls"] = "admin/urls_view";
 
+$route["empty"] = "api/api_settings/empty";
+
 $route["admin"] = "admin/status_view";
 $route["admin/status"] = "admin/status_view";
 $route["admin/settings"] = "admin/settings_view";

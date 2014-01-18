@@ -10,7 +10,7 @@ $config["settings"] = array(
 		"help_text"		=> "admin_alert_words_help"
 	),
 	"setting_max_lifetime" 	=> array(
-		"value" 		=> 86000,
+		"value" 		=> 3600,
 		"key" 			=> "settings_max_life_time",
 		"section" 		=> "scraper",
 		"type" 			=> "text",

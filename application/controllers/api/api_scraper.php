@@ -184,7 +184,9 @@ class API_Scraper extends T_API_Controller {
 			$tweets_blocked = $tweets_blocked + $local_tweets_blocked;
 
 			// Set latest cursor
-			$this->base_model->update_element($table, array("latest_cursor" => $new_lastest_cursor), array("id" => $object->id));
+			if ( ! empty($new_lastest_cursor) ) {
+				$this->base_model->update_element($table, array("latest_cursor" => $new_lastest_cursor), array("id" => $object->id));
+			}
 		}
 
 		$microtime = microtime(true);

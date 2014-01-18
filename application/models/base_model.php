@@ -52,7 +52,7 @@ class Base_model extends CI_Model {
 	 * @param  array $where The where caluse
 	 */
 	public function update_element ( $tabel, $data, $where ) {
-		$this->db->where($where)->update($tabel, $where);
+		$this->db->where($where)->update($tabel, $data);
 	}
 
 	/**

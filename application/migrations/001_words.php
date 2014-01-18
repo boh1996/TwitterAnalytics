@@ -48,7 +48,7 @@ class Migration_Words extends CI_Migration {
 
 		$this->dbforge->create_table('hidden_words', TRUE);
 
-		$this->db->query("CREATE UNIQUE INDEX `word_UNIQUE` ON hidden_words (`word` ASC) ;");
+		$this->db->query("CREATE UNIQUE INDEX `value_UNIQUE` ON hidden_words (`value` ASC) ;");
 
 		# Hidden Connected words
 		$this->dbforge->add_field(array(
@@ -74,7 +74,7 @@ class Migration_Words extends CI_Migration {
 
 		$this->dbforge->create_table('hidden_connected_words', TRUE);
 
-		$this->db->query("CREATE UNIQUE INDEX `word_UNIQUE` ON hidden_connected_words (`word` ASC) ;");
+		$this->db->query("CREATE UNIQUE INDEX `value_UNIQUE` ON hidden_connected_words (`value` ASC) ;");
 	}
 
 	public function  down () {

@@ -14,11 +14,11 @@ class Migration_Alerts extends CI_Migration {
 				"constraint" => 255
 			),
 			"created_at" => array(
-				"type" => "VARCHAR".
+				"type" => "VARCHAR",
 				"constraint" => 45
 			),
-			"created_at" => array(
-				"type" => "VARCHAR".
+			"updated_at" => array(
+				"type" => "VARCHAR",
 				"constraint" => 45
 			)
 		));
@@ -38,11 +38,11 @@ class Migration_Alerts extends CI_Migration {
 				"constraint" => 11
 			),
 			"alert_string_id" => array(
-				"type" => "INT".
+				"type" => "INT",
 				"constraint" => 11
 			),
 			"created_at" => array(
-				"type" => "VARCHAR".
+				"type" => "VARCHAR",
 				"constraint" => 45
 			)
 		));

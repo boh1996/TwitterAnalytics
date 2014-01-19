@@ -98,6 +98,10 @@ class View_model extends CI_Model {
 	public function get_pages_ordered_in_sections () {
 		$pages = $this->get_pages();
 
+		if ( ! is_array($pages) ) {
+			return false;
+		}
+
 		$list = array();
 		$headers = array();
 

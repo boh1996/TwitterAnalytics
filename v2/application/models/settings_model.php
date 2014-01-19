@@ -225,6 +225,10 @@ class Settings_model extends Base_model {
 
 		$settings = $this->config->item("settings");
 
+		if ( ! is_array($settings) || ( is_array($settings) && count($settings) == 0 ) ) {
+			return false;
+		}
+
 		foreach ( $settings as $key => $array ) {
 			if ( $section === null || ( ! is_null($section) && $array["section"] == $section ) ) {
 				if ( ! isset($data[$key]) ) {

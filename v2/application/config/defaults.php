@@ -36,6 +36,9 @@ $config["intervals"] = array(
  		"value" => 1800,
  		"language_key" => "sort_per_half_hour"
  	),
- 	"per_fifthteen_minutes" => 
+ 	"per_fifthteen_minutes" => array(
+ 		"value" => 900,
+ 		"language_key" => "sort_per_fifthteen_minutes"
+ 	)
 );
 ?>

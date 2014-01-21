@@ -53,6 +53,8 @@ $route["admin/history"] = "admin/history_view";
 $route["admin/scrapers"] = "admin/scrapers_view";
 $route["admin/errors"] = "admin/errors_view";
 $route["admin/active/scrapers"] = "admin/active_scrapers_view";
+$route["admin/pages"] = "admin/pages_view";
+$route["admin/intervals"] = "admin/intervals";
 
 #### API #####
 $route["admin/access/control/save"] = "api/api_access_control/save";

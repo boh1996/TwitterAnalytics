@@ -41,15 +41,13 @@ class Scrape_model extends Base_model {
 	 * @param  integer $tweets_created The number of added tweets
 	 * @param  string $scraper      The scraper that just finished
 	 * @param integer $tweets_fetched The number of tweets loaded from twitter
-	 * @param integer $tweets_blocked The number of tweets blocked
 	 * @param string $uuid The run uuid
 	 * @param string $end_microtime The micro timestamp when the scraping ended
 	 */
-	public function create_history_item ( $tweets_created, $scraper, $tweets_fetched, $tweets_blocked, $uuid, $end_microtime ) {
+	public function create_history_item ( $tweets_created, $scraper, $tweets_fetched, $uuid, $end_microtime ) {
 		$this->db->insert("history", array(
 			"created_at" => time(),
 			"tweets_created" => $tweets_created,
-			"tweets_blocked" => $tweets_blocked,
 			"scraper" => $scraper,
 			"tweets_fetched" => $tweets_fetched,
 			"run_uuid" => $uuid,
@@ -90,34 +88,22 @@ class Scrape_model extends Base_model {
 	 * @param  integer $item_id        The item fetched "topic_id", "url_id" etc
 	 * @param  integer $tweets_created The number of tweets inserted
 	 * @param  integer $tweets_fetched The number of tweets fetched from twitter
-	 * @param integer $tweets_blocked The number of tweets blocked
 	 * @param  float $microtime      The microtime where the scraping of the item started
 	 * @param  integer $item_number    The current item number / ´scraper_runs´.item_count
 	 * @param  string $url            The url where the items was fetched from
 	 */
-	public function insert_statistic ( $uuid, $type, $item_id, $tweets_created, $tweets_fetched, $tweets_blocked, $microtime, $item_number, $url ) {
+	public function insert_statistic ( $uuid, $type, $item_id, $tweets_created, $tweets_fetched, $microtime, $item_number, $url ) {
 		$this->db->insert("scrape_statistics", array(
 			"type" => $type,
 			"item_id" => $item_id,
 			"tweets_created" => $tweets_created,
 			"tweets_fetched" => $tweets_fetched,
-			"tweets_blocked" => $tweets_blocked,
 			"created_at" => time(),
 			"microtime" => $microtime,
 			"item_number" => $item_number,
 			"url" => $url,
 			"run_uuid" => $uuid
 		));
-	}
-
-	/**
-	 * Returns the extra word characters
-	 * @return string
-	 */
-	public function word_charlist () {
-		$this->load->model("settings_model");
-		$data = $this->settings_model->check_defaults("scraper",$this->settings_model->get_settings("scraper"));
-		return $data["settings_word_charset"]->value;
 	}
 
 	/**
@@ -137,92 +123,6 @@ class Scrape_model extends Base_model {
 			"item_count" => $item_count,
 			"created_at" => time()
 		));
-	}
-
-	/**
-	 * Loops through the list of unwanted strings an remove them
-	 * @param  string $text The tweet text
-	 * @return string
-	 */
-	public function remove_unwanted_strings ( $text ) {
-		$strings = $this->get_list("removed_strings");
-
-		foreach ( $strings as $string ) {
-			$text = str_replace($string->value, "", $text);
-		}
-
-		return $text;
-	}
-
-	/**
-	 * If a tweet contains, one of the alert strings
-	 * @param  string $text          The tweet text
-	 * @param  array $alert_strings Array of the alert string rows
-	 * @return boolean|array                If array, create an alert
-	 */
-	public function if_to_alert ( $text, $alert_strings ) {
-		$alerts = array();
-
-		foreach ( $alert_strings as $string ) {
-			if ( strpos($text, $string->value) !== false ) {
-				$alerts[] = $string->id;
-			}
-		}
-
-		if ( count($alerts) > 0 ) {
-			return $alerts;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Remoevs URLs from the strings and process the tweet to find the tweet word
-	 * @param  array $tweet The tweet data array
-	 * @param array &$alert Special alert data
-	 * @param array $alert_strings The strings to alert for
-	 * @return array
-	 */
-	public function process_tweet ( $tweet, &$alert, $alert_strings ) {
-		$processing = $this->remove_unwanted_strings($tweet["text"]);
-
-		$words_list = str_word_count(preg_replace('/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i', '', $processing), 2 , $this->word_charlist() );
-		$words = array();
-
-		$alert_data = $this->if_to_alert($processing, $alert_strings);
-
-		if ( is_array($alert_data) ) {
-			$alert = $alert_data;
-		}
-
-		foreach ( $words_list as $position => $word ) {
-			$words[] = array(
-				"position" => $position,
-				"word" => $word
-			);
-		}
-
-		$tweet["words"] = $words;
-
-		return $tweet;
-	}
-
-	/**
-	 * If the string has to be blocked for insertion
-	 * @param  array $blocked_strings The array containing the not wanted strings
-	 * @param  string $text            The tweet text
-	 * @return boolean                  If true, block the tweet
-	 */
-	public function if_to_block_tweet ( $blocked_strings, $text ) {
-		if ( is_array($blocked_strings) ) {
-			foreach ( $blocked_strings as $string ) {
-				if ( strpos($text, $string->value) !== false ) {
-					return true;
-				}
-			}
-		}
-
-		return false;
 	}
 }
 ?>

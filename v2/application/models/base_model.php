@@ -30,6 +30,50 @@ class Base_model extends CI_Model {
 	}
 
 	/**
+	 *     Converts array elements to objects
+	 *
+	 *    @param array $array The array
+	 *
+	 *    @return array The new array
+	 */
+	public function array_elements_to_object ( $array ) {
+		foreach ( $array as $key => $value) {
+			$array[$key] = (object)$value;
+		}
+
+		return $array;
+	}
+
+	/**
+	 *    Searches for keys and values in arrays
+	 *
+	 *    @param array $array  The collection to search
+	 *    @param string $key    The key to search in
+	 *    @param string $search The value to search for
+	 *
+	 *    @return results
+	 */
+	public function find_in_array ( $array, $key, $search ) {
+		$return = array();
+
+		foreach ( $array as $index => $value ) {
+			if ( is_array($value) ) {
+				if ( $key == $index && $value == $search ) {
+					$return[$index] = $value;
+				} else if ( isset($value[$key]) && $value[$key] == $search ) {
+					$return[$index] = $value;
+				}
+			} else {
+				if ( $key == $index && $value == $search ) {
+					$return[$index] = $value;
+				}
+			}
+		}
+
+		return ( count($return) > 0 ) ? $return : false ;
+	}
+
+	/**
 	 * Returns the first row of the query
 	 * @param  string $table The table to select from
 	 * @param  array $where The query

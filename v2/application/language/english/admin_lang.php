@@ -1,32 +1,16 @@
 <?php
-$lang["enter_twitter_details"] = "Twitter credidentials";
 $lang["admin_save"] = "Save";
 $lang["admin_twitter"] = "Twitter";
-$lang["alert_settings"] = "Alert settings!";
-$lang["alerts_count"] = "Number of alerts shown!";
-$lang["replaced_string_settings"] = "Strings to remove!";
 $lang["admin_topics"] = "Topics";
 $lang["admin_access_control"] = "Access control";
 $lang["admin_access_control_pages"] = "Pages";
 $lang["no_pages_found"] = "No pages found!";
-$lang["admin_blocked_strings"] = "Blocked strings";
-$lang["number_of_alerts"] = "Number of alerts";
-$lang["admin_string_to_remove"] = "Strings to remove";
-$lang["admin_twitter_updated"] = "Credidentials updated successfully!";
-$lang["admin_remove_account"]= "Remove account";
-$lang["admin_twitter_removed"] = "Account removed!";
-$lang["admin_missing_account_id"] = "Missing account id";
-$lang["add_account"] = "Add account";
 $lang["admin_access_control_description"] = "If the checkbox is checked, login is required!";
 $lang["admin_urls"] = "URLs";
 $lang["admin_missing_key_name"] = "Missing key name";
 $lang["admin_saved_successfully"] = "Data saved successfully";
-$lang["alert_strings"] = "Alert strings!";
-$lang["alert_string"] = "Add new alert string";
 $lang["admin_remove_string"] = "Remove";
 $lang["admin_missing_id"] = "Missing object id!";
-$lang["admin_alert_deleted"] = "Alert string deleted successfully";
-$lang["admin_new_topic"] = "Add new topic";
 $lang["admin_duplicated"] = "Duplicates exists";
 $lang["admin_topics_add"] = "Add/Update topics";
 $lang["admin_new_url"] = "Add new URL";
@@ -59,18 +43,15 @@ $lang["admin_urls_description"] = "Twitter URLs that will be analyzed for tweets
 $lang["admin_alerts_settings_description"] = "Settings regarded to the alerts viewer!";
 
 $lang["admin_settings"] = "Settings";
+$lang["admin_intervals"] = "Intervals";
 $lang["admin_analytics_settings"] = "Analytics settings";
 $lang["scraper_settings"] = "Scraper settings";
 $lang["admin_scaper_started_at"] = "Started at";
 
-$lang["settings_word_charsets"] = "Characters accepted in words too";
-$lang["admin_word_extra_chars"] = "Extra word chars";
-$lang["admin_word_extra_characters"] = "Extra word characters";
-
 $lang["admin_page_admin_twitter"] = "Twitter";
 $lang["admin_page_settings"] = "Settings";
 $lang["admin_page_status"] = "Status";
-$lang["admin_page_user_home"] = "Analytics";
+$lang["admin_page_user_home"] = "Home";
 $lang["admin_page_admin_alerts"] = "Alerts control";
 $lang["admin_page_admin_access_control"] = "Access control";
 $lang["admin_page_topics"] = "Topics";
@@ -80,8 +61,6 @@ $lang["admin_page_strings"] = "Strings to remove";
 $lang["admin_status_no_active_scrapers"] = "No active scrapers";
 $lang["admin_page_urls"] = "URLs";
 $lang["admin_refresh"] = "Refresh";
-$lang["admin_page_user_alerts"] = "Alerts";
-$lang["admin_page_hidden_words"] = "Hidden words";
 
 $lang["admin_missing_post_data"] = "Missing post data!";
 $lang["admin_post_data_error"] = "Wrong post data structure!";
@@ -127,12 +106,8 @@ $lang["admin_alerts_settings_nav_title"] = "Settings";
 $lang["admin_hidden_words_title"] = "Hidden words";
 $lang["admin_add_hidden_word"] = "Hide word";
 $lang["admin_alerts_strings_nav_title"] = "Strings";
-$lang["admin_hidden_words_description"] = "Hiddes words from the main view";
-$lang["admin_alerts_connected_hidden_nav_title"] = "Hidden connected words";
-$lang["alert_hidden_connected_words"] = "Hidden connected words";
-$lang["alert_hidden_connected_words_description"] = "Following words will not be shown as connected";
-$lang["admin_remove_hidden_word"] = "Unhide";
-$lang["admin_hidden_word"] = "Hidden word";
-$lang["admin_hidden_words"] = "Hidden words";
-$lang["admin_strings_to_remove_description"] = "Will remove strings from the tweets!";
+
+# Pages #
+$lang["admin_pages"] = "Pages";
+$lang["admin_page_pages"] = "Topic Pages Settings";
 ?>

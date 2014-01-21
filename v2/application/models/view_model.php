@@ -11,7 +11,7 @@
  * @version 1.0
  * @filesource
  */
-class View_model extends CI_Model {
+class View_model extends Base_model {
 
 	/**
 	 * An internal variable storing the pages
@@ -35,7 +35,7 @@ class View_model extends CI_Model {
 			"section" => $section
 		))->get("access_control");
 
-		if ( ! $query->num_rows() ) return false;
+		if ( ! $query->num_rows() ) return find_in_array($this->pages, "section", $section);
 
 		$list = array();
 
@@ -65,7 +65,7 @@ class View_model extends CI_Model {
 	public function get_pages () {
 		$query = $this->db->get("access_control");
 
-		if ( ! $query->num_rows() ) return false;
+		if ( ! $query->num_rows() ) return $this->array_elements_to_object($this->pages);
 
 		$list = array();
 

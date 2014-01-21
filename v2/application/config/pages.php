@@ -40,5 +40,25 @@ $config["pages"] = array(
 		"type"					=> "page",
 		"header_language_key"	=> ""
 	),
+	"admin_pages" => array(
+		"page"					=> "admin_pages",
+		"mode" 					=> "login",
+		"language_key" 			=> "admin_pages",
+		"section"				=> "admin",
+		"admin_language_key" 	=> "admin_page_pages",
+		"url"					=> "admin/pages",
+		"type"					=> "page",
+		"header_language_key"	=> ""
+	),
+	"admin_intervals" => array(
+		"page"					=> "admin_intervals",
+		"mode" 					=> "login",
+		"language_key" 			=> "admin_intervals",
+		"section"				=> "admin",
+		"admin_language_key" 	=> "admin_page_intervals",
+		"url"					=> "admin/intervals",
+		"type"					=> "page",
+		"header_language_key"	=> ""
+	),
 );
 ?>

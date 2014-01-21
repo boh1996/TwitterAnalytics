@@ -42,7 +42,7 @@ class User_Control{
 	 * @access public
 	 * @var array
 	 */
-	public $languageFiles = array("common", "admin", "user");
+	public $languageFiles = array("common", "admin", "user", "sort");
 
 	/**
 	 * This function calls all the needed security functions

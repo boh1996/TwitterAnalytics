@@ -1,4 +1,17 @@
 <?php
+$config["settings"] = array(
+        "setting_max_lifetime"         => array(
+                "value"                 => 3600,
+                "key"                         => "settings_max_life_time",
+                "section"                 => "scraper",
+                "type"                         => "text",
+                "language_key"         => "admin_max_age",
+                "placeholder"        => "admin_tweet_max_age",
+                "help_text"                => "admin_max_life_time_help"
+        ),
+);
+
+
 $config["intervals"] = array(
 	"per_year" => array(
 		"key" => "per_year",

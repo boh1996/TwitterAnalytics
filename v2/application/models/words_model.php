@@ -25,7 +25,7 @@ class Words_model extends Base_model {
 	public function get_strings_grouped_in_pages () {
 		$query = $this->db->query('SELECT
 			    statistic_page_id,
-			    GROUP_CONCAT(value SEPARATOR ";") AS strings
+			    GROUP_CONCAT(value, "@|", id SEPARATOR "@;") AS strings
 			FROM statistic_strings
 			GROUP BY statistic_page_id'
 		);
@@ -35,8 +35,13 @@ class Words_model extends Base_model {
 		$list = array();
 
 		foreach ( $query->result() as $row ) {
-			$row->strings = explode(";");
-			$list[] = $row;
+			$row->strings = explode("@;", $row->strings);
+
+			foreach ( $row->strings as $key => $string ) {
+				$row->strings[$key] = explode("@|", $string);
+			}
+
+			$list[$row->statistic_page_id] = $row;
 		}
 
 		return $list;

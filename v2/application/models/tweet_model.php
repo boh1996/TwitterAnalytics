@@ -25,18 +25,17 @@ class Tweet_model extends Base_model {
 	 * @return boolean
 	 */
 	public function create_tweet ( $tweet, &$id, &$error_types ) {
-		$exists = $this->exists("tweets", array("tweet_id" => $tweet["tweet_id"]));
-		if ( ! $exists && $accepted_time ) {
+		$exists = $this->exists("statistic_tweets", array("tweet_id" => $tweet["tweet_id"]));
+		if ( ! $exists ) {
 			$data = array(
 				"created_at" => $tweet["created_at"],
 				"tweet_id" => $tweet["tweet_id"],
 				"username" => $tweet["screen_name"],
 				"user_title" => $tweet["display_name"],
-				"tweet_source_url" => $tweet["tweet_source_url"],
 				"inserted_at" => time()
 			);
 
-			$this->db->insert("tweets", $data);
+			$this->db->insert("statistic_tweets", $data);
 
 			$tweet_db_id = $this->db->insert_id();
 			$id = $tweet_db_id;
@@ -48,73 +47,62 @@ class Tweet_model extends Base_model {
 			if ( $exists ) {
 				$error_types[] = "tweet_exists";
 			}
-			if ( ! $accepted_time ) {
-				$error_types[] = "to_old";
-			}
 			return false;
 		}
 	}
+
+	/**
+	 *    Inserts a link between a string and a tweet
+	 *
+	 *    @param integer $tweet_id  The tweet database id
+	 *    @param integer $string_id The string database id
+	 *
+	 */
+	public function insert_tweet_string ( $tweet_id, $string_id ) {
+		if ( ! $this->exists("statistic_tweet_strings", array("tweet_id" => $tweet_id, "statistic_tweet_string_id" => $string_id)) ) {
+			$this->db->insert("statistic_tweet_strings", array(
+				"created_at" => time(),
+				"updated_at" => time(),
+				"tweet_id" => $tweet_id,
+				"statistic_tweet_string_id" => $string_id
+			));
+		}
+	}
+
+	/**
+     * The oldest tweets to store
+     * @return integer
+     */
+	public function maxTime () {
+		$this->load->model("settings_model");
+		$data = $this->settings_model->check_defaults("scraper",$this->settings_model->get_settings("scraper"));
+		return $data["setting_max_lifetime"]->value;
+    }
+
 
 	/**
 	 * Inserts all the data and links it to the tweet
 	 * @param  array $tweet       The tweet data
 	 * @param  integer $tweet_db_id The tweet database id
 	 */
-	public function insert_tweet_data ( $tweet, $tweet_db_id ) {
-		if ( count($tweet["words"]) ) {
-			foreach ( $tweet["words"] as $word ) {
-				$this->create_tweet_word($word, $tweet_db_id);
+	public function insert_tweet_data ( $tweet, $tweet_db_id ) {}
+
+	/**
+	 *    Loops through the list of strings, and inserts a link,
+	 *    if one of them are found in the tweet
+	 *
+	 *    @param array $tweet   The tweet data array
+	 *    @param array $strings An array of strings in the format array([0] => value, [1] => id)
+	 *
+	 */
+	public function search_for_strings ( $tweet, $strings ) {
+		foreach ( $strings as $string ) {
+			$value = $string[0];
+			$id = $string[1];
+
+			if ( strpos($tweet["text"], $value) !== false ) {
+				$this->insert_tweet_string($tweet["id"], $id);
 			}
-		}
-	}
-
-	/**
-	 * Creates a link between a word and a tweet
-	 * @param  string $word     The word array
-	 * @param  integer $tweet_id The parent tweet
-	 */
-	public function create_tweet_word ( $word, $tweet_id ) {
-		if ( ! isset($GLOBALS["words"]) ) {
-			$GLOBALS["words"] = array();
-		}
-
-		$word["word"] = strtolower($word["word"]);
-
-		if ( ! isset($GLOBALS["words"][$word["word"]]) ) {
-			$word_id = $this->create_word($word["word"]);
-			$GLOBALS["words"][$word["word"]] = $word_id;
-		} else {
-			$word_id = $GLOBALS["words"][$word["word"]];
-		}
-
-		$this->db->insert("tweet_words", array(
-			"created_at" => time(),
-			"tweet_id" => $tweet_id,
-			"word_id" => $word_id,
-			"position" => $word["position"]
-		));
-
-		return $this->db->insert_id();
-	}
-
-	/**
-	 * Creates a word in thw words database, or returns the word id if the word exists
-	 * @param  string $word The word to add
-	 * @return integer The word id
-	 */
-	public function create_word ( $word ) {
-		$id = $this->get_id("words", array(
-			"word" => $word
-		));
-		if ( $id === false ) {
-			$this->db->insert("words", array(
-				"word" => strtolower($word),
-				"created_at" => time()
-			));
-
-			return $this->db->insert_id();
-		} else {
-			return $id;
 		}
 	}
 }

@@ -282,9 +282,9 @@ class Scraper {
 		}
 
 		// If more newer pages to load, load em
-		if ( $next_page_cursor !== false ) {
+		/*if ( $next_page_cursor !== false ) {
 			$tweets = array_merge($tweets, $this->scrapeTweets($meta, $old_refresh_cursor, $next_page_cursor, $type, $data, true, $latest_cursor, $max_timestamp ));
-		}
+		}*/
 
 		return $tweets;
 	}

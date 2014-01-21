@@ -93,12 +93,12 @@ class API_Scraper extends T_API_Controller {
 		$uuid = $this->scrape_model->gen_uuid();
 
 		// Insert global statistics
-		$this->scrape_model->insert_scraper_run($uuid, $item_type, $start_global, count($urls));
+		$this->scrape_model->insert_scraper_run($uuid, $item_type, $start_global, 1);
 
 		$tweets_created = 0;
 		$tweets_fetched = 0;
 		$item_number = 0;
-		$tweets[] = array();
+		$tweets = array();
 
 		$item_start_time = microtime(true);
 		$item_number = $item_number+1;
@@ -136,7 +136,7 @@ class API_Scraper extends T_API_Controller {
 		}
 
 		// Inserts local item analytics
-		$this->scrape_model->insert_statistic($uuid, $item_type, $url->id, $local_tweets_created , count($local_tweets), $item_start_time, $item_number, $url);
+		$this->scrape_model->insert_statistic($uuid, $item_type, $url->id, $local_tweets_created , count($local_tweets), $item_start_time, $item_number, $url->url);
 
 		$tweets_created = $tweets_created + $local_tweets_created;
 
@@ -160,16 +160,17 @@ class API_Scraper extends T_API_Controller {
 
 		if ( $urls === false ) return false;
 
-		$tweets = array();
+		$this->load->model("words_model");
+
+		$strings = $this->words_model->get_strings_grouped_in_pages();
 
 		foreach ( $urls as $url ) {
 			$local_tweets = $this->_scrape( "statistic_urls", $scraper, $item_type, $url );
 
-			/*if ( ! isset($tweets[$url->statistic_page_id]) ) {
-				$tweets[$url->statistic_page_id] = array();
-			}
 
-			$tweets[$url->statistic_page_id] = array_merge($tweets[$url->statistic_page_id], $local_tweets);*/
+			foreach ( $local_tweets as $tweet ) {
+				$this->tweet_model->search_for_strings($tweet, $strings[$url->statistic_page_id]->strings);
+			}
 		}
 	}
 }

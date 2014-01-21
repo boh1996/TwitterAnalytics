@@ -54,9 +54,11 @@ $route["admin/scrapers"] = "admin/scrapers_view";
 $route["admin/errors"] = "admin/errors_view";
 $route["admin/active/scrapers"] = "admin/active_scrapers_view";
 $route["admin/pages"] = "admin/pages_view";
-$route["admin/intervals"] = "admin/intervals";
+$route["admin/intervals"] = "admin/intervals_view";
 
 #### API #####
+$route["scrape/pages"] = "api/api_scraper/pages";
+
 $route["admin/access/control/save"] = "api/api_access_control/save";
 
 $route["admin/twitter/save"] = "api/api_settings/twitter";

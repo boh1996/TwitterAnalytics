@@ -43,6 +43,7 @@ $lang["admin_urls_description"] = "Twitter URLs that will be analyzed for tweets
 $lang["admin_alerts_settings_description"] = "Settings regarded to the alerts viewer!";
 
 $lang["admin_settings"] = "Settings";
+$lang["admin_scrapers_pages"] = "Pages";
 $lang["admin_intervals"] = "Intervals";
 $lang["admin_analytics_settings"] = "Analytics settings";
 $lang["scraper_settings"] = "Scraper settings";

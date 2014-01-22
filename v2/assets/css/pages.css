@@ -1,0 +1,14 @@
+[contenteditable="true"] {
+	border:2px solid #E0E0EB;
+	border-radius: 10px;
+	background-color: #D7E3F5;
+	padding: 0px 10px 0px 0px;
+}
+
+.page-name {
+	width:auto !important;
+}
+
+.list-container {
+	padding-top: 10px;
+}

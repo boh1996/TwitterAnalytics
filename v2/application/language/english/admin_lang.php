@@ -111,4 +111,13 @@ $lang["admin_alerts_strings_nav_title"] = "Strings";
 # Pages #
 $lang["admin_pages"] = "Pages";
 $lang["admin_page_pages"] = "Topic Pages Settings";
+
+$lang["admin_pages_urls_tab"] = "URLs";
+$lang["admin_pages_strings_tab"] = "Strings";
+$lang["admin_edit_page_name"] = "Edit";
+$lang["admin_pages_settings"] = "Pages";
+$lang["admin_pages_save"] = "Save";
+$lang["admin_sorry_something_failed"] = "A network or server error occured! Sorry :(";
+$lang["admin_page_url"] = "URL:";
+$lang["admin_page_string"] = "String:";
 ?>

@@ -64,6 +64,7 @@ $route["admin/access/control/save"] = "api/api_access_control/save";
 $route["admin/twitter/save"] = "api/api_settings/twitter";
 $route["sign_in/auth"] = "api/api_login/login";
 $route["sign_out/noui"] = "api/api_login/logout";
+$route["save/page/name"] = "api/api_pages/pages";
 
 $route["admin/settings/save"] = "api/api_settings/settings";
 $route["admin/setting/(:any)"] = "api/api_settings/setting/key/$1";

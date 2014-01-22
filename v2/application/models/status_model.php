@@ -46,7 +46,6 @@ class Status_model extends Base_model {
 			    scrape_statistics.created_at AS last_insert,
 			    tweets_created as stats_tweet_created,
 			    tweets_fetched as stats_tweet_fetched,
-			    tweets_blocked as stats_tweets_blocked,
 			    run_uuid,
 			    scrape_statistics.type as stats_type,
 			    item_id
@@ -78,7 +77,6 @@ class Status_model extends Base_model {
 			history.tweets_created,
 			history.tweets_fetched,
 			history.run_uuid,
-			history.tweets_blocked,
 			errors.run_uuid,
 			history.scraper,
 			errors.error_string,

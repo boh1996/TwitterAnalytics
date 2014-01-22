@@ -151,52 +151,6 @@ class Admin extends CI_Controller {
 	}
 
 	/**
-	 * Shows the admin twitter planel
-	 */
-	public function twitter_view () {
-		if ( ! $this->user_control->check_security("admin_twitter") ) {
-			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
-			die();
-		}
-
-		$this->lang->load("common");
-		$this->lang->load("admin");
-		$this->load->model("settings_model");
-
-		$this->load->view("admin_twitter_view", $this->user_control->ControllerInfo(array(
-			"current_section" => "admin",
-			"accounts" => $this->settings_model->get_twitter_users(),
-			"translations" => json_encode($this->lang->export()),
-		)));
-	}
-
-	/**
-	 * Shows the settings page for the alert words
-	 */
-	public function alerts_view () {
-		if ( ! $this->user_control->check_security("admin_alerts") ) {
-			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
-			die();
-		}
-
-		$this->lang->load("common");
-		$this->lang->load("admin");
-		$this->load->model("settings_model");
-		$this->load->model("alert_model");
-
-		$alerts = $this->alert_model->get_list("alert_strings");
-		$hidden_words = $this->alert_model->get_list("hidden_connected_words");
-
-		$this->load->view("admin_alerts_view", $this->user_control->ControllerInfo(array(
-			"current_section" => "admin",
-			"translations" => json_encode($this->lang->export()),
-			"settings" => $this->settings_model->check_defaults("alerts",$this->settings_model->get_settings("alerts")),
-			"alerts" => ( $alerts !== false ) ? $alerts : array(),
-			"hidden_words" => ( $hidden_words !== false ) ? $hidden_words : array(),
-		)));
-	}
-
-	/**
 	 * Shows the access control management page
 	 */
 	public function access_control_view () {
@@ -212,46 +166,6 @@ class Admin extends CI_Controller {
 			"pages" => $this->access_model->get_pages(),
 			"translations" => json_encode($this->lang->export()),
 			"current_section" => "admin"
-		)));
-	}
-
-	/**
-	 * Shows the list of words, that will block a tweet view
-	 */
-	public function blocked_strings_view () {
-		if ( ! $this->user_control->check_security("admin_topics") ) {
-			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
-			die();
-		}
-
-		$this->lang->load("admin");
-
-		$objects = $this->base_model->get_list("blocked_strings");
-
-		$this->load->view("admin_blocked_strings_view", $this->user_control->ControllerInfo(array(
-			"translations" => json_encode($this->lang->export()),
-			"current_section" => "admin",
-			"objects" => ( $objects !== false ) ? $objects : array()
-		)));
-	}
-
-	/**
-	 * Shows the view, where the string to remove is selected
-	 */
-	public function strings_to_remove_view () {
-		if ( ! $this->user_control->check_security("admin_topics") ) {
-			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
-			die();
-		}
-
-		$this->lang->load("admin");
-
-		$objects = $this->base_model->get_list("removed_strings");
-
-		$this->load->view("admin_strings_to_remove_view", $this->user_control->ControllerInfo(array(
-			"translations" => json_encode($this->lang->export()),
-			"current_section" => "admin",
-			"objects" => ( $objects !== false ) ? $objects : array()
 		)));
 	}
 
@@ -276,128 +190,40 @@ class Admin extends CI_Controller {
 	}
 
 	/**
-	 * Shows the topics admin view
+	 *    Shows the pages view
+	 *
 	 */
-	public function topics_view () {
-		if ( ! $this->user_control->check_security("admin_topics") ) {
+	public function pages_view () {
+		if ( ! $this->user_control->check_security("admin_pages") ) {
 			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
 			die();
 		}
 
 		$this->lang->load("admin");
+		$this->load->model("words_model");
+		$objects = $this->words_model->get_pages_info();
 
-		$topics = $this->base_model->get_list("topics");
-
-		$this->load->view("admin_topics_view", $this->user_control->ControllerInfo(array(
+		$this->load->view("admin_pages_view", $this->user_control->ControllerInfo(array(
 			"translations" => json_encode($this->lang->export()),
 			"current_section" => "admin",
-			"topics" => ( $topics !== false ) ? $topics : array()
+			"objects" => ( $objects !== false ) ? $objects : array()
 		)));
 	}
 
-	/**
-	 * Shows the template for the alerts settings page
-	 */
-	public function alerts_settings_template_view () {
-		if ( ! $this->user_control->check_security("admin_alerts") ) {
+	public function pages_template_view () {
+		if ( ! $this->user_control->check_security("admin_pages") ) {
 			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
 			die();
 		}
 
-		$this->lang->load("common");
-		$this->lang->load("admin");
-		$this->load->model("settings_model");
-
-		$this->load->view("templates/admin_alerts_settings_view", $this->user_control->ControllerInfo(array(
-			"current_section" => "admin",
-			"translations" => json_encode($this->lang->export()),
-			"settings" => $this->settings_model->check_defaults("alerts",$this->settings_model->get_settings("alerts")),
-		)));
-	}
-
-	/**
-	 * Shows the template for the hidden connected words page
-	 */
-	public function alerts_hidden_connected_words_template_view () {
-		if ( ! $this->user_control->check_security("admin_alerts") ) {
-			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
-			die();
-		}
-
-		$this->lang->load("common");
-		$this->lang->load("admin");
-		$this->load->model("alert_model");
-
-		$hidden_words = $this->alert_model->get_list("hidden_connected_words");
-
-		$this->load->view("templates/admin_alerts_connected_words_view", $this->user_control->ControllerInfo(array(
-			"current_section" => "admin",
-			"translations" => json_encode($this->lang->export()),
-			"hidden_words" => ( $hidden_words !== false ) ? $hidden_words : array(),
-		)));
-	}
-
-	/**
-	 * Shows the template for the alert strings view
-	 */
-	public function alerts_strings_template_view () {
-		if ( ! $this->user_control->check_security("admin_alerts") ) {
-			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
-			die();
-		}
-
-		$this->lang->load("common");
-		$this->lang->load("admin");
-		$this->load->model("alert_model");
-
-		$alerts = $this->alert_model->get_list("alert_strings");
-
-		$this->load->view("templates/admin_alets_strings_view", $this->user_control->ControllerInfo(array(
-			"current_section" => "admin",
-			"translations" => json_encode($this->lang->export()),
-			"alerts" => ( $alerts !== false ) ? $alerts : array(),
-		)));
-	}
-
-	/**
-	 * Shows the hidden words form template view
-	 */
-	public function hidden_words_template_view () {
-		if ( ! $this->user_control->check_security("admin_hidden_words") ) {
-			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
-			die();
-		}
-
-		$this->lang->load("common");
 		$this->lang->load("admin");
 
-		$objects = $this->base_model->get_list("hidden_words");
+		$objects = $this->base_model->get_list("urls");
 
-		$this->load->view("templates/admin_hidden_words_list_view", $this->user_control->ControllerInfo(array(
-			"current_section" => "admin",
+		$this->load->view("templates/pages_view", $this->user_control->ControllerInfo(array(
 			"translations" => json_encode($this->lang->export()),
-			"objects" => ( $objects !== false ) ? $objects : array(),
-		)));
-	}
-
-	/**
-	 * Shows the hidden words page
-	 */
-	public function hidden_words_view () {
-		if ( ! $this->user_control->check_security("admin_hidden_words") ) {
-			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
-			die();
-		}
-
-		$this->lang->load("common");
-		$this->lang->load("admin");
-
-		$objects = $this->base_model->get_list("hidden_words");
-
-		$this->load->view("admin_hidden_words_view", $this->user_control->ControllerInfo(array(
 			"current_section" => "admin",
-			"translations" => json_encode($this->lang->export()),
-			"objects" => ( $objects !== false ) ? $objects : array(),
+			//"objects" => ( $objects !== false ) ? $objects : array()
 		)));
 	}
 }

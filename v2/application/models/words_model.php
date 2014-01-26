@@ -62,7 +62,7 @@ class Words_model extends Base_model {
 			    email_change_value,
 			    embed
 			FROM statistic_pages sp
-			INNER JOIN (
+			LEFT JOIN (
 			    SELECT
 			        statistic_page_id as su_page_id,
 			        GROUP_CONCAT(IFNULL(url, "NULL"), "@|", id SEPARATOR "@;") AS urls,
@@ -71,13 +71,13 @@ class Words_model extends Base_model {
 			    FROM statistic_urls
 			    GROUP BY su_page_id
 			) url_list ON url_list.su_page_id = sp.id
-			INNER JOIN (
+			LEFT JOIN (
 			    SELECT
+			    	id as string_id,
 			        value as string_value,
-			        GROUP_CONCAT(IFNULL(value, "NULL"), "@|", id, "@|", IFNULL(category, "NULL"), "@|", IFNULL(color, "NULL") SEPARATOR "@;") AS strings,
+			        GROUP_CONCAT(IFNULL(value, "NULL"), "@|", id, "@|", IFNULL(category, "NULL") SEPARATOR "@;") AS strings,
 			        category,
-			        statistic_page_id as ss_page_id,
-			        color
+			        statistic_page_id as ss_page_id
 			    FROM statistic_strings
 			    GROUP BY ss_page_id
 			) string_list ON string_list.ss_page_id = sp.id'
@@ -85,25 +85,46 @@ class Words_model extends Base_model {
 
 		if ( ! $query->num_rows() ) return false;
 
+		$this->load->config("categories");
+		$config_categories = $this->config->item("categories");
+
 		$list = array();
 
 		foreach ( $query->result() as $row ) {
-			$row->urls = explode("@;", $row->urls);
-			$row->strings = explode("@;", $row->strings);
+			$urls = explode("@;", $row->urls);
+			$strings_list = explode("@;", $row->strings);
 
-			foreach ( $row->urls as $key => $url ) {
-				$row->urls[$key] = explode("@|", $url);
-				$row->urls[$key]["url"] = $row->urls[$key][0];
-				$row->urls[$key]["id"] = $row->urls[$key][1];
+			$row->urls = array();
+			$row->strings = array();
+
+			foreach ( $urls as $key => $url ) {
+				$url = explode("@|", $url);
+				if ( is_array($url) && count($url) > 1 ) {
+					$row->urls[$key] = array();
+					$row->urls[$key]["url"] = $url[0];
+					$row->urls[$key]["id"] = $url[1];
+				}
 			}
 
-			foreach ( $row->strings as $key => $string ) {
-				$row->strings[$key] = explode("@|", $string);
-				$row->strings[$key]["value"] = $row->strings[$key][0];
-				$row->strings[$key]["id"] = $row->strings[$key][1];
-				$row->strings[$key]["category"] = $row->strings[$key][2];
-				$row->strings[$key]["color"] = $row->strings[$key][3];
+			$strings = array();
+
+			foreach ( $config_categories as $category ) {
+				$strings[$category["key"]] = array("strings" => array());
+				$strings[$category["key"]]["config"] = $category;
 			}
+
+			foreach ( $strings_list as $key => $string ) {
+				$string = explode("@|", $string);
+				if ( is_array($string) && count($string) > 2 ) {
+					$category = $string[2];
+					$strings[$category]["strings"][$key] = array();
+					$strings[$category]["strings"][$key]["value"] = $string[0];
+					$strings[$category]["strings"][$key]["id"] = $string[1];
+					$strings[$category]["strings"][$key]["category"] = $string[2];
+				}
+			}
+
+			$row->strings = $strings;
 
 			$list[$row->id] = $row;
 		}

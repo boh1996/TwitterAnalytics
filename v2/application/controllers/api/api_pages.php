@@ -34,8 +34,46 @@ class API_Pages extends T_API_Controller {
 			"id" => $this->get("id")
 		));
 
-		$this->repsonse(array(
+		$this->response(array(
 			"status" => true
 		));
+	}
+
+	/**
+	 *    Delete page endpoint
+	 *
+	 */
+	public function page_delete () {
+		if ( ! $this->get("id") ) {
+			$this->response(array(
+				"status" => false,
+			), 400);
+		}
+
+		$this->page_model->delete_page($this->get("id"));
+
+		$this->response(array(
+			"status" => true
+		));
+	}
+
+	/**
+	 *    Save post batch
+	 *
+	 */
+	public function save_post () {
+		if ( ! $this->post("pages") ) {
+			$this->response(array(
+				array(
+					"status" => false
+				)
+			),400);
+		}
+
+		$this->page_model->save_pages($this->post("pages"));
+
+		$this->response(array(
+			"status" => true
+		),200);
 	}
 }

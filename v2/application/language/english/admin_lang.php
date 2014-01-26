@@ -120,4 +120,14 @@ $lang["admin_pages_save"] = "Save";
 $lang["admin_sorry_something_failed"] = "A network or server error occured! Sorry :(";
 $lang["admin_page_url"] = "URL:";
 $lang["admin_page_string"] = "String:";
+$lang["admin_remove_item"] = "Remove";
+$lang["admin_deleted_successfully"] = "Object deleted successfully!";
+$lang["admin_add_url"] = "Add URL";
+$lang["admin_add_string"] = "Add String";
+$lang["admin_create_page"] = "Create page";
+$lang["admin_remove_page"] = "Remove";
+$lang["pages_page_description"] = "Create pages and add urls and strings to them";
+$lang["admin_embed_title"] = "Embed text / HTML on page";
+$lang["admin_page_login_control"] = "Login:";
+$lang["admin_page_email_change_value"] = "Change value for email";
 ?>

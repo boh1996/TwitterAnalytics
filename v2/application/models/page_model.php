@@ -18,30 +18,24 @@ class Page_model extends Base_model {
 	}
 
 	/**
-	 *    Fetches a list of pages
+	 *    Deletes a pages and the associated URLs and Strings
 	 *
-	 *    @param [type] $where [description]
+	 *    @param integer $page_id The id of the page
 	 *
-	 *    @return [type] [description]
 	 */
-	/*public function get_statistic_pages ( $where = null ) {
-		if ( ! is_null($where) && is_array($where) ) {
-			$this->db->where($where);
-		}
+	public function delete_page ( $page_id ) {
+		$this->db->delete("statistic_pages", array(
+			"id" => $page_id
+		));
 
-		$this->db->from("statistic_pages");
-		$query = $this->db->get();
+		$this->db->delete("statistic_strings", array(
+			"statistic_page_id" => $page_id
+		));
 
-		if ( ! $query->num_rows() ) return false;
-
-		$list = array();
-
-		foreach ( $query->result() as $row ) {
-			$list[$row->key] = $row;
-		}
-
-		return $list;
-	}*/
+		$this->db->delete("statistic_urls", array(
+			"statistic_page_id" => $page_id
+		));
+	}
 
 	/**
 	 *    Recieves the page that matches the search
@@ -64,5 +58,92 @@ class Page_model extends Base_model {
 		if ( ! $query->num_rows() ) return false;
 
 		return $query->row();
+	}
+
+	/**
+	 *    Updates the list of strings
+	 *
+	 *    @param array $strings The list of strings to save
+	 *    @param integer $page_id The page it's associated with
+	 *
+	 */
+	public function save_strings ( $strings, $page_id ) {
+		foreach ( $strings as $string ) {
+			if ( isset($string["id"]) ) {
+				$this->db->where(array(
+					"id" => $string["id"]
+				))->update("statistic_strings", array(
+					"value" => $string["string"],
+					"category" => $string["category"],
+					"statistic_page_id" => $page_id
+				));
+			} else {
+				$this->db->insert("statistic_strings", array(
+					"value" => $string["string"],
+					"category" => $string["category"],
+					"statistic_page_id" => $page_id
+				));
+			}
+		}
+	}
+
+	/**
+	 *    Updates the list of urls
+	 *
+	 *    @param array $urls    The list of URLs
+	 *    @param integer $page_id The page it's associated with
+	 *
+	 */
+	public function save_urls ( $urls, $page_id ) {
+		foreach ( $urls as $url ) {
+			if ( isset($url["id"]) ) {
+				$this->db->where(array(
+					"id" => $url["id"]
+				))->update("statistic_urls", array(
+					"url" => $url["url"],
+					"statistic_page_id" => $page_id
+				));
+			} else {
+				$this->db->insert("statistic_urls", array(
+					"url" => $url["url"],
+					"statistic_page_id" => $page_id
+				));
+			}
+		}
+	}
+
+	/**
+	 *    Saves a list of pages
+	 *
+	 *    @param array $pages The list of pages
+	 *
+	 */
+	public function save_pages ( $pages ) {
+		foreach ( $pages as $page ) {
+			if ( isset($page["id"]) && $this->exists("statistic_pages", array(
+				"id" => $page["id"]
+			)) ) {
+				$this->db->where(array(
+					"id" => $page["id"]
+				));
+				$this->db->update("statistic_pages",array(
+					"name" => $page["name"],
+					"login" => $page["login"],
+					"embed" => $page["embed"],
+					"email_change_value" => $page["email_change_value"]
+				));
+				$this->save_strings($page["strings"], $page["id"]);
+				$this->save_urls($page["urls"], $page["id"]);
+			} else {
+				$id = $this->insert("statistic_pages",array(
+					"name" => $page["name"],
+					"login" => $page["login"],
+					"embed" => $page["embed"],
+					"email_change_value" => $page["email_change_value"]
+				));
+				$this->save_strings($page["strings"], $id);
+				$this->save_urls($page["urls"], $id);
+			}
+		}
 	}
 }

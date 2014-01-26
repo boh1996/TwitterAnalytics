@@ -69,3 +69,14 @@ function alert ( data, template, templateId, container, mode, closeCallback, tim
 		},timeout);
 	}
 }
+
+function makeid( length )
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < length; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}

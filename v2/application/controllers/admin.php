@@ -210,6 +210,10 @@ class Admin extends CI_Controller {
 		)));
 	}
 
+	/**
+	 *    Shows the admin pages template view, used for AJAX refresh
+	 *
+	 */
 	public function pages_template_view () {
 		if ( ! $this->user_control->check_security("admin_pages") ) {
 			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
@@ -217,13 +221,13 @@ class Admin extends CI_Controller {
 		}
 
 		$this->lang->load("admin");
+		$this->load->model("words_model");
+		$objects = $this->words_model->get_pages_info();
 
-		$objects = $this->base_model->get_list("urls");
-
-		$this->load->view("templates/pages_view", $this->user_control->ControllerInfo(array(
+		$this->load->view("templates/admin_pages_template_view", $this->user_control->ControllerInfo(array(
 			"translations" => json_encode($this->lang->export()),
 			"current_section" => "admin",
-			//"objects" => ( $objects !== false ) ? $objects : array()
+			"objects" => ( $objects !== false ) ? $objects : array()
 		)));
 	}
 }

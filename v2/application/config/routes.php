@@ -54,6 +54,7 @@ $route["admin/scrapers"] = "admin/scrapers_view";
 $route["admin/errors"] = "admin/errors_view";
 $route["admin/active/scrapers"] = "admin/active_scrapers_view";
 $route["admin/pages"] = "admin/pages_view";
+$route["admin/template/pages"] = "admin/pages_template_view";
 $route["admin/intervals"] = "admin/intervals_view";
 
 #### API #####
@@ -69,7 +70,11 @@ $route["save/page/name"] = "api/api_pages/pages";
 $route["admin/settings/save"] = "api/api_settings/settings";
 $route["admin/setting/(:any)"] = "api/api_settings/setting/key/$1";
 
-$route["admin/alerts/template/settings"] = "admin/alerts_settings_template_view";
+$route["save/pages"] = "api/api_pages/save";
+
+$route["string/(:any)"] = "api/api_strings/string/id/$1";
+$route["url/(:any)"] = "api/api_urls/url/id/$1";
+$route["page/(:any)"] = "api/api_pages/page/id/$1";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

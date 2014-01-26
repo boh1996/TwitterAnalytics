@@ -30,6 +30,19 @@ class Base_model extends CI_Model {
 	}
 
 	/**
+	 *    Inserts an element an returns the id
+	 *
+	 *    @param string $table The table to insert into
+	 *    @param array $data  The database to insert into
+	 *
+	 *    @return integer
+	 */
+	public function insert ( $table, $data ) {
+		$this->db->insert($table, $data);
+		return $this->db->insert_id();
+	}
+
+	/**
 	 *     Converts array elements to objects
 	 *
 	 *    @param array $array The array

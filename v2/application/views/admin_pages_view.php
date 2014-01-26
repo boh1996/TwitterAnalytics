@@ -8,11 +8,18 @@
 
 		<link href="<?= $asset_url; ?>bootstrap/css/bootstrap.css" rel="stylesheet">
 		<link href="<?= $asset_url; ?>bootstrap/css/docs.css" rel="stylesheet">
+		<link href="<?= $asset_url; ?>css/bootstrap-checkbox.css" rel="stylesheet">
 		<link href="<?= $asset_url; ?>css/style.css" rel="stylesheet">
 		<link href="<?= $asset_url; ?>css/admin.css" rel="stylesheet">
 		<link href="<?= $asset_url; ?>css/pages.css" rel="stylesheet">
 	</head>
 	<body>
+
+		<div style="display:none;" >
+			<div id="newPageTemplate">
+				<?= $this->user_control->LoadTemplate("new_page_template_view"); ?>
+			</div>
+		</div>
 
 		<script type="text/javascript">
 			var base_url = "<?= $base_url; ?>";
@@ -29,65 +36,26 @@
 		<div class="container">
 			<div class="well" style="height:auto !important; min-height:150px;">
 				<div class="page-header text-center col-sm-10 col-sm-offset-1">
-					<h1><?= $this->lang->line("admin_pages_settings"); ?><small> <?= $this->lang->line("scraper_settings_description"); ?></small></h1>
+					<h1><?= $this->lang->line("admin_pages_settings"); ?><small> <?= $this->lang->line("pages_page_description"); ?></small></h1>
 				</div>
 			</div>
 
-			<form class="form-signin form-horizontal" role="form">
+			<form class="form-signin form-horizontal pages-form" role="form">
+				<div class="page-container">
+					<?= $this->user_control->LoadTemplate("pages_list_view"); ?>
 
-				<div class="bs-example bs-example-tab">
-					<div id="scrapers" style="display:inline-block;width:100%;">
+					<?= $this->user_control->LoadTemplate("new_page_view"); ?>
+				</div>
 
-						<div class="col-sm-offset-1 col-sm-10">
-							<div class="form-group">
-								<div class="col-sm-12" id="errors">
-								</div>
-							</div>
-
-							<?php foreach ( $objects as $object ): ?>
-								<div class="col-sm-12">
-									<h2><span class="page-name" data-value="<?= $object->name ?>"><?= $object->name ?></span> <small><a href="#" data-page-id="<?= $object->id; ?>"><?= $this->lang->line("admin_edit_page_name"); ?></a></small></h2>
-								</div>
-								<div class="form-group col-sm-12">
-									<ul class="nav nav-tabs">
-										<li class="active"><a data-toggle="tab" href="#urls_<?= $object->id ?>"><?= $this->lang->line("admin_pages_urls_tab"); ?></a></li>
-									  	<li><a data-toggle="tab" href="#strings_<?= $object->id ?>"><?= $this->lang->line("admin_pages_strings_tab"); ?></a></li>
-									</ul>
-
-									<div class="tab-content">
-										<div class="tab-pane active" id="urls_<?= $object->id ?>">
-											<div class="col-sm-offset-1 col-sm-5 list-container">
-												<?php foreach ( $object->urls as $url ): ?>
-													<div class="form-group" style="min-width:600px;">
-														<label for="url_<?= $object->id; ?>_<?= $url['id']; ?>" class="col-sm-2 control-label"><?= $this->lang->line("admin_page_url"); ?></label>
-														<div class="col-sm-10">
-															<input id="url_<?= $object->id; ?>_<?= $url['id']; ?>" type="text" class="form-control" value="<?= $url["url"]; ?>" >
-														</div>
-													</div>
-												<?php endforeach; ?>
-											</div>
-										</div>
-										<div class="tab-pane" id="strings_<?= $object->id ?>">
-											<div class="col-sm-offset-1 col-sm-10 list-container">
-												ORDER BY CATEGORY
-												<?php foreach ( $object->strings as $string ): ?>
-													<div class="form-group" style="min-width:600px;">
-														<label for="string_<?= $object->id; ?>_<?= $string['id']; ?>" class="col-sm-2 control-label"><?= $this->lang->line("admin_page_string"); ?></label>
-														<div class="col-sm-10">
-															<input id="string_<?= $object->id; ?>_<?= $string['id']; ?>" type="text" class="form-control" value="<?= $string["value"]; ?>" >
-														</div>
-													</div>
-												<?php endforeach; ?>
-											</div>
-										</div>
-									</div>
-								</div>
-							<?php endforeach; ?>
-						</div>
+				<div class="well notifications" style="display:none; text-align:center;">
+					<div class="form-group">
+						<div class="col-sm-12" id="errors"></div>
 					</div>
 				</div>
 
-				<div class="well" style="height:auto !important;">
+				</div>
+
+				<div class="well" style="height:auto !important; min-height:80px;">
 					<div class="form-group">
 						<div class="col-sm-offset-1 col-sm-10">
 							<button class="btn btn-lg btn-primary btn-block" type="submit"><?= $this->lang->line("admin_save"); ?></button>
@@ -99,6 +67,7 @@
 
 		<script src="<?= $asset_url; ?>jquery.min.js"></script>
 		<script src="<?= $asset_url; ?>bootstrap/js/bootstrap.min.js"></script>
+		<script src="<?= $asset_url; ?>js/bootstrap-checkbox.js"></script>
 		<script src="<?= $asset_url; ?>js/nav.js"></script>
 		<script src="<?= $asset_url; ?>js/functions.js"></script>
 		<script src="<?= $asset_url; ?>js/list-input.js"></script>

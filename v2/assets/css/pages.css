@@ -5,6 +5,10 @@
 	padding: 0px 10px 0px 0px;
 }
 
+.embed {
+	display:inline-block;
+}
+
 .page-name {
 	width:auto !important;
 }
@@ -12,3 +16,5 @@
 .list-container {
 	padding-top: 10px;
 }
+
+textarea { resize:vertical; }

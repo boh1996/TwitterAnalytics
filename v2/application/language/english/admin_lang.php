@@ -110,7 +110,7 @@ $lang["admin_alerts_strings_nav_title"] = "Strings";
 
 # Pages #
 $lang["admin_pages"] = "Pages";
-$lang["admin_page_pages"] = "Topic Pages Settings";
+$lang["admin_page_pages"] = "Pages Settings";
 
 $lang["admin_pages_urls_tab"] = "URLs";
 $lang["admin_pages_strings_tab"] = "Strings";
@@ -130,4 +130,16 @@ $lang["pages_page_description"] = "Create pages and add urls and strings to them
 $lang["admin_embed_title"] = "Embed text / HTML on page";
 $lang["admin_page_login_control"] = "Login:";
 $lang["admin_page_email_change_value"] = "Change value for email";
+$lang["admin_intervals_settings"] = "Intervals";
+$lang["admin_intervals_description"] = "Security settings for intervals";
+$lang["admin_page_intervals"] = "Intervals";
+$lang["admin_no_intervals_found"] = "No intervals found";
+$lang["admin_interval_login"] = "Login:";
+$lang["admin_intervals_value"] = "Value";
+$lang["admin_interval_seconds"] = "Seconds";
+$lang["admin_interval_hide"] = "Hide";
+$lang["admin_interval_show"] = "Show";
+$lang["admin_object_hide"] = "Object is now hidden";
+$lang["admin_object_show"] = "Object is now visible";
+$lang["admin_access_control_changed"] = "Access control changed successfully!";
 ?>

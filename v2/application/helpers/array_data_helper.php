@@ -20,6 +20,36 @@ function assoc_implode($delemiter = "&",$element_delemiter = "=",$array = NULL){
 	}
 }
 
+/** 
+ * Sort array of objects by field. 
+ * 
+ * @autor Lea Hayes
+ * @param array $objects Array of objects to sort. 
+ * @param string $on Name of field. 
+ * @param string $order (ASC|DESC) 
+ */ 
+function sort_on_field(&$objects, $on, $order = 'DESC') { 
+    $comparer = ($order === 'DESC') 
+        ? "return -strcmp(\$a->{$on},\$b->{$on});" 
+        : "return strcmp(\$a->{$on},\$b->{$on});"; 
+    usort($objects, create_function('$a,$b', $comparer)); 
+}
+
+
+function aasort (&$array, $key) {
+    $sorter = array();
+    $ret = array();
+    reset($array);
+    foreach ( $array as $ii => $va ) {
+        $sorter[$ii] = $va[$key];
+    }
+    asort($sorter);
+    foreach ( $sorter as $ii => $va ) {
+        $ret[$ii] = $array[$ii];
+    }
+    $array = $ret;
+}
+
 /**
  * This function mixes two arrays together,
  * taking the keys from one and the values from the other.

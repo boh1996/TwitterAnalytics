@@ -70,6 +70,11 @@ $route["save/page/name"] = "api/api_pages/pages";
 $route["admin/settings/save"] = "api/api_settings/settings";
 $route["admin/setting/(:any)"] = "api/api_settings/setting/key/$1";
 
+$route["admin/interval/hide"] = "api/api_intervals/hide";
+$route["admin/interval/show"] = "api/api_intervals/show";
+$route["admin/interval/edit"] = "api/api_intervals/interval";
+$route["admin/intervals/edit"] = "api/api_intervals/intervals";
+
 $route["save/pages"] = "api/api_pages/save";
 
 $route["string/(:any)"] = "api/api_strings/string/id/$1";

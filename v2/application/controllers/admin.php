@@ -146,7 +146,6 @@ class Admin extends CI_Controller {
 			"current_section" => "admin",
 			"translations" => json_encode($this->lang->export()),
 			"scraper_settings" => $this->settings_model->check_defaults("scraper",$this->settings_model->get_settings("scraper")),
-			"analytics_settings" => $this->settings_model->check_defaults("analytics",$this->settings_model->get_settings("analytics")),
 		)));
 	}
 
@@ -225,6 +224,27 @@ class Admin extends CI_Controller {
 		$objects = $this->words_model->get_pages_info();
 
 		$this->load->view("templates/admin_pages_template_view", $this->user_control->ControllerInfo(array(
+			"translations" => json_encode($this->lang->export()),
+			"current_section" => "admin",
+			"objects" => ( $objects !== false ) ? $objects : array()
+		)));
+	}
+
+	/**
+	 *    Shows the intervals settings view
+	 *
+	 */
+	public function intervals_view () {
+		if ( ! $this->user_control->check_security("admin_intervals") ) {
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
+		}
+
+		$this->lang->load("admin");
+		$this->load->model("settings_model");
+		$objects = $this->settings_model->get_intervals();
+
+		$this->load->view("admin_intervals_view", $this->user_control->ControllerInfo(array(
 			"translations" => json_encode($this->lang->export()),
 			"current_section" => "admin",
 			"objects" => ( $objects !== false ) ? $objects : array()

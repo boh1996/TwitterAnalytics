@@ -171,19 +171,21 @@ class Settings_model extends Base_model {
 			}
 		}
 
-		foreach ( $data as $key => $object ) {
-			if ( isset( $settings[$key] ) ) {
-				if ( $settings[$key]["section"] != $object->section ) {
-					$data[$key] = (object) $settings[$key];
-					$this->set_setting($key, $object->value, $settings[$key]["section"]);
+		if ( $data !== false ) {
+			foreach ( $data as $key => $object ) {
+				if ( isset( $settings[$key] ) ) {
+					if ( $settings[$key]["section"] != $object->section ) {
+						$data[$key] = (object) $settings[$key];
+						$this->set_setting($key, $object->value, $settings[$key]["section"]);
+					}
+				} else {
+					$this->delete_setting($key);
+					unset($data[$key]);
 				}
-			} else {
-				$this->delete_setting($key);
-				unset($data[$key]);
 			}
-		}
 
-		array_multisort($data);
+			array_multisort($data);
+		}
 
 		return $data;
 	}
@@ -194,22 +196,40 @@ class Settings_model extends Base_model {
 	 *    @return array
 	 */
 	public function get_intervals () {
+		$this->load->helper("array_data");
+		$this->load->config("defaults");
 		$intervals = $this->config->item("intervals");
 
 		$query = $this->db->get("statistic_view_intervals");
 
+		$defaults = $this->array_elements_to_object($this->get_default_intervals());
 
-		if ( ! $query->num_rows() ) return $this->array_elements_to_object($intervals);
+		usort($defaults, function($a, $b)
+		{
+		    return ( $a->value > $b->value ) ? true : false;
+		});
+
+		if ( ! $query->num_rows() ) return $defaults;
 
 		$list = array();
 
 		foreach ( $query->result() as $row ) {
 			if ( isset($intervals[$row->key]) ) {
+				$row->value = $intervals[$row->key]["value"];
 				$row->language_key = $intervals[$row->key]["language_key"];
+				$row->name = $this->lang->line($row->language_key);
+				$row->default = true;
 
-				if ( empty($row->name) ) {
-					$row->name = $this->lang->line($intervals[$row->key]["language_key"]);
+				$row->name = $this->lang->line($intervals[$row->key]["language_key"]);
+
+				if ( $row->login == "" ) {
+					$row->login = $intervals[$row->key]["login"];
 				}
+
+				if ( $row->status == "" ) {
+					$row->status = $intervals[$row->key]["status"];
+				}
+
 			}
 
 			$list[$row->key] = $row;
@@ -218,10 +238,33 @@ class Settings_model extends Base_model {
 		foreach ( $intervals as $key => $array ) {
 			if ( ! isset($list[$key]) ) {
 				$array["name"] = $this->lang->line($array["language_key"]);
-				$list[] = (object) $array;
+				$array["default"] = true;
+				$list[$array["key"]] = (object) $array;
 			}
 		}
 
+		usort($list, function($a, $b)
+		{
+		    return ( $a->value > $b->value ) ? true : false;
+		});
+
 		return $list;
+	}
+
+	/**
+	 *    Parses the list of default intervals
+	 *
+	 *    @return array<Array>
+	 */
+	public function get_default_intervals () {
+		$this->load->helper("array_data");
+		$intervals = $this->config->item("intervals");
+
+		foreach ( $intervals as $key => $array ) {
+			$intervals[$key]["name"] = $this->lang->line($array["language_key"]);
+			$intervals[$key]["default"] = true;
+		}
+
+		return $intervals;
 	}
 }

@@ -53,35 +53,6 @@
 					</div>
 				</div>
 			</form>
-
-			<form class="form-signin form-horizontal settings-form" data-section="analytics" role="form">
-				<div class="col-sm-10 col-sm-offset-3">
-					<div class="page-header">
-						<h1><?= $this->lang->line("admin_analytics_settings"); ?><small> <?= $this->lang->line("admin_analytics_settings_description"); ?></small></h1>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<div class="col-sm-offset-3 col-sm-8" id="errors">
-					</div>
-				</div>
-
-				<?php foreach ( $analytics_settings as $key => $object ): ?>
-					<div class="form-group">
-						<label for="<?= $key; ?>" class="col-sm-2 control-label col-sm-offset-2"><?= $this->lang->line($object->language_key); ?></label>
-						<div class="col-sm-6">
-							<input data-setting="<?= $key; ?>" type="text" id="<?= $key; ?>" value="<?= $object->value; ?>" name="<?= $key; ?>" class="form-control" placeholder="<?= $this->lang->line($object->placeholder); ?>" required>
-							<span class="help-block"><?= $this->lang->line($object->help_text); ?></span>
-						</div>
-					</div>
-				<?php endforeach; ?>
-
-				<div class="form-group">
-					<div class="col-sm-offset-4 col-sm-6">
-						<button class="btn btn-lg btn-primary btn-block" type="submit"><?= $this->lang->line("admin_save"); ?></button>
-					</div>
-				</div>
-			</form>
 		<div>
 
 		<script src="<?= $asset_url; ?>jquery.min.js"></script>

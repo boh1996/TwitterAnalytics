@@ -267,4 +267,45 @@ class Settings_model extends Base_model {
 
 		return $intervals;
 	}
+
+	/**
+	 *    Loads up a config file, looks in the array key $array,
+	 *    loops through the items, and looks through either the sub array or the value,
+	 *    and returns if it matches the query or if $multiple is enabled,
+	 *    then the items are added to a list and returned.
+	 *
+	 *    @param string  $file     The config file name
+	 *    @param string  $item    The config item name
+	 *    @param string  $key      The config item value array key
+	 *    @param string  $value    The array->value key whe are looking for
+	 *    @param string|boolean|integer|array  $default  The default value
+	 *    @param boolean $multiple If multiple items should be returned
+	 *
+	 *    @return array|string|integer|boolean
+	 */
+	public function config_array_find ( $file, $item, $key, $value = "", $default = "", $multiple = false ) {
+		$this->load->config($file);
+
+		$items = $this->config->item($item);
+
+		$list = array();
+
+		foreach ( $items as $index => $array ) {
+			if ( $index == $key && is_array($array) && isset($array[$value]) ) {
+				if ( $multiple ) {
+					$list[] = $array[$value];
+				} else {
+					return $array[$value];
+				}
+			} else if ( $index == $key ) {
+				if ( $multiple ) {
+					$list[] = $array;
+				} else {
+					return $array;
+				}
+			}
+		}
+
+		return $list;
+	}
 }

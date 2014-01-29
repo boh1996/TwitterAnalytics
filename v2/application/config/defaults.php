@@ -1,13 +1,96 @@
 <?php
 $config["settings"] = array(
-        "setting_max_lifetime"         => array(
-                "value"                 => 3600,
-                "key"                         => "settings_max_life_time",
-                "section"                 => "scraper",
-                "type"                         => "text",
-                "language_key"         => "admin_max_age",
-                "placeholder"        => "admin_tweet_max_age",
-                "help_text"                => "admin_max_life_time_help"
+        "setting_max_lifetime"      => array(
+                "value"             => 3600,
+                "key"               => "settings_max_life_time",
+                "section"           => "scraper",
+                "type"              => "text",
+                "language_key"      => "admin_max_age",
+                "placeholder"       => "admin_tweet_max_age",
+                "help_text"         => "admin_max_life_time_help"
+        ),
+        "setting_number_of_columns" => array(
+        	"value"                 => 10,
+            "key"                   => "setting_number_of_columns",
+            "section"               => "viewer",
+            "type"                  => "text",
+            "language_key"         	=> "admin_number_of_columns",
+            "placeholder"       	=> "admin_graph_columns",
+            "help_text"             => "setting_number_of_columns_help"
+        ),
+        "setting_default_zero_color" => array(
+        	"value"                 => "#D1E0E0",
+            "key"                   => "setting_default_zero_color",
+            "section"               => "viewer",
+            "type"                  => "text",
+            "language_key"         	=> "admin_default_color",
+            "placeholder"       	=> "admin_default_zero_color",
+            "help_text"             => "setting_default_zero_color"
+        ),
+
+        # Email #
+        "setting_email_sender" => array(
+        	"value"                 => "support@illution.dk",
+            "key"                   => "setting_email_sender",
+            "section"               => "email",
+            "type"                  => "text",
+            "language_key"         	=> "admin_email_sender",
+            "placeholder"       	=> "admin_email_sender_placeholder",
+            "help_text"             => "setting_email_sender_help"
+        ),
+        "setting_email_subject" => array(
+        	"value"                 => "{{page}} has changed {{change_value}}%",
+            "key"                   => "setting_email_subject",
+            "section"               => "email",
+            "type"                  => "textarea",
+            "language_key"         	=> "admin_email_subject",
+            "placeholder"       	=> "admin_email_subject_placeholder",
+            "help_text"             => "setting_email_subject_help"
+        ),
+        "setting_email_message" => array(
+        	"value"                 => "There has been a change to {{page}}, at {{page_url}}, with {{tweet_count}} and a change of {{change_value}}%",
+            "key"                   => "setting_email_message",
+            "section"               => "email",
+            "type"                  => "textarea",
+            "language_key"         	=> "admin_email_message",
+            "placeholder"       	=> "admin_email_message_placeholder",
+            "help_text"             => "setting_email_message_help"
+        ),
+        "setting_email_alt_message" => array(
+        	"value"                 => "There has been a change to {{page}} with {{tweet_count}} and a change of {{change_value}}%",
+            "key"                   => "setting_email_alt_message",
+            "section"               => "email",
+            "type"                  => "textarea",
+            "language_key"         	=> "admin_email_alt_message",
+            "placeholder"       	=> "admin_email_alt_message_placeholder",
+            "help_text"             => "setting_email_alt_message_help"
+        ),
+        "setting_email_zero_minimum_change_amount" => array(
+            "value"                 => 200,
+            "key"                   => "setting_email_zero_minimum_change_amount",
+            "section"               => "email",
+            "type"                  => "text",
+            "language_key"          => "setting_email_zero_minimum_change_amount",
+            "placeholder"           => "admin_email_change_from_zero_placeholder",
+            "help_text"             => "setting_email_minimum_change_from_zero_help"
+        ),
+        "setting_email_increase_alert" => array(
+            "value"                 => true,
+            "key"                   => "setting_email_increase_alert",
+            "section"               => "email",
+            "type"                  => "checkbox",
+            "language_key"          => "setting_email_increase_alert",
+            "placeholder"           => "admin_email_increase_alert_placeholder",
+            "help_text"             => "setting_increase_alert_help"
+        ),
+        "setting_email_decrease_alert" => array(
+            "value"                 => true,
+            "key"                   => "setting_email_decrease_alert",
+            "section"               => "email",
+            "type"                  => "checkbox",
+            "language_key"          => "setting_email_decrease_alert",
+            "placeholder"           => "admin_email_decrease_alert_placeholder",
+            "help_text"             => "setting_increase_alert_help"
         ),
 );
 

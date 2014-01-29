@@ -142,4 +142,33 @@ $lang["admin_interval_show"] = "Show";
 $lang["admin_object_hide"] = "Object is now hidden";
 $lang["admin_object_show"] = "Object is now visible";
 $lang["admin_access_control_changed"] = "Access control changed successfully!";
+$lang["admin_number_of_columns"] = "Number of columns";
+$lang["admin_graph_columns"] = "Number of graph columns";
+$lang["setting_number_of_columns_help"] = "The numbeer of columns show in the graph";
+$lang["admin_default_color"] = "Default column color";
+$lang["admin_default_zero_color"] = "No strings column color";
+$lang["setting_default_zero_color"] = "Default color";
+
+###### Email ########
+$lang["admin_email_sender"] = "Email sender";
+$lang["admin_email_sender_placeholder"] = "Alert email sender address";
+$lang["setting_email_sender_help"] = "The email shown as sender of the alert emails";
+$lang["admin_email_subject"] = "Email subject";
+$lang["admin_email_subject_placeholder"] = "Subject title";
+$lang["setting_email_subject_help"] = "The email subject text, use the specified variables, in the variables section.";
+$lang["admin_email_message"] = "Email message body";
+$lang["admin_email_message_placeholder"] = "Message body";
+$lang["setting_email_message_help"] = "The change email text, use the described variables in the variables section";
+$lang["admin_email_alt_message"] = "Simple message without HTML";
+$lang["admin_email_alt_message_placeholder"] = "Text without HTML";
+$lang["setting_email_alt_message_help"] = "Simpler form of the message text";
+$lang["setting_email_zero_minimum_change_amount"] = "Minimum change from zero";
+$lang["admin_email_change_from_zero_placeholder"] = "Minimum change, if last was zero tweets";
+$lang["setting_email_minimum_change_from_zero_help"] = "The minimum change in %, if last interval had zero tweets";
+$lang["setting_email_increase_alert"] = "Alert on increase";
+$lang["admin_email_increase_alert_placeholder"] = "Increase alert";
+$lang["setting_increase_alert_help"] = "Send an email alert, if there has been an increase in tweets";
+$lang["setting_email_decrease_alert"] = "Alert on decrease";
+$lang["admin_email_decrease_alert_placeholder"] = "Email alert on decrease";
+$lang["setting_increase_alert_help"] = "Send an email if the number of tweets has decreased";
 ?>

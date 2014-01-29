@@ -86,8 +86,10 @@ class API_Scraper extends T_API_Controller {
 	 * @param  string $scraper   The scraper history name
 	 * @param  string $item_type The item type name
 	 * @param  string $url  The URL object
+	 * @param string @$uuid A container for the current run UUID
+	 * @param array @info Returned statistic info
 	 */
-	private function _scrape ( $table, $scraper, $item_type, $url ) {
+	private function _scrape ( $table, $scraper, $item_type, $url, &$uuid, &$info ) {
 		$start_global = microtime(true);
 
 		$uuid = $this->scrape_model->gen_uuid();
@@ -150,6 +152,14 @@ class API_Scraper extends T_API_Controller {
 		// Inserts the row the "sets" the scraping as finished
 		$this->scrape_model->create_history_item($tweets_created, $scraper, $tweets_fetched, $uuid, $microtime );
 
+		$info = array(
+			"scraper" => $scraper,
+			"tweets_fetched" => $tweets_fetched,
+			"microtime" => $microtime,
+			"tweets_created" => $tweets_created,
+			"item_start_time" => $item_start_time
+		);
+
 		return $tweets;
 	}
 
@@ -164,13 +174,30 @@ class API_Scraper extends T_API_Controller {
 
 		$strings = $this->words_model->get_strings_grouped_in_pages();
 
-		foreach ( $urls as $url ) {
-			$local_tweets = $this->_scrape( "statistic_urls", $scraper, $item_type, $url );
+		$pages = array();
 
+		foreach ( $urls as $url ) {
+			if ( ! isset($pages[$url->statistic_page_id]) ) {
+				$pages[$url->statistic_page_id] = array("urls" => array(), "tweets_created" => 0, "tweets_fetched" => 0);
+			}
+
+			$pages[$url->statistic_page_id]["urls"][] = $url->url;
+
+			$local_tweets = $this->_scrape( "statistic_urls", $scraper, $item_type, $url, $uuid, $info );
+
+			$pages[$url->statistic_page_id]["tweets_fetched"] = $pages[$url->statistic_page_id]["tweets_fetched"] + $info["tweets_fetched"];
+			$pages[$url->statistic_page_id]["tweets_created"] + $pages[$url->statistic_page_id]["tweets_created"] + $info["tweets_created"];
 
 			foreach ( $local_tweets as $tweet ) {
 				$this->tweet_model->search_for_strings($tweet, $strings[$url->statistic_page_id]->strings);
+				$this->tweet_model->link_page_and_tweet($tweet["tweet_id"], $url->statistic_page_id);
+
 			}
+		}
+
+		// Insert page stats
+		foreach ( $pages as $page_id => $info ) {
+			$this->scrape_model->insert_page_stats($page_id, $info["tweets_created"], $info["tweets_fetched"]);
 		}
 	}
 }

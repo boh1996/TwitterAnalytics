@@ -29,11 +29,12 @@ class Cleanup extends CI_Controller {
 		$maxtime = $data["setting_max_lifetime"]->value;
 
 		$databases = array(
-			"errros",
+			"errors",
 			"scraper_runs",
 			"history",
-			"scraper_statistics",
+			"scrape_statistics",
 			"statistic_tweets",
+			"statistic_tweet_strings"
 		);
 
 		$this->load->model("cleanup_model");

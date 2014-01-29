@@ -25,8 +25,12 @@
 		</div>
 
 		<?= $this->user_control->LoadTemplate("nav_bar_view"); ?>
-		<div class="container" style="padding:0px 10px 0px 10px; width:100%; display:inline-block;">
+		<div class="container">
+			<div class="col-sm-12">
+				<div id="chart">
 
+				</div>
+			</div>
 		</div>
 
 		<script src="<?= $asset_url; ?>jquery.min.js"></script>
@@ -34,9 +38,8 @@
 		<script src="<?= $asset_url; ?>js/bootstrap-select.min.js"></script>
 		<script src="<?= $asset_url; ?>js/nav.js"></script>
 		<script src="<?= $asset_url; ?>js/underscore-min.js"></script>
-		<script src="<?= $asset_url; ?>js/moment-with-langs.min.js"></script>
-		<script src="<?= $asset_url; ?>js/daterangepicker.js"></script>
-		<script src="<?= $asset_url; ?>js/jquery.floatThead.min.js"></script>
-		<script src="<?= $asset_url; ?>js/analytics.js"></script>
+		<script src="<?= $asset_url; ?>js/highcharts.js"></script>
+		<script src="<?= $asset_url; ?>js/functions.js"></script>
+		<script src="<?= $asset_url; ?>js/viewer.js"></script>
 	</body>
 </html>

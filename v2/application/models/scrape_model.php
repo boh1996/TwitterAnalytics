@@ -124,5 +124,22 @@ class Scrape_model extends Base_model {
 			"created_at" => time()
 		));
 	}
+
+	/**
+	 *    Creates a record in the page_stats table for the page scraping
+	 *
+	 *    @param integer $page_id        The scraped page
+	 *    @param integer $tweets_created Number of tweets created
+	 *    @param integer $tweets_fetched Number of tweets fetched from twitter
+	 *
+	 */
+	public function insert_page_stats ( $page_id, $tweets_created, $tweets_fetched ) {
+		$this->db->insert("page_stats", array(
+			"page_id" => $page_id,
+			"tweets_created" => $tweets_created,
+			"tweets_fetched" => $tweets_fetched,
+			"created_at" => time()
+		));
+	}
 }
 ?>

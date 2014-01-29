@@ -56,17 +56,39 @@ class Tweet_model extends Base_model {
 	 *
 	 *    @param integer $tweet_id  The tweet database id
 	 *    @param integer $string_id The string database id
+	 *    @param integer $category The string category
 	 *
 	 */
-	public function insert_tweet_string ( $tweet_id, $string_id ) {
+	public function insert_tweet_string ( $tweet_id, $string_id, $category ) {
 		if ( ! $this->exists("statistic_tweet_strings", array("tweet_id" => $tweet_id, "statistic_tweet_string_id" => $string_id)) ) {
 			$this->db->insert("statistic_tweet_strings", array(
 				"created_at" => time(),
 				"updated_at" => time(),
 				"tweet_id" => $tweet_id,
-				"statistic_tweet_string_id" => $string_id
+				"statistic_tweet_string_id" => $string_id,
+				"category" => $category
 			));
 		}
+	}
+
+	/**
+	 *    Links a row, to a page
+	 *
+	 *    @param integer $tweet_id The Twitter Tweet id
+	 *    @param integer $page_id  The page id
+	 *
+	 */
+	public function link_page_and_tweet ( $tweet_id, $page_id ) {
+		$row = $this->select("statistic_tweets", array(
+			"tweet_id" => $tweet_id
+		));
+
+		if ( $row === false ) return false;
+
+		$this->db->insert("page_tweets", array(
+			"tweet_id" => $row->id,
+			"page_id" => $page_id
+		));
 	}
 
 	/**
@@ -99,9 +121,10 @@ class Tweet_model extends Base_model {
 		foreach ( $strings as $string ) {
 			$value = $string[0];
 			$id = $string[1];
+			$category = $string[2];
 
 			if ( strpos($tweet["text"], $value) !== false ) {
-				$this->insert_tweet_string($tweet["id"], $id);
+				$this->insert_tweet_string($tweet["id"], $id, $category);
 			}
 		}
 	}

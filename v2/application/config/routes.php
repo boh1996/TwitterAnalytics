@@ -75,6 +75,10 @@ $route["admin/interval/show"] = "api/api_intervals/show";
 $route["admin/interval/edit"] = "api/api_intervals/interval";
 $route["admin/intervals/edit"] = "api/api_intervals/intervals";
 
+$route["get/tweets/(:any)/(:any)"] = "api/api_viewer/stats/page/$1/interval/$2";
+
+$route["email/(:any)"] = "api/api_email/interval/interval/$1";
+
 $route["save/pages"] = "api/api_pages/save";
 
 $route["string/(:any)"] = "api/api_strings/string/id/$1";

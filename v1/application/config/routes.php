@@ -41,6 +41,9 @@
 $route['default_controller'] = "user";
 $route['404_override'] = '';
 
+$route["setup"] = "setup/index";
+$route["setup/save"] = "setup/save";
+
 $route["sign_in"] = "login/sign_in_view";
 $route["sign_out"] = "login/sign_out";
 $route["admin/alerts"] = "admin/alerts_view";

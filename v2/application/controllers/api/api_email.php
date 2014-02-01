@@ -21,6 +21,10 @@ class API_Email extends T_API_Controller {
 		parent::__construct();
 	}
 
+	/**
+	 *    The input that triggers an interval alert text
+	 *
+	 */
 	public function interval_get () {
 		if ( ! $this->get("interval") ) {
 			return false;

@@ -39,7 +39,7 @@ $config["settings"] = array(
             "help_text"             => "setting_email_sender_help"
         ),
         "setting_email_subject" => array(
-        	"value"                 => "{{page}} has changed {{change_value}}%",
+        	"value"                 => "{{page_name}} has changed {{change_value}}%",
             "key"                   => "setting_email_subject",
             "section"               => "email",
             "type"                  => "textarea",
@@ -48,7 +48,7 @@ $config["settings"] = array(
             "help_text"             => "setting_email_subject_help"
         ),
         "setting_email_message" => array(
-        	"value"                 => "There has been a change to {{page}}, at {{page_url}}, with {{tweet_count}} and a change of {{change_value}}%",
+        	"value"                 => "There has been a change to {{page_name}}, at {{page_url}}, with {{tweet_count}} and a change of {{change_value}}%",
             "key"                   => "setting_email_message",
             "section"               => "email",
             "type"                  => "textarea",
@@ -57,7 +57,7 @@ $config["settings"] = array(
             "help_text"             => "setting_email_message_help"
         ),
         "setting_email_alt_message" => array(
-        	"value"                 => "There has been a change to {{page}} with {{tweet_count}} and a change of {{change_value}}%",
+        	"value"                 => "There has been a change to {{page_name}} with {{tweet_count}} and a change of {{change_value}}%",
             "key"                   => "setting_email_alt_message",
             "section"               => "email",
             "type"                  => "textarea",

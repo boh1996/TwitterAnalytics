@@ -149,30 +149,104 @@ class Email_model extends Base_model {
 		return $this->email->send_debugger();
 	}
 
+	/**
+	 *    Returns if the selected types notifications are turend on
+	 *
+	 *    @param string $type "increase" or "decrease"
+	 *
+	 *    @return boolean
+	 */
+	public function mail_type_on ( $type ) {
+		$this->load->model("settings_model");
+
+		if ( $type == "increase" ) {
+			return $this->settings_model->fetch_setting("setting_email_increase_alert", true, "email");
+		} else {
+			return $this->settings_model->fetch_setting("setting_email_decrease_alert", true, "email");
+		}
+	}
+
+	/**
+	 *    Fetches the calculated data and decides if a mail should be send,
+	 *    and calls the function that sends the mail
+	 *
+	 *    @param integer $interval The time between the newest and the next one
+	 *    @param integer $page_id  The page to search tweets for
+	 *
+	 *    @return boolean
+	 */
 	public function process ( $interval, $page_id ) {
 		$this->load->model("statistic_model");
+		$this->load->model("page_model");
+		$this->load->model("settings_model");
 		$calculations = $this->statistic_model->tweets_in_ranges_sum($this->statistic_model->create_time_ranges($interval, 2, time(), array(
 			"newest",
 			"second"
 		)), $page_id);
+		$page_id = (int)$page_id;
 		$difference = $calculations["newest"] - $calculations["second"];
 		$percent_change = ($difference / $calculations["second"]) * 100;
+		$page = $this->page_model->get_statistic_page($page_id);
+		$min_change = $page->email_change_value;
 
-		$type = "negative";
+		$type = "decrease";
+
+		$settings = array(
+			"change_value" => $percent_change,
+			"time" => time(),
+			"tweet_count_now" => $calculations["newest"],
+			"tweet_count_last" => $calculations["second"],
+			"page_name" => $page->name,
+			"page_url" => $this->config->item("base_url") . "page/" . $page->id
+		);
 
 		if ( $percent_change > 0 ) {
-			$type = "possitve";
+			$type = "increase";
 		}
 
-		echo $type;
+		if ( $percent_change == 0 ) {
+			return false;
+		}
 
-		/*if ( $calculations["second"] == 0 ) {
-
+		if ( $calculations["second"] == 0 ) {
+			if ( abs($percent_change) >= $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 200, "email") and $this->mail_type_on($type) ) {
+				$this->create_message($settings, $type);
+			}
 		} else {
+			if ( abs($percent_change) > $min_change and $this->mail_type_on($type) ) {
+				$this->create_message($settings, $type);
+			}
+		}
+	}
 
-		}*/
+	/**
+	 *    Creates the message text parts
+	 *
+	 *    @param array $settings The mustache variables
+	 *    @param string $type     The message type
+	 *
+	 */
+	public function create_message ( $settings, $type ) {
+		$this->load->file("application/libraries/mustache.php");
 
-		// If last is 0, then change need to be {{zero_min_change_amount}} % + to trigger
+		$message = $this->settings_model->fetch_setting("setting_email_message", "", "email");
+		$alt_message = $this->settings_model->fetch_setting("setting_email_alt_message", "", "email");
+		$subject = $this->settings_model->fetch_setting("setting_email_subject", "", "email");
+
+		$mustache = new Mustache;
+
+		$variables = $this->variables($settings);
+
+		$parts = array(
+			"message" => $mustache->render($message, $variables),
+			"alt_message" => $mustache->render($alt_message, $variables),
+			"subject" => $mustache->render($subject, $variables),
+			"type" => $type
+		);
+
+		print_r($parts);
+
+		$this->send_email($parts);
 	}
 }
 ?>

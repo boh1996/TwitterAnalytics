@@ -57,6 +57,8 @@ $route["admin/pages"] = "admin/pages_view";
 $route["admin/template/pages"] = "admin/pages_template_view";
 $route["admin/intervals"] = "admin/intervals_view";
 
+$route["page/(:any)"] = "page/get_page/id/$1";
+
 #### API #####
 $route["scrape/pages"] = "api/api_scraper/pages";
 

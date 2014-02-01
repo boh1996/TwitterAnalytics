@@ -113,6 +113,24 @@ class Page_model extends Base_model {
 	}
 
 	/**
+	 *    Returns the pages email change value
+	 *
+	 *    @param integer $page_id The page to fetch the value for
+	 *
+	 *    @return string
+	 */
+	public function get_email_change_value ( $page_id ) {
+		$this->db->select("email_change_value");
+		$this->db->from("statistic_pages");
+		$this->db->where(array(
+			"id" => $page_id
+		));
+		$query = $this->get();
+
+		return $query->row()->email_change_value;
+	}
+
+	/**
 	 *    Saves a list of pages
 	 *
 	 *    @param array $pages The list of pages

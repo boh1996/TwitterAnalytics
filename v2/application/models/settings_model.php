@@ -251,7 +251,7 @@ class Settings_model extends Base_model {
 			}
 		}
 
-		usort($list, function($a, $b)
+		uasort($list, function($a, $b)
 		{
 		    return ( $a->value > $b->value ) ? true : false;
 		});

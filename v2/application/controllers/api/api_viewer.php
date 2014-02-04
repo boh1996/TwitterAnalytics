@@ -49,13 +49,46 @@ class API_Viewer extends T_API_Controller {
 			),403);
 		}
 
-		$tweets = $this->statistic_model->tweets_ranges($this->statistic_model->create_time_ranges($this->get("interval"), $this->settings_model->fetch_setting("setting_number_of_columns", 10, "viewer"), time()), $page->id);
+		$this->load->model("settings_model");
+
+		$intervals = $this->settings_model->get_intervals(true);
+
+		if ( $intervals === false ) {
+			$this->response(array(
+				"status" => false,
+			),400);
+		}
+
+		if ( ! isset($intervals[$this->get("interval")]) ) {
+			$this->response(array(
+				"status" => false,
+			),400);
+		}
+
+		$interval = $intervals[$this->get("interval")];
+
+		if ( $interval === false ) {
+			$this->response(array(
+				"status" => false,
+			),400);
+		}
+
+		if ( $interval->login == "login" && $this->user_control->is_signed_in() === false ) {
+			$this->response(array(
+				"status" => false,
+				"login_redirect" => true
+			),403);
+		}
+
+		$tweets = $this->statistic_model->tweets_ranges($this->statistic_model->create_time_ranges($interval->value, $this->settings_model->fetch_setting("setting_number_of_columns", 10, "viewer"), time()), $page->id, $categories, $avg);
 
 		$response = $tweets;
 
 		$this->response(array(
 			"status" => true,
-			"tweets" => $tweets
+			"tweets" => $tweets,
+			"categories" => $categories,
+			"avg" => $avg
 		),200);
 	}
 }

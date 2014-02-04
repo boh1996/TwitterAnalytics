@@ -29,52 +29,50 @@
 		</div>
 
 		<?= $this->user_control->LoadTemplate("nav_bar_view"); ?>
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="well">
-						<h1 class="text-center"><?= $page->name; ?></h1>
+		<div class="row">
+			<div class="col-sm-10 col-sm-offset-1">
+				<div class="well" style="min-height:80px;">
+					<div class="col-sm-offset-1 col-sm-3">
+						<form class="form-inline" role="form">
+							<div class="form-group">
+								<label for="intervals"><?= $this->lang->line("user_interval"); ?></label>
+								<select class="selectpicker" id="intervals">
+									<?php foreach ( $intervals as $key => $object ): ?>
+										<option value="<?= $object->value; ?>" data-key="<?= $object->key; ?>"><?= $object->name; ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+						</form>
+					</div>
+
+					<div class="col-sm-2">
+						<p><b><?= $this->lang->line("user_average"); ?></b> <span id="avg"></span></p>
+					</div>
+
+					<div class="col-sm-1 col-sm-offset-5">
+						<button class="btn btn-default" id="refresh"><?= $this->lang->line("user_refresh"); ?></button>
 					</div>
 				</div>
 			</div>
-
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="well">
-						<div class="col-sm-offset-1">
-							<form class="form-inline" role="form">
-								<div class="form-group">
-									<label for="intervals"><?= $this->lang->line("user_interval"); ?></label>
-									<select class="selectpicker" id="intervals">
-										<?php foreach ( $intervals as $key => $object ): ?>
-											<option value="<?= $object->value; ?>" data-key="<?= $object->key; ?>"><?= $object->name; ?></option>
-										<?php endforeach; ?>
-									</select>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-sm-12">
-					<div id="chart">
-
-					</div>
-				</div>
-			</div>
-
-			<?php if ( $page->embed !== "" ): ?>
-				<div class="row">
-					<div class="col-sm-12">
-						<div class="well">
-							<?= $page->embed; ?>
-						</div>
-					</div>
-				</div>
-			<?php endif; ?>
 		</div>
+
+		<div class="row">
+			<div class="col-sm-10 col-sm-offset-1">
+				<div id="chart" class="bs-example">
+
+				</div>
+			</div>
+		</div>
+
+		<?php if ( $page->embed !== "" ): ?>
+			<div class="row">
+				<div class="col-sm-10 col-sm-offset-1">
+					<div class="well">
+						<?= $page->embed; ?>
+					</div>
+				</div>
+			</div>
+		<?php endif; ?>
 
 		<script src="<?= $asset_url; ?>jquery.min.js"></script>
 		<script src="<?= $asset_url; ?>bootstrap/js/bootstrap.min.js"></script>

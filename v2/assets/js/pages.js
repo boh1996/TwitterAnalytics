@@ -99,7 +99,7 @@ $(document).on("click", ".remove-string", function ( event ) {
 		$(this).closest(".string-object").remove();
 
 		if ( form.find(".add-string").length == 0 ) {
-			form.append(returnStringElement(null, form));
+			form.append(returnStringElement(null, form, form.attr("data-category-id")));
 		}
 		return;
 	}
@@ -120,7 +120,7 @@ $(document).on("click", ".remove-string", function ( event ) {
 
 
 	if ( form.find(".add-string").length == 0 ) {
-		form.append(returnStringElement(null, form));
+		form.append(returnStringElement(null, form, form.attr("data-category-id")));
 	}
 } );
 
@@ -138,16 +138,16 @@ $(document).on("keyup", ".create-string", function ( event ) {
 		form.find(".add-string").attr("placeholder", translations.admin_page_string);
 		form.find(".add-string").closest(".string-object").find("label").html(translations.admin_page_string);
 		form.find(".add-string").removeClass("add-string");
-		form.append(returnStringElement(null, form));
+		form.append(returnStringElement(null, form, form.attr("data-category-id")));
 	}
 } );
 
-function returnStringElement ( after, form ) {
+function returnStringElement ( after, form, category ) {
 	return '<div class="form-group string-object" style="min-width:600px;">' +
 				'<label class="col-sm-2 control-label">' + translations.admin_add_string + '</label>' +
 				'<div class="col-sm-10">' +
 					'<div class="input-group">' +
-						'<input type="text" class="form-control create-string add-string" placeholder="' + translations.admin_add_string + '" >' +
+						'<input type="text" data-category-id="' + category + '" class="form-control create-string add-string" placeholder="' + translations.admin_add_string + '" >' +
 						'<span class="input-group-btn">' +
 							'<button class="btn btn-lg btn-danger button-addon remove-string" type="button">' + translations.admin_remove_item + '</button>' +
 						'</span>' +

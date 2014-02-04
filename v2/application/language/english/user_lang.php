@@ -12,4 +12,9 @@ $lang["user_refresh"] = "Refresh";
 $lang["user_connected_words"] = "Connected words[Count]";
 $lang["user_no_connected_words"] = "No connected words";
 $lang["user_interval"] = "Interval:";
+$lang["user_tweets_per_interval"] = "Tweets per interval";
+$lang["user_intervals_right_to_left"] = "Intervals, right is largest";
+$lang["user_category"] = "<b>Category</b>";
+$lang["user_count"] = "<b>Count</b>";
+$lang["user_average"] = "Average tweets per interval:";
 ?>

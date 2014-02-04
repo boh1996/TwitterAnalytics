@@ -45,5 +45,22 @@ class Interval_model extends Base_model {
 			"key" => $key
 		));
 	}
+
+	/**
+	 *    Fetches an interval item
+	 *
+	 *    @param string $key The interval to fetch
+	 *
+	 *    @return onject
+	 */
+	public function fetch ( $key ) {
+		$query = $this->db->from("statistic_view_intervals")->where(array(
+			"key" => $key
+		))->get();
+
+		if ( ! $query->num_rows() ) return false;
+
+		return $query->row();
+	}
 }
 ?>

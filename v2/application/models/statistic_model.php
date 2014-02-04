@@ -55,11 +55,15 @@ class Statistic_model extends Base_model {
 	 *
 	 *    @param array<int => arrayy(min, max)> $ranges A list of ranges
 	 *    @param integer $page_id An optional page id
+	 *    @param array &$labels A container for the category labels
+	 *    @param integer &$avg The avarage tweet count
 	 *
 	 *    @return array<Object>
 	 */
-	public function tweets_ranges ( $ranges, $page_id = null ) {
+	public function tweets_ranges ( $ranges, $page_id = null, &$labels, &$avg ) {
 		$list = array();
+
+		$sum = 0;
 
 		foreach ( $ranges as $index => $value ) {
 			$min = $value[0];
@@ -103,6 +107,10 @@ class Statistic_model extends Base_model {
 			$this->load->model("settings_model");
 
 			$largest = 0;
+			$row->min = gmdate("d-m\TH:i", $min);
+			$row->max = gmdate("d-m-\TH:i", $max);
+
+			$labels[] = $row->min . " - " . $row->max;
 			$row->color = $this->settings_model->fetch_setting("setting_default_zero_color", "#D1E0E0" , "viewer");
 			$row->category = "NONE";
 
@@ -111,7 +119,7 @@ class Statistic_model extends Base_model {
 				if ( is_array($value) && count($value) > 1 ) {
 					$count = $value[1];
 					$cat = $value[0];
-					$row->categories[$cat] = $count;
+					$row->categories[] = array("count" => $count, "name" => $cat);
 
 					if ( $count > $largest ) {
 						$largest = $count;
@@ -121,8 +129,26 @@ class Statistic_model extends Base_model {
 				}
 			}
 
-			$list[] = $row;
+			$list[$min] = $row;
+			$sum = $sum + $row->tweet_count;
 		}
+		sort($list);
+
+		$last = null;
+		$last_key = null;
+
+		foreach ( $list as $key => $object ) {
+			if ( ! is_null($last) ) {
+				if ( $last != 0 && $object->tweet_count != 0 ) {
+					$list[$last_key]->change_next = floor(( ( $last - $object->tweet_count ) / ( ( $last + $object->tweet_count ) / 2 ) ) * 100);
+				}
+			}
+
+			$last = $object->tweet_count;
+			$last_key = $key;
+		}
+
+		$avg = $sum / count($list);
 
 		return $list;
 	}

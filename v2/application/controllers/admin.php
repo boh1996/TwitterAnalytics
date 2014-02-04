@@ -149,6 +149,23 @@ class Admin extends CI_Controller {
 		)));
 	}
 
+	public function email_view () {
+		if ( ! $this->user_control->check_security("admin_email") ) {
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
+		}
+
+		$this->lang->load("common");
+		$this->lang->load("admin");
+		$this->load->model("settings_model");
+
+		$this->load->view("admin_email_view", $this->user_control->ControllerInfo(array(
+			"current_section" => "admin",
+			"translations" => json_encode($this->lang->export()),
+			"settings" => $this->settings_model->check_defaults("email",$this->settings_model->get_settings("email")),
+		)));
+	}
+
 	/**
 	 * Shows the access control management page
 	 */

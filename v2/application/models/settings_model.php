@@ -195,7 +195,7 @@ class Settings_model extends Base_model {
 	 *
 	 *    @return array
 	 */
-	public function get_intervals () {
+	public function get_intervals ( $removeInactive = false ) {
 		$this->load->helper("array_data");
 		$this->load->config("defaults");
 		$intervals = $this->config->item("intervals");
@@ -240,6 +240,14 @@ class Settings_model extends Base_model {
 				$array["name"] = $this->lang->line($array["language_key"]);
 				$array["default"] = true;
 				$list[$array["key"]] = (object) $array;
+			}
+		}
+
+		if ( $removeInactive ) {
+			foreach ($list as $key => $object ) {
+				if ( $object->status == false || $object->status == 0 ) {
+					unset($list[$key]);
+				}
 			}
 		}
 

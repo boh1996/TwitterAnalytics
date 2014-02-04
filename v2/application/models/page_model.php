@@ -45,7 +45,7 @@ class Page_model extends Base_model {
 	 *    @return Object The database row
 	 */
 	public function get_statistic_page ( $value ) {
-		if ( is_integer($value) ) {
+		if ( is_numeric($value) ) {
 			$key = "id";
 		} else {
 			$key = "name";

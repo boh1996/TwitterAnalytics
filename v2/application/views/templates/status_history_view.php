@@ -6,7 +6,6 @@
 				<th><?= $this->lang->line("admin_error_created_time"); ?></th>
 				<th><?= $this->lang->line("admin_tweets_created"); ?></th>
 				<th><?= $this->lang->line("admin_tweets_fetched"); ?></th>
-				<th><?= $this->lang->line("admin_tweets_blocked"); ?></th>
 				<th><?= $this->lang->line("admin_item_count"); ?></th>
 				<th><?= $this->lang->line("admin_scaper"); ?></th>
 			</thead>
@@ -19,7 +18,6 @@
 					<td><i><time datetime="<?= strftime( "%Y-%m-%dT%H:%M:%SZ" , $item->created_at) ?>"><?= strftime( "%d / %m / %Y - %H:%M:%S" , $item->created_at) ?></time></i></td>
 					<td><?= $item->tweets_created; ?></td>
 					<td><?= $item->tweets_fetched; ?></td>
-					<td><?= $item->tweets_blocked; ?></td>
 					<td><?= $item->item_count; ?></td>
 					<td><?= $item->scraper; ?></td>
 				</tr>
@@ -30,7 +28,6 @@
 				<th><?= $this->lang->line("admin_error_created_time"); ?></th>
 				<th><?= $this->lang->line("admin_tweets_created"); ?></th>
 				<th><?= $this->lang->line("admin_tweets_fetched"); ?></th>
-				<th><?= $this->lang->line("admin_tweets_blocked"); ?></th>
 				<th><?= $this->lang->line("admin_item_count"); ?></th>
 				<th><?= $this->lang->line("admin_scaper"); ?></th>
 			</tfoot>

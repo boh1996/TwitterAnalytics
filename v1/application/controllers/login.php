@@ -35,10 +35,8 @@ class Login extends CI_Controller {
 	 * Signs the user out
 	 */
 	public function sign_out () {
-		$token = $_SESSION["data"]["token"];
-		session_unset();
-		session_destroy();
-		session_start();
+		$token = $this->session->userdata('token');;
+		$this->session->sess_destroy();
 		$this->load->model("token_model");
 		$this->token_model->remove_token($token);
 

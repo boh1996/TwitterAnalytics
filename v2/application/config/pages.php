@@ -60,5 +60,15 @@ $config["pages"] = array(
 		"type"					=> "page",
 		"header_language_key"	=> ""
 	),
+	"admin_email"	=> array(
+		"page"					=> "admin_email",
+		"mode" 					=> "login",
+		"language_key" 			=> "admin_email",
+		"section"				=> "admin",
+		"admin_language_key" 	=> "admin_page_email",
+		"url"					=> "admin/email",
+		"type"					=> "page",
+		"header_language_key"	=> ""
+	)
 );
 ?>

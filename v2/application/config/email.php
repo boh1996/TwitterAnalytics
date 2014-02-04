@@ -1,5 +1,5 @@
 <?php
-$config["useragent"] = "CodeIgniter";
+/*$config["useragent"] = "CodeIgniter";
 $config["protocol"] = "mail";
 $config["mailpath"] = "/usr/sbin/sendmail";
 $config["smtp_host"] = NULL;
@@ -17,5 +17,5 @@ $config["priority"] = 5; // Email priority, 1 -5
 $config["crlf"] = "\n";
 $config["newline"] = "\n";
 $config["bcc_batch_mode"] = False;
-$config["bcc_batch_size"] = 200;
+$config["bcc_batch_size"] = 200;*/
 ?>

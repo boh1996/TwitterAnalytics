@@ -56,7 +56,7 @@ $config["settings"] = array(
             "placeholder"       	=> "admin_email_message_placeholder",
             "help_text"             => "setting_email_message_help"
         ),
-        "setting_email_alt_message" => array(
+        /*"setting_email_alt_message" => array(
         	"value"                 => "There has been a change to {{page_name}} with {{tweet_count}} and a change of {{change_value}}%",
             "key"                   => "setting_email_alt_message",
             "section"               => "email",
@@ -64,7 +64,7 @@ $config["settings"] = array(
             "language_key"         	=> "admin_email_alt_message",
             "placeholder"       	=> "admin_email_alt_message_placeholder",
             "help_text"             => "setting_email_alt_message_help"
-        ),
+        ),*/
         "setting_email_zero_minimum_change_amount" => array(
             "value"                 => 200,
             "key"                   => "setting_email_zero_minimum_change_amount",

@@ -57,7 +57,8 @@ function refresh ( url ) {
 }
 
 $(document).ready( function () {
-	refresh("get/tweets/1/400000");
+	refresh("get/tweets/" + page + "/400000");
+	 $('.selectpicker').selectpicker();
 } );
 
 function componentToHex(c) {

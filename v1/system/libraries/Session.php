@@ -137,6 +137,7 @@ class CI_Session {
 		// Fetch the cookie
 		$session = $this->CI->input->cookie($this->sess_cookie_name);
 
+
 		// No cookie?  Goodbye cruel world!...
 		if ($session === FALSE)
 		{
@@ -164,8 +165,10 @@ class CI_Session {
 			}
 		}
 
+
 		// Unserialize the session array
 		$session = $this->_unserialize($session);
+
 
 		// Is the session data we unserialized an array with the correct format?
 		if ( ! is_array($session) OR ! isset($session['session_id']) OR ! isset($session['ip_address']) OR ! isset($session['user_agent']) OR ! isset($session['last_activity']))
@@ -724,7 +727,7 @@ class CI_Session {
 	 */
 	function _unserialize($data)
 	{
-		$data = @unserialize(strip_slashes($data));
+		$data = unserialize(stripslashes($data));
 
 		if (is_array($data))
 		{

@@ -42,48 +42,6 @@ class Email_model extends Base_model {
 	}
 
 	/**
-	 *    Returns a list of the BCC emails
-	 *
-	 *    @param string $type Message type, "increase" or "decline"
-	 *
-	 *    @return array<String>
-	 */
-	public function get_bccs ( $type = "increase" ) {
-		$query = $this->db->get("email_bccs");
-
-		if ( ! $query->num_rows() ) return false;
-
-		$list = array();
-
-		foreach ( $query->result() as $row ) {
-			$list[] = $row->value;
-		}
-
-		return $list;
-	}
-
-	/**
-	 *    Returns a list of the CC emails
-	 *
-	 *    @param string $type Message type, "increase" or "decline"
-	 *
-	 *    @return array<String>
-	 */
-	public function get_ccs ( $type = "increase" ) {
-		$query = $this->db->get("email_ccs");
-
-		if ( ! $query->num_rows() ) return false;
-
-		$list = array();
-
-		foreach ( $query->result() as $row ) {
-			$list[] = $row->value;
-		}
-
-		return $list;
-	}
-
-	/**
 	 *    Merges the custom variables with the default variables
 	 *
 	 *    @param array $custom A list of custom variables
@@ -114,39 +72,9 @@ class Email_model extends Base_model {
 
 		if ( $recievers === false ) return false;
 
-		$this->email->from($recievers);
+		$this->load->helper('email');
 
-		$bccs = $this->get_bccs($settings["type"]);
-
-		if ( $bccs !== false ) {
-			$this->email->bcc($bccs);
-		}
-
-		$ccs = $this->get_ccs($settings["type"]);
-
-		if ( $ccs !== false ) {
-			$this->email->cc($settings["type"]);
-		}
-
-		$this->email->subject($settings["subject"]);
-
-		$this->email->message($settings["message"]);
-
-		$this->email->set_alt_message($settings["alt_message"]);
-
-		if ( isset($settings["attachments"]) ) {
-			if ( is_array($settings["attachment"]) ) {
-				foreach ( $settings["attachment"] as $attachment ) {
-					$this->email->attach($attachment);
-				}
-			} else {
-				$this->email->attach($settings["attachments"]);
-			}
-		}
-
-		$this->email->send();
-
-		return $this->email->send_debugger();
+		mail(implode(",", $recievers), $settings["subject"], wordwrap($settings["message"], 70, "\r\n"), "From: " . $settings["sender_email"]);
 	}
 
 	/**
@@ -185,6 +113,11 @@ class Email_model extends Base_model {
 		)), $page_id);
 		$page_id = (int)$page_id;
 		$difference = $calculations["newest"] - $calculations["second"];
+
+		if ( $difference == 0 or $calculations["second"] == 0 ) {
+			return false;
+		}
+
 		$percent_change = ($difference / $calculations["second"]) * 100;
 		$page = $this->page_model->get_statistic_page($page_id);
 		$min_change = $page->email_change_value;
@@ -235,7 +168,7 @@ class Email_model extends Base_model {
 
 		$mustache = new Mustache;
 
-		$variables = $this->variables($settings);
+		$variables = $this->variables(array_merge($settings));
 
 		$parts = array(
 			"message" => $mustache->render($message, $variables),
@@ -244,7 +177,7 @@ class Email_model extends Base_model {
 			"type" => $type
 		);
 
-		print_r($parts);
+		$parts = $this->variables($parts);
 
 		$this->send_email($parts);
 	}

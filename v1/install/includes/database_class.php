@@ -34,6 +34,8 @@ class Database {
 		// Open the default SQL file
 		$query = file_get_contents('assets/install.sql');
 
+		$query = str_replace("%%DATABASE_NAME%%", $data["database"], $query);
+
 		// Execute a multi query
 		$mysqli->multi_query($query);
 

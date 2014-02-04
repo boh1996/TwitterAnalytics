@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 5.5.15, for Win32 (x86)
 --
--- Host: 127.0.0.1    Database: twitter_analytics
+-- Host: 127.0.0.1    Database: %%DATABASE_NAME%%
 -- ------------------------------------------------------
--- Server version	5.5.16
+-- Server version 5.5.16
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,12 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `twitter_analytics`
+-- Current Database: `%%DATABASE_NAME%%`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `twitter_analytics` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `%%DATABASE_NAME%%` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
-USE `twitter_analytics`;
+USE `%%DATABASE_NAME%%`;
 
 --
 -- Table structure for table `access_control`
@@ -128,6 +128,33 @@ CREATE TABLE `blocked_strings` (
 LOCK TABLES `blocked_strings` WRITE;
 /*!40000 ALTER TABLE `blocked_strings` DISABLE KEYS */;
 /*!40000 ALTER TABLE `blocked_strings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ci_sessions`
+--
+
+DROP TABLE IF EXISTS `ci_sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ci_sessions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip_address` text,
+  `session_id` varchar(255) DEFAULT NULL,
+  `user_agent` text,
+  `last_activity` text,
+  `user_data` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ci_sessions`
+--
+
+LOCK TABLES `ci_sessions` WRITE;
+/*!40000 ALTER TABLE `ci_sessions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ci_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -704,4 +731,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-01  0:22:22
+-- Dump completed on 2014-02-03 19:54:36

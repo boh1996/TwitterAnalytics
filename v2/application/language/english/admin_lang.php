@@ -171,4 +171,17 @@ $lang["setting_increase_alert_help"] = "Send an email alert, if there has been a
 $lang["setting_email_decrease_alert"] = "Alert on decrease";
 $lang["admin_email_decrease_alert_placeholder"] = "Email alert on decrease";
 $lang["setting_increase_alert_help"] = "Send an email if the number of tweets has decreased";
+$lang["admin_email"] = "Email";
+$lang["admin_page_email"] = "Email";
+$lang["settings_email"] = "Email settings";
+$lang["email_Settings_description"] = "Settings related to the email alert system";
+$lang["settings_variables_description"] = "These are the usable variables for the different templates:<br>
+<b>{{page_name}}</b> : The name of the current page<br>
+<b>{{change_value}}</b> : The difference value<br>
+<b>{{sender_email}}</b> : The sender of the email<br>
+<b>{{base_url}}</b> : The URL the site are hosted on<br>
+<b>{{page_url}}</b> : The URL for the page that launched the alert<br>
+<b>{{time}}</b> : The current time<br>
+<b>{{asset_url}}</b> : The URL for the site asset directory<br>
+";
 ?>

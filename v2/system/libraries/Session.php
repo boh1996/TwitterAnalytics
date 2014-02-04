@@ -724,7 +724,7 @@ class CI_Session {
 	 */
 	function _unserialize($data)
 	{
-		$data = @unserialize(strip_slashes($data));
+		$data = unserialize(stripslashes($data));
 
 		if (is_array($data))
 		{

@@ -37,7 +37,7 @@ class API_Login extends T_API_Controller {
 	 * Removes the session data and token
 	 */
 	public function logout_get () {
-		$token = $_SESSION["data"]["token"];
+		$token = $this->session->userdata('token');;
 		$this->load->model("token_model");
 		$this->token_model->remove_token($token);
 
@@ -149,12 +149,12 @@ class API_Login extends T_API_Controller {
 		$this->token_model->create_token($user->id, $token);
 
 		// Change the session data
-		$_SESSION["signed_in"] = true;
-		$_SESSION["data"] = array(
+		$this->session->set_userdata(array(
 			"token" => $token,
 			"user_id" => $user->id,
-			"signed_in_at" => time()
-		);
+			"signed_in_at" => time(),
+			"signed_in" => true
+		));
 
 		$this->response(array(
 			"status" => true,

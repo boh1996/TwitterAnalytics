@@ -48,6 +48,7 @@ $route["admin/access/control"] = "admin/access_control_view";
 $route["admin"] = "admin/status_view";
 $route["admin/status"] = "admin/status_view";
 $route["admin/settings"] = "admin/settings_view";
+$route["admin/email"] = "admin/email_view";
 
 $route["admin/history"] = "admin/history_view";
 $route["admin/scrapers"] = "admin/scrapers_view";
@@ -57,7 +58,11 @@ $route["admin/pages"] = "admin/pages_view";
 $route["admin/template/pages"] = "admin/pages_template_view";
 $route["admin/intervals"] = "admin/intervals_view";
 
-$route["page/(:any)"] = "page/get_page/id/$1";
+if ( ! isset($_GET["token"]) ) {
+	$route["page/(:any)"] = "page/get_page/$1";
+} else {
+	$route["page/(:any)"] = "api/api_pages/page/id/$1";
+}
 
 #### API #####
 $route["scrape/pages"] = "api/api_scraper/pages";
@@ -85,7 +90,6 @@ $route["save/pages"] = "api/api_pages/save";
 
 $route["string/(:any)"] = "api/api_strings/string/id/$1";
 $route["url/(:any)"] = "api/api_urls/url/id/$1";
-$route["page/(:any)"] = "api/api_pages/page/id/$1";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

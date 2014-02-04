@@ -13,7 +13,7 @@
 				<div class="input-group">
 					<input data-id="<?= $object->id; ?>" data-value="<?= $object->value ?>" type="text" class="form-control list-input" value="<?= $object->value ?>">
 					<span class="input-group-btn">
-							<button class="btn btn-lg btn-danger button-addon remove-input" type="button"><?= $this->lang->line("admin_remove_hidden_word"); ?></button>
+							<button class="btn btn-lg btn-danger button-addon remove-input" type="button"><?= $this->lang->line("admin_remove_string"); ?></button>
 						</span>
 				</div>
 			</div>
@@ -25,7 +25,7 @@
 			<div class="input-group">
 				<input type="text" class="form-control list-input" placeholder="<?= $this->lang->line("admin_hidden_word"); ?>">
 				<span class="input-group-btn">
-						<button class="btn btn-lg btn-danger button-addon remove-input" type="button"><?= $this->lang->line("admin_remove_hidden_word"); ?></button>
+						<button class="btn btn-lg btn-danger button-addon remove-input" type="button"><?= $this->lang->line("admin_remove_string"); ?></button>
 					</span>
 			</div>
 		</div>

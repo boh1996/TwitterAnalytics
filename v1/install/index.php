@@ -30,6 +30,7 @@ if($_POST) {
 
 		// If no errors, redirect to registration page
 		if(!isset($message)) {
+			sleep(2);
 		  $redir = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
       $redir .= "://".$_SERVER['HTTP_HOST'];
       $redir .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);

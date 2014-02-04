@@ -52,7 +52,6 @@ class User_Control{
 	public function __construct(){
 		$this->_CI =& get_instance();
 
-		session_start();
 		date_default_timezone_set("Europe/Copenhagen");
 
 		if ( isset($_GET["language"]) && array_key_exists($_GET["language"], $this->_CI->config->item("languages")) ) {
@@ -114,7 +113,7 @@ class User_Control{
 	 * @return boolean
 	 */
 	public function is_signed_in () {
-		if ( ! isset($_SESSION["signed_in"]) || ( isset($_SESSION["signed_in"]) && $_SESSION["signed_in"] == false ) ) {
+		if ( $this->_CI->session->userdata('signed_in') === false ) {
 			return false;
 		}
 

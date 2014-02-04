@@ -11,4 +11,5 @@ $lang["user_type_word"] = "Word";
 $lang["user_refresh"] = "Refresh";
 $lang["user_connected_words"] = "Connected words[Count]";
 $lang["user_no_connected_words"] = "No connected words";
+$lang["user_interval"] = "Interval:";
 ?>

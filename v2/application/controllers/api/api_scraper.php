@@ -61,7 +61,9 @@ class API_Scraper extends T_API_Controller {
 	 * @return string
 	 */
 	protected function _determine_page_type ( $url, &$data ) {
+		$url = trim($url);
 		$query_str = parse_url($url, PHP_URL_QUERY);
+		$page = false;
 		parse_str($query_str, $data);
 		if ( $url == "twitter.com" ) {
 			$page = "timeline";
@@ -72,9 +74,11 @@ class API_Scraper extends T_API_Controller {
 		} else  if ( strpos($url, "search?q=") !== false ) {
 			$page = "search";
 		} else {
-			preg_match("|https?://(www\.)?twitter\.com/(#!/)?@?(?P<name>[^/]*)|", $url, $matches);
-			$data["user"] = $matches["name"];
-			$page = "profile";
+			preg_match("|(https)?(://)?(www\.)?twitter\.com/(#!/)?@?(?P<name>[^/]*)|", $url, $matches);
+			if ( isset($matches["name"]) ) {
+				$data["user"] = $matches["name"];
+				$page = "profile";
+			}
 		}
 
 		return $page;
@@ -107,6 +111,10 @@ class API_Scraper extends T_API_Controller {
 
 		$type = $this->_determine_page_type($url->url, $data);
 
+		if ( $type == false ) {
+			return false;
+		}
+
 		// Fetch the tweets
 		try{
 			$local_tweets = $this->scraper->scrapeTweets(array(), $new_lastest_cursor, $url->latest_cursor, $type, $data, NULL, false, $this->tweet_model->maxTime() );
@@ -115,7 +123,7 @@ class API_Scraper extends T_API_Controller {
 		}
 
 		if ( ! isset($local_tweets) || ! is_array($local_tweets) ) {
-			$this->scrape_model->create_error("Scraping failed!", $url, $uuid, $item_type, $url->id );
+			$this->scrape_model->create_error("Scraping failed!", $url->url, $uuid, $item_type, $url->id );
 			$this->response(array(
 				"status" => false
 			), 500);
@@ -177,21 +185,25 @@ class API_Scraper extends T_API_Controller {
 		$pages = array();
 
 		foreach ( $urls as $url ) {
-			if ( ! isset($pages[$url->statistic_page_id]) ) {
-				$pages[$url->statistic_page_id] = array("urls" => array(), "tweets_created" => 0, "tweets_fetched" => 0);
-			}
+			if ( $url->url != "" ) {
+				if ( ! isset($pages[$url->statistic_page_id]) ) {
+					$pages[$url->statistic_page_id] = array("urls" => array(), "tweets_created" => 0, "tweets_fetched" => 0);
+				}
 
-			$pages[$url->statistic_page_id]["urls"][] = $url->url;
+				$pages[$url->statistic_page_id]["urls"][] = $url->url;
 
-			$local_tweets = $this->_scrape( "statistic_urls", $scraper, $item_type, $url, $uuid, $info );
+				$local_tweets = $this->_scrape( "statistic_urls", $scraper, $item_type, $url, $uuid, $info );
 
-			$pages[$url->statistic_page_id]["tweets_fetched"] = $pages[$url->statistic_page_id]["tweets_fetched"] + $info["tweets_fetched"];
-			$pages[$url->statistic_page_id]["tweets_created"] + $pages[$url->statistic_page_id]["tweets_created"] + $info["tweets_created"];
+				if ( $local_tweets !== false ) {
+					$pages[$url->statistic_page_id]["tweets_fetched"] = $pages[$url->statistic_page_id]["tweets_fetched"] + $info["tweets_fetched"];
+					$pages[$url->statistic_page_id]["tweets_created"] + $pages[$url->statistic_page_id]["tweets_created"] + $info["tweets_created"];
 
-			foreach ( $local_tweets as $tweet ) {
-				$this->tweet_model->search_for_strings($tweet, $strings[$url->statistic_page_id]->strings);
-				$this->tweet_model->link_page_and_tweet($tweet["tweet_id"], $url->statistic_page_id);
+					foreach ( $local_tweets as $tweet ) {
+						$this->tweet_model->search_for_strings($tweet, $strings[$url->statistic_page_id]->strings);
+						$this->tweet_model->link_page_and_tweet($tweet["tweet_id"], $url->statistic_page_id);
 
+					}
+				}
 			}
 		}
 

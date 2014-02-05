@@ -39,13 +39,15 @@ class API_Viewer extends T_API_Controller {
 		if ( $page === false ) {
 			$this->response(array(
 				"status" => false,
+				"error_string" => "no_page"
 			),400);
 		}
 
 		if ( $page->login == "true" && $this->user_control->is_signed_in() === false ) {
 			$this->response(array(
 				"status" => false,
-				"login_redirect" => true
+				"login_redirect" => true,
+				"error_string" => "login_required"
 			),403);
 		}
 
@@ -56,12 +58,14 @@ class API_Viewer extends T_API_Controller {
 		if ( $intervals === false ) {
 			$this->response(array(
 				"status" => false,
+				"error_string" => "wrong_interval"
 			),400);
 		}
 
 		if ( ! isset($intervals[$this->get("interval")]) ) {
 			$this->response(array(
 				"status" => false,
+				"error_string" => "no_interval"
 			),400);
 		}
 
@@ -70,13 +74,15 @@ class API_Viewer extends T_API_Controller {
 		if ( $interval === false ) {
 			$this->response(array(
 				"status" => false,
+				"error_string" => "wrong_interval"
 			),400);
 		}
 
 		if ( $interval->login == "login" && $this->user_control->is_signed_in() === false ) {
 			$this->response(array(
 				"status" => false,
-				"login_redirect" => true
+				"login_redirect" => true,
+				"error_string" => "login_required"
 			),403);
 		}
 

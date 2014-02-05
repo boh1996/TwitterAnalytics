@@ -204,7 +204,7 @@ class Settings_model extends Base_model {
 
 		$defaults = $this->array_elements_to_object($this->get_default_intervals());
 
-		usort($defaults, function($a, $b)
+		uasort($defaults, function($a, $b)
 		{
 		    return ( $a->value > $b->value ) ? true : false;
 		});
@@ -250,6 +250,8 @@ class Settings_model extends Base_model {
 				}
 			}
 		}
+
+		print_r($list);
 
 		uasort($list, function($a, $b)
 		{

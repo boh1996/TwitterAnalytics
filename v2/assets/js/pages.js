@@ -265,12 +265,12 @@ $(document).on("submit", ".pages-form", function ( event ) {
 						page.strings.push({
 							"id" : $(stringElement).attr("data-object-id"),
 							"string" : $(stringElement).find(".create-string").val(),
-							"category" : $(stringElement).attr("data-category-id")
+							"category" : $(stringElement).closest(".category").attr("data-category-id")
 						});
 					} else {
 						page.strings.push({
 							"string" : $(stringElement).find(".create-string").val(),
-							"category" : $(stringElement).attr("data-category-id")
+							"category" : $(stringElement).closest(".category").attr("data-category-id")
 						});
 					}
 				}

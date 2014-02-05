@@ -100,6 +100,7 @@ class Statistic_model extends Base_model {
 			$row = $query->row();
 			$row->created = explode(",", $row->created);
 			$row->tweets = explode(",", $row->tweets);
+			$row->strings = $this->top_strings(null, 10, $page_id, $min, $max);
 			$categories = explode("@;", $row->categories);
 
 			$row->categories = array();
@@ -151,6 +152,72 @@ class Statistic_model extends Base_model {
 		$avg = $sum / count($list);
 
 		return $list;
+	}
+
+	/**
+	 *    The top scoring strings in the selected range
+	 *
+	 *    @param integer  $time_back The time to walk back in time to fetch strings for
+	 *    @param integer $limit     The max number of strings
+	 *    @param integer $page_id The page to fetch for
+	 *    @param integer $start The starting time
+	 *    @param integer $end Ending time
+	 *
+	 *    @return array
+	 */
+	public function top_strings ( $time_back = null, $limit = 10, $page_id, $start = null, $end = null ) {
+		if ( is_null($end) ) {
+			$end = time();
+		}
+
+		if ( is_null($start) ) {
+			$start = $end - $time_back;
+		}
+
+		$min = $start;
+		$max = $end;
+		$query = $this->db->query('
+			SELECT
+			    COUNT(*) AS string_count,
+			    statistic_tweet_string_id,
+			    category,
+			    value
+			FROM statistic_tweet_strings
+			INNER JOIN (
+			    SELECT
+			        value,
+			        id as  string_id
+			    FROM statistic_strings
+			) strings on strings.string_id = statistic_tweet_string_id
+			WHERE tweet_id IN (
+			    SELECT id
+			    FROM statistic_tweets
+			    WHERE created_at BETWEEN ? AND ? AND id IN ( SELECT tweet_id FROM page_tweets WHERE page_id = ? )
+			)
+			GROUP BY statistic_tweet_string_id
+			ORDER BY string_count DESC
+			LIMIT ' . intval($limit) . '
+		', array($min, $max, $page_id));
+
+		if ( ! $query->num_rows() ) return false;
+
+		$categories = array();
+		$list = array();
+
+		foreach ( $query->result() as $row ) {
+			$list[] = $row;
+
+			if ( isset($categories[$row->category]) ) {
+				$categories[$row->category] = $categories[$row->category] + $row->string_count;
+			} else {
+				$categories[$row->category] = $row->string_count;
+			}
+		}
+
+		return array(
+			"strings" => $list,
+			"categories" => $categories
+		);
 	}
 
 	/**

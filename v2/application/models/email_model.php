@@ -122,7 +122,7 @@ class Email_model extends Base_model {
 		$page = $this->page_model->get_statistic_page($page_id);
 		$min_change = $page->email_change_value;
 
-		$type = "decrease";
+		$type = "increase";
 
 		$settings = array(
 			"change_value" => $percent_change,
@@ -133,12 +133,8 @@ class Email_model extends Base_model {
 			"page_url" => $this->config->item("base_url") . "page/" . $page->id
 		);
 
-		if ( $percent_change > 0 ) {
-			$type = "increase";
-		}
-
-		if ( $percent_change == 0 ) {
-			return false;
+		if ( $percent_change < 0 ) {
+			$type = "decrease";
 		}
 
 		if ( $calculations["second"] == 0 ) {
@@ -146,7 +142,7 @@ class Email_model extends Base_model {
 				$this->create_message($settings, $type);
 			}
 		} else {
-			if ( abs($percent_change) > $min_change and $this->mail_type_on($type) ) {
+			if ( abs($percent_change) >= $min_change and $this->mail_type_on($type) ) {
 				$this->create_message($settings, $type);
 			}
 		}

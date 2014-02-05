@@ -17,4 +17,14 @@ $lang["user_intervals_right_to_left"] = "Intervals, right is largest";
 $lang["user_category"] = "<b>Category</b>";
 $lang["user_count"] = "<b>Count</b>";
 $lang["user_average"] = "Average tweets per interval:";
+$lang["user_page_name"] = "Name";
+$lang["user_pages"] = "Pages";
+$lang["user_string"] = "String";
+$lang["user_tooltip_string"] = "<b>String</b>";
+$lang["user_string_category"] = "Category";
+$lang["user_strings"] = "Strings";
+$lang["user_categories"] = "Categories";
+$lang["user_count_string"] = "Count";
+$lang["user_tweet_count"] = "<b>Interval Count</b>";
+$lang["user_interval_stats"] = "Interval";
 ?>

@@ -82,13 +82,18 @@ class API_Viewer extends T_API_Controller {
 
 		$tweets = $this->statistic_model->tweets_ranges($this->statistic_model->create_time_ranges($interval->value, $this->settings_model->fetch_setting("setting_number_of_columns", 10, "viewer"), time()), $page->id, $categories, $avg);
 
+		$strings = $this->statistic_model->top_strings($interval->value * 10, 10, $page->id);
+
 		$response = $tweets;
 
 		$this->response(array(
 			"status" => true,
 			"tweets" => $tweets,
 			"categories" => $categories,
-			"avg" => $avg
+			"avg" => $avg,
+			"strings" => ( $strings !== false ) ? $this->load->view("templates/user_strings_view", $this->user_control->ControllerInfo(array(
+				"strings" => $strings
+			)), true) : ""
 		),200);
 	}
 }

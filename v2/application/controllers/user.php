@@ -63,9 +63,14 @@ class User extends CI_Controller {
 
 		$this->lang->load("common");
 
+		$this->load->model("words_model");
+
+		$objects = $this->words_model->get_pages_info();
+
 		$data = array(
 			"current_section" => "user",
 			"translations" => json_encode($this->lang->export()),
+			"objects" => ( $objects !== false ) ? $objects : array()
 		);
 
 		$this->load->view("user_home_view", $this->user_control->ControllerInfo($data));

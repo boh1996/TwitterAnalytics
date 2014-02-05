@@ -98,8 +98,16 @@ Highcharts.theme = {
 // Apply the theme
 var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 
-
 function refresh ( url ) {
+	refreshChart(url);
+	if ( window.autoRefresh === true ) {
+		setTimeout( function () {
+			refreshChart();
+		}, window.refreshRate );
+	}
+}
+
+function refreshChart ( url ) {
 	url = url || window.url;
 	window.url = url;
 
@@ -110,6 +118,8 @@ function refresh ( url ) {
 			contentType : "application/json",
 			url : base_url + url + "?token=" + localStorage.getItem("twa_token"),
 		}).success( function ( data ) {
+
+			$("#strings").html(data.strings);
 
 			$("#avg").html( data.avg );
 
@@ -125,7 +135,8 @@ function refresh ( url ) {
 				dataValues.push({
 					y: parseInt(element.tweet_count),
 					color: element.color,
-					categories : element.categories
+					categories : element.categories,
+					strings : element.strings
 				});
 			} );
 
@@ -173,11 +184,23 @@ function refresh ( url ) {
 				     formatter: function () {
 				     	var string = "";
 
-				     	$(this.point.categories).each( function (index, element) {
-				     		string =  string + translations.user_category + ":" + element.name + " - " + translations.user_count + ":"  + element.count + "<br>";
-				     	} );
+				     	if ( this.point.categories.length > 0 ) {
+				     		string += "<h4>" + translations.user_categories + "</h4>";
+					     	$(this.point.categories).each( function (index, element) {
+					     		string =  string + translations.user_category + ":" + element.name + " - " + translations.user_count + ":"  + element.count + "<br>";
+					     	} );
+					     	string += "<hr>";
+				     	}
+				     	if ( this.point.strings != false ) {
+				     		string += "<h4>" + translations.user_strings + "</h4>";
+				     		$(this.point.strings.strings).each( function (index, element) {
+					     		string = string + translations.user_category + ":" + element.category + " - " + translations.user_tooltip_string + ":" + element.value + " - " + translations.user_count + ":"  + element.string_count + "<br>";
+					     	} );
+					     	string += "<hr>";
+				     	}
 				     	if ( string != "" ) {
-				     		string = string + translations.user_count + ":"  + this.y + "<br>";
+				     		string += "<h4>" + translations.user_interval_stats + "</h4>";
+				     		string = string + translations.user_tweet_count + ":"  + this.y + "<br>";
 				        	return string;
 				    	} else {
 				    		return translations.user_count + ":"  + this.y;
@@ -193,12 +216,6 @@ function refresh ( url ) {
 
 			alert(null, translations["admin_sorry_something_failed"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
 		} );
-
-		if ( window.autoRefresh === true ) {
-			setTimeout( function () {
-				refresh();
-			}, window.refreshRate );
-		}
 	} else {
 		alert(null, translations["admin_please_log_in"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
 	}
@@ -215,7 +232,7 @@ $(document).ready( function () {
 
 $(document).on("click", "#refresh", function () {
 	var value = $("#intervals").val();
-	refresh("get/tweets/" + page + "/" + $('#intervals').find('option[value="' + value + '"]').attr("data-key"));
+	refreshChart("get/tweets/" + page + "/" + $('#intervals').find('option[value="' + value + '"]').attr("data-key"));
 } );
 
 $(document).on("change", "#intervals", function () {

@@ -100,5 +100,30 @@ class User_model extends CI_Model {
 			"id" => $id
 		))->update($data);
 	}
+
+	/**
+	 *    Creates a user
+	 *
+	 *    @param string $username           The users username
+	 *    @param string $password           The users password
+	 *    @param string $user_secret        The users hash salt
+	 *    @param integer $hashing_iterations The number of hashing iterations
+	 *
+	 *    @return boolean
+	 */
+	public function create_user ( $username, $password, $user_secret, $hashing_iterations ) {
+		if ( $this->user_exists_username($username) ) {
+			return false;
+		}
+
+		$this->db->insert("users", array(
+			"username" => $username,
+			"password" => $password,
+			"user_token" => $user_secret,
+			"hashing_iterations" => $hashing_iterations
+		));
+
+		return true;
+	}
 }
 ?>

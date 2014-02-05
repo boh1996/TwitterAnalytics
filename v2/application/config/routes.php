@@ -44,6 +44,7 @@ $route['404_override'] = '';
 $route["sign_in"] = "login/sign_in_view";
 $route["sign_out"] = "login/sign_out";
 $route["admin/access/control"] = "admin/access_control_view";
+$route["setup"] = "setup";
 
 $route["admin"] = "admin/status_view";
 $route["admin/status"] = "admin/status_view";

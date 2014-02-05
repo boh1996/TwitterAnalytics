@@ -1,4 +1,4 @@
-window.autoRefresh = false;
+window.autoRefresh = true;
 window.refreshRate = 60000;
 
 /**
@@ -100,6 +100,8 @@ var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 
 
 function refresh ( url ) {
+	url = url || window.url;
+	window.url = url;
 
 	if ( ! localStorage.getItem("twa_token") === false ) {
 		$.ajax({
@@ -194,7 +196,7 @@ function refresh ( url ) {
 
 		if ( window.autoRefresh === true ) {
 			setTimeout( function () {
-				refresh(url);
+				refresh();
 			}, window.refreshRate );
 		}
 	} else {

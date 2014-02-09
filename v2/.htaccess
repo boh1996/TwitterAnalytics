@@ -2,6 +2,6 @@ RewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php/$1 [L]
+RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
 
 RewriteCond $1 !^(index.php|img|css|js|install|robots.txt|favicon.ico|update.php)

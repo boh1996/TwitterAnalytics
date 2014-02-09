@@ -14,8 +14,17 @@
 		<div class="form-group">
 			<label for="<?= $key; ?>" class="col-sm-2 control-label col-sm-offset-2"><?= $this->lang->line($object->language_key); ?></label>
 			<div class="col-sm-6">
-				<input data-setting="<?= $key; ?>" type="text" id="<?= $key; ?>" value="<?= $object->value; ?>" name="<?= $key; ?>" class="form-control" placeholder="<?= $this->lang->line($object->placeholder); ?>" required>
-				<span class="help-block"><?= $this->lang->line($object->help_text); ?></span>
+				<?php if ( $object->type == "text" ): ?>
+					<input data-setting="<?= $key; ?>" type="text" id="<?= $key; ?>" value="<?= $object->value; ?>" name="<?= $key; ?>" class="form-control" placeholder="<?= $this->lang->line($object->placeholder); ?>">
+				<?php elseif ( $object->type == "textarea" ) : ?>
+					<textarea data-setting="<?= $key; ?>" id="<?= $key; ?>" name="<?= $key; ?>" class="form-control" placeholder="<?= $this->lang->line($object->placeholder); ?>"><?= $object->value; ?></textarea>
+				<?php elseif ( $object->type == "checkbox" ) : ?>
+					<div class="checkbox">
+						<label>
+							<input data-setting="<?= $key; ?>" <?php if ( $object->value == true ) { echo 'checked="checked"'; }; ?>   type="checkbox" id="<?= $key; ?>" value="<?= $object->value; ?>" name="<?= $key; ?>" placeholder="<?= $this->lang->line($object->placeholder); ?>"> <?= $this->lang->line($object->placeholder); ?>
+						</label>
+					</div>
+				<?php endif; ?>
 			</div>
 		</div>
 	<?php endforeach; ?>

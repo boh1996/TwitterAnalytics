@@ -142,4 +142,13 @@ $lang["admin_remove_hidden_word"] = "Unhide";
 $lang["admin_hidden_word"] = "Hidden word";
 $lang["admin_hidden_words"] = "Hidden words";
 $lang["admin_strings_to_remove_description"] = "Will remove strings from the tweets!";
+$lang["admin_alert_string_exact_match"] = "Alert string exact match";
+$lang["admin_exact_match"] = "Exact match";
+$lang["admin_exact_match_help"] = "If the alert match system should use contains or exact match";
+$lang["admin_setting_viewer_max_time"] = "Max liftime in viewer";
+$lang["admin_viewer_max_time_placeholder"] = "Time in minutes";
+$lang["admin_setting_viewer_max_time_help"] = "The max time of the shown tweets, in minutes";
+$lang["admin_setting_timezone"] = "Timezone";
+$lang["admin_admin_setting_timezone_placeholder"] = "Timezone name";
+$lang["admin_admin_setting_timezone_help"] = "The name of the timezone, 'Europe/Copenhagen etc, find avaiable timezones here: http://php.net/manual/en/timezones.php'";
 ?>

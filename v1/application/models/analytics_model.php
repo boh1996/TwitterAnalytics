@@ -110,10 +110,11 @@ class Analytics_model extends Base_model {
 	 * @param  integer  $alert_id The alert string id
 	 * @param  integer $limit    The max number of words, returned
 	 * @param string $date $date query
+	 * @param integer $max_time The max life time of tweets
 	 * @return array<Object>
 	 */
-	public function get_alert_connection_words ( $alert_id, $limit = 3, $date = null ) {
-		$where = "";
+	public function get_alert_connection_words ( $alert_id, $limit = 3, $date = null, $max_time = null ) {
+		/*$where = "";
 		if ( ! is_null($date) ) {
 			preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches);
 			$start_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["start"]));
@@ -121,6 +122,9 @@ class Analytics_model extends Base_model {
 			if ( is_object($start_time) && is_object($end_time) ) {
 				$where = ' AND created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
 			}
+		} else if ( ! is_null($max_time) ) {
+			$max = time() - $max_time;
+			$where = ' AND created_at BETWEEN ' . $max . ' AND ' . time();
 		}
 
 		$limit = intval($limit);
@@ -157,14 +161,14 @@ class Analytics_model extends Base_model {
 			LIMIT ?
 		', array($alert_id, $limit));
 
-		if ( ! $query->num_rows() ) return false;
+		if ( ! $query->num_rows() ) return false;*/
 
 		$list = array();
 
-		foreach ( $query->result() as $row ) {
+		/*foreach ( $query->result() as $row ) {
 			$row->word = ucfirst($row->word);
 			$list[] = $row;
-		}
+		}*/
 
 		return $list;
 	}
@@ -173,10 +177,11 @@ class Analytics_model extends Base_model {
 	 * Fetches top alert words
 	 * @param  integer $limit The max number of rows to fetch
 	 * @param  string $date  Date/time range string
+	 * @param integer $max_time The max life time
 	 * @return array
 	 */
-	public function fetch_alert_words ( $limit = 10, $date = nulll ) {
-		$this->load->model("settings_model");
+	public function fetch_alert_words ( $limit = 10, $date = nulll, $max_time = null ) {
+		/*$this->load->model("settings_model");
 		$where = "";
 		if ( ! is_null($date) ) {
 			preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches);
@@ -185,6 +190,9 @@ class Analytics_model extends Base_model {
 			if ( is_object($start_time) && is_object($end_time) ) {
 				$where = ' WHERE created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
 			}
+		} else if ( ! is_null($max_time) ) {
+			$max = time() - $max_time;
+			$where = ' WHERE created_at BETWEEN ' . $max . ' AND ' . time();
 		}
 
 		$limit = intval($limit);
@@ -193,7 +201,7 @@ class Analytics_model extends Base_model {
     		twast.*
 	 		FROM alert_strings ast
 		 	INNER JOIN(
-			    SELECT 
+			    SELECT
 			    	COUNT(alert_string_id) AS word_count,
 			   		GROUP_CONCAT(tweet_id) as tweets,
 			    	alert_string_id,
@@ -206,16 +214,16 @@ class Analytics_model extends Base_model {
 			twast ON ast.id = twast.alert_string_id ORDER BY word_count DESC LIMIT ?
 		', array($limit));
 
-		if ( ! $query->num_rows() ) return false;
+		if ( ! $query->num_rows() ) return false;*/
 
 		$list = array();
 
-		foreach ( $query->result() as $row ) {
+		/*foreach ( $query->result() as $row ) {
 			$row->word = ucfirst($row->word);
 			$row->tweets = explode(",", $row->tweets);
 			$row->connected = $this->get_alert_connection_words($row->alert_string_id, $this->settings_model->fetch_setting("setting_alert_connection_words_shown", 3, "alerts"), $date);
 			$list[] = $row;
-		}
+		}*/
 
 		return $list;
 	}
@@ -243,10 +251,11 @@ class Analytics_model extends Base_model {
 	 * @param integer $word_limit The max number of words
 	 * @param  integer $limit The number of words to show
 	 * @param  integer  $date  The date range
+	 * @param integer $max_time The max life time of the shown tweets if no date present
 	 * @return array<Objec>
 	 */
-	public function fetch_alert_box ( $word_limit = 50, $limit = 3, $date = null ) {
-		$where = "";
+	public function fetch_alert_box ( $word_limit = 50, $limit = 3, $date = null, $max_time = null ) {
+		/*$where = "";
 		if ( ! is_null($date) ) {
 			preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches);
 			$start_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["start"]));
@@ -254,6 +263,9 @@ class Analytics_model extends Base_model {
 			if ( is_object($start_time) && is_object($end_time) ) {
 				$where = ' WHERE created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
 			}
+		} else if ( ! is_null($max_time) ) {
+			$max = time() - $max_time;
+			$where = ' WHERE created_at BETWEEN ' . $max . ' AND ' . time();
 		}
 
 		$hidden = $this->get_hidden_words(true);
@@ -323,16 +335,16 @@ class Analytics_model extends Base_model {
 			LIMIT ?"
 		, array($word_limit, $limit));
 
-		if ( ! $query->num_rows() ) return false;
+		if ( ! $query->num_rows() ) return false;*/
 
 		$list = array();
 
-		foreach ( $query->result() as $row ) {
+		/*foreach ( $query->result() as $row ) {
 			$row->word = ucfirst($row->word);
 			$row->tweets = explode(",", $row->tweets);
 			$row->connected = $this->get_alert_connection_words($row->word_id, $this->settings_model->fetch_setting("setting_alert_connection_words_shown", 3, "alerts"), $date);
 			$list[] = $row;
-		}
+		}*/
 
 		return $list;
 	}
@@ -341,33 +353,37 @@ class Analytics_model extends Base_model {
 	 * Feches the list of top words, date
 	 * @param  integer $limit Th number of words to fetch
 	 * @param  string  $date  A date range, to fetch between
+	 * @param integer $max_time The max lifetime of tweets if no date present
 	 * @return array<Object>
 	 */
-	public function fetch_words ( $limit = 50, $date = null ) {
+	public function fetch_words ( $limit = 50, $date = null, $max_time = null ) {
 		$where = "";
 		if ( ! is_null($date) ) {
 			preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches);
 			$start_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["start"]));
 			$end_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["end"]));
 			if ( is_object($start_time) && is_object($end_time) ) {
-				$where = ' WHERE created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
+				$where = ' WHERE tweet_words.created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
 			}
+		} else if ( ! is_null($max_time) ) {
+			$max = time() - intval($max_time);
+			$where = ' WHERE tweet_words.created_at BETWEEN ' . $max . ' AND ' . time();
 		}
 
 		$hidden = $this->get_hidden_words(true);
 		if ( $hidden !== false && count($hidden) > 0 ) {
-			$hidden_string = " WHERE word_id NOT IN (" . implode(",",$hidden) . ")";
+			$hidden_string = " AND word_id NOT IN (" . implode(",",$hidden) . ")";
 		} else {
 			$hidden_string = "";
 		}
 
 		$limit = intval($limit);
-		$query = $this->db->query("SELECT * FROM (
+
+		/*$query = $this->db->query("SELECT * FROM (
 			SELECT
 				word,
 				word_id,
 				created_at,
-				tweets,
 				unique_tweets,
 				word_count,
 				type
@@ -377,7 +393,6 @@ class Analytics_model extends Base_model {
 				        w.word,
 				        w.id as word_id,
 				        tw.created_at,
-				        tw.tweets,
 				        tw.word_count,
 				        tw.unique_tweets,
 				        'user_type_word' AS type
@@ -385,7 +400,6 @@ class Analytics_model extends Base_model {
 				    INNER JOIN
 				    (
 				        SELECT COUNT(word_id) AS word_count,
-				        GROUP_CONCAT(DISTINCT tweet_id ORDER BY tweet_id ASC) as tweets,
 				        word_id,
 				        created_at,
 				        COUNT(DISTINCT tweet_id) as unique_tweets
@@ -405,7 +419,6 @@ class Analytics_model extends Base_model {
 				        ast.value as word,
 				        ast.id as word_id,
 				        twast.created_at,
-				        twast.tweets,
 				        twast.word_count,
 				        twast.unique_tweets,
 				        'user_type_alert_string' as type
@@ -413,7 +426,6 @@ class Analytics_model extends Base_model {
 				    INNER JOIN
 				    (
 				        SELECT COUNT(alert_string_id) AS word_count,
-				        GROUP_CONCAT(DISTINCT tweet_id ORDER BY tweet_id ASC) as tweets,
 				        alert_string_id,
 				        created_at,
 				        COUNT(DISTINCT tweet_id) as unique_tweets
@@ -429,7 +441,41 @@ class Analytics_model extends Base_model {
 			) words GROUP BY word ) result
 			ORDER BY word_count DESC
 			LIMIT ?"
-		, array($limit));
+		, array($limit));*/
+		$query = $this->db->query(
+			'SELECT * FROM (
+			    SELECT
+			        COUNT(*) as word_count,
+			        word_id,
+			        word,
+			        tweet_words.created_at,
+			        "user_type_word" AS type
+			    FROM tweet_words
+			    JOIN words ON words.id = tweet_words.word_id
+			    ' . $where . '
+			    ' . $hidden_string . '
+			    GROUP BY word_id
+			    ORDER BY word_count DESC
+    			LIMIT 50
+			) tweets
+			UNION ALL
+			SELECT * FROM (
+			    SELECT
+			        COUNT(*) as word_count,
+			        tweet_alert_strings.created_at,
+			        alert_strings.value as word,
+			        alert_strings.id as word_id,
+			        "user_type_alert_string" as type
+			    FROM tweet_alert_strings
+			    JOIN alert_strings ON alert_strings.id = tweet_alert_strings.alert_string_id
+			    ' . str_replace("tweet_words", "tweet_alert_strings", $where) . '
+			    GROUP BY alert_string_id
+			    ORDER BY word_count DESC
+    			LIMIT 50
+			) strings
+			ORDER BY word_count DESC
+			LIMIT ?
+		', array($limit));
 
 		if ( ! $query->num_rows() ) return false;
 
@@ -437,7 +483,6 @@ class Analytics_model extends Base_model {
 
 		foreach ( $query->result() as $row ) {
 			$row->word = ucfirst($row->word);
-			$row->tweets = explode(",", $row->tweets);
 			$list[] = $row;
 		}
 

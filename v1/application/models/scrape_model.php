@@ -147,8 +147,12 @@ class Scrape_model extends Base_model {
 	public function remove_unwanted_strings ( $text ) {
 		$strings = $this->get_list("removed_strings");
 
-		foreach ( $strings as $string ) {
-			$text = str_replace($string->value, "", $text);
+		if ( $strings !== false && is_array($strings) ) {
+
+			foreach ( $strings as $string ) {
+				$text = str_replace($string->value, "", $text);
+			}
+
 		}
 
 		return $text;
@@ -161,11 +165,19 @@ class Scrape_model extends Base_model {
 	 * @return boolean|array                If array, create an alert
 	 */
 	public function if_to_alert ( $text, $alert_strings ) {
+		$this->load->model("settings_model");
+		$exact_match = (bool) $this->settings_model->fetch_setting("setting_alert_exact_match", true, "alerts");
 		$alerts = array();
 
 		foreach ( $alert_strings as $string ) {
-			if ( strpos($text, $string->value) !== false ) {
-				$alerts[] = $string->id;
+			if ( $exact_match ) {
+				if ( preg_match("~\b(\s*)?" . $string->value . "\b(\s*)?~",$text) > 0 ) {
+					$alerts[] = $string->id;
+				}
+			} else {
+				if ( strpos($text, $string->value) !== false ) {
+					$alerts[] = $string->id;
+				}
 			}
 		}
 

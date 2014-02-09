@@ -52,7 +52,10 @@ class User_Control{
 	public function __construct(){
 		$this->_CI =& get_instance();
 
-		date_default_timezone_set("Europe/Copenhagen");
+		$this->_CI->load->model("base_model");
+		$this->_CI->load->model("settings_model");
+
+		date_default_timezone_set($this->_CI->settings_model->fetch_setting("setting_timezone", "Europe/Copenhagen", "scraper"));
 
 		if ( isset($_GET["language"]) && array_key_exists($_GET["language"], $this->_CI->config->item("languages")) ) {
 			$this->language = $_GET["language"];

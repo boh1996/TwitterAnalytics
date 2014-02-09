@@ -282,7 +282,7 @@ class Scraper {
 		}
 
 		// If more newer pages to load, load em
-		if ( $next_page_cursor !== false ) {
+		if ( $next_page_cursor !== false && $last_element["created_at"] > ( time() - $max_timestamp ) ) {
 			$tweets = array_merge($tweets, $this->scrapeTweets($meta, $old_refresh_cursor, $next_page_cursor, $type, $data, true, $latest_cursor, $max_timestamp ));
 		}
 

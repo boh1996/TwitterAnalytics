@@ -114,17 +114,16 @@ class Analytics_model extends Base_model {
 	 * @return array<Object>
 	 */
 	public function get_alert_connection_words ( $alert_id, $limit = 3, $date = null, $max_time = null ) {
-		/*$where = "";
-		if ( ! is_null($date) ) {
-			preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches);
+		$where = "";
+		if ( ! is_null($date) && preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches) ) {
 			$start_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["start"]));
 			$end_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["end"]));
 			if ( is_object($start_time) && is_object($end_time) ) {
-				$where = ' AND created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
+				$where = ' AND tweet_words.created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
 			}
 		} else if ( ! is_null($max_time) ) {
 			$max = time() - $max_time;
-			$where = ' AND created_at BETWEEN ' . $max . ' AND ' . time();
+			$where = ' AND tweet_words.created_at BETWEEN ' . $max . ' AND ' . time();
 		}
 
 		$limit = intval($limit);
@@ -139,36 +138,31 @@ class Analytics_model extends Base_model {
 
 		$query = $this->db->query('
 			SELECT
-			    COUNT(tw.word_id) AS word_count,
-			    tw.word_id,
-			    GROUP_CONCAT(DISTINCT tweet_id ORDER BY tweet_id DESC) as tweets,
-			    word
-			FROM tweet_words tw
-			INNER JOIN (
-			    SELECT
-			        word,
-			        id
-			    FROM words
-			) words_table ON words_table.id = tw.word_id
+			    COUNT(*) as word_count,
+			    word,
+			    word_id
+			FROM tweet_words
+			JOIN words ON words.id = tweet_words.word_id
 			WHERE tweet_id IN (
 			    SELECT tweet_id
 			    FROM tweet_alert_strings
 			    WHERE alert_string_id = ?
-			    ' . $where . '
-			)' . $hidden_string . '
+			)
+			' . $hidden_string . '
+			 ' . $where . '
 			GROUP BY word_id
 			ORDER BY word_count DESC
 			LIMIT ?
 		', array($alert_id, $limit));
 
-		if ( ! $query->num_rows() ) return false;*/
+		if ( ! $query->num_rows() ) return false;
 
 		$list = array();
 
-		/*foreach ( $query->result() as $row ) {
+		foreach ( $query->result() as $row ) {
 			$row->word = ucfirst($row->word);
 			$list[] = $row;
-		}*/
+		}
 
 		return $list;
 	}
@@ -195,23 +189,6 @@ class Analytics_model extends Base_model {
 		}
 
 		$limit = intval($limit);
-		/*$query = $this->db->query('
-			SELECT
-	    		ast.value as word,
-	    		twast.*
-	 		FROM alert_strings ast
-		 	INNER JOIN(
-			    SELECT
-			    	COUNT(alert_string_id) AS word_count,
-			   		GROUP_CONCAT(tweet_id) as tweets,
-			    	alert_string_id,
-		    	FROM (
-		    		SELECT *
-		    		FROm tweet_alert_strings' . $where . '  ) wherestrings
-		    	GROUP BY alert_string_id
-		    )
-			twast ON ast.id = twast.alert_string_id ORDER BY word_count DESC LIMIT ?
-		', array($limit));*/
 		$query = $this->db->query('
 			SELECT
 			    COUNT(*) as word_count,

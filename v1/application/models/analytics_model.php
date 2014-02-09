@@ -256,7 +256,11 @@ class Analytics_model extends Base_model {
 
 		$hidden = $this->get_hidden_words(true);
 		if ( $hidden !== false && count($hidden) > 0 ) {
-			$hidden_string = " WHERE word_id NOT IN (" . implode(",",$hidden) . ")";
+			if ( $where == "" ) {
+				$hidden_string = " WHERE word_id NOT IN (" . implode(",",$hidden) . ")";
+			} else {
+				$hidden_string = " AND word_id NOT IN (" . implode(",",$hidden) . ")";
+			}
 		} else {
 			$hidden_string = "";
 		}
@@ -271,7 +275,6 @@ class Analytics_model extends Base_model {
 				        COUNT(*) as word_count,
 				        word_id,
 				        word,
-				        tweet_words.created_at,
 				        "user_type_word" AS type
 				    FROM tweet_words
 				    JOIN words ON words.id = tweet_words.word_id
@@ -285,14 +288,13 @@ class Analytics_model extends Base_model {
 				SELECT * FROM (
 				    SELECT
 				        COUNT(*) as word_count,
-				        tweet_alert_strings.created_at,
-				        alert_strings.value as word,
 				        alert_strings.id as word_id,
+				        alert_strings.value as word,
 				        "user_type_alert_string" as type
 				    FROM tweet_alert_strings
 				    JOIN alert_strings ON alert_strings.id = tweet_alert_strings.alert_string_id
 				    ' . str_replace("tweet_words", "tweet_alert_strings", $where) . '
-				    GROUP BY alert_string_id
+				    GROUP BY word_id
 				    ORDER BY word_count DESC
 	    			LIMIT ?
 				) strings
@@ -310,7 +312,7 @@ class Analytics_model extends Base_model {
 
 		foreach ( $query->result() as $row ) {
 			$row->word = ucfirst($row->word);
-			$row->connected = $this->get_alert_connection_words($row->word_id, $this->settings_model->fetch_setting("setting_alert_connection_words_shown", 3, "alerts"), $date);
+			$row->connected = $this->get_alert_connection_words($row->word_id, $this->settings_model->fetch_setting("setting_alert_connection_words_shown", 3, "alerts"), $date, $max_time);
 			$list[] = $row;
 		}
 
@@ -352,7 +354,6 @@ class Analytics_model extends Base_model {
 			        COUNT(*) as word_count,
 			        word_id,
 			        word,
-			        tweet_words.created_at,
 			        "user_type_word" AS type
 			    FROM tweet_words
 			    JOIN words ON words.id = tweet_words.word_id
@@ -366,9 +367,8 @@ class Analytics_model extends Base_model {
 			SELECT * FROM (
 			    SELECT
 			        COUNT(*) as word_count,
-			        tweet_alert_strings.created_at,
-			        alert_strings.value as word,
 			        alert_strings.id as word_id,
+			        alert_strings.value as word,
 			        "user_type_alert_string" as type
 			    FROM tweet_alert_strings
 			    JOIN alert_strings ON alert_strings.id = tweet_alert_strings.alert_string_id

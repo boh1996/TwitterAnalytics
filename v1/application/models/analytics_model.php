@@ -181,49 +181,59 @@ class Analytics_model extends Base_model {
 	 * @return array
 	 */
 	public function fetch_alert_words ( $limit = 10, $date = nulll, $max_time = null ) {
-		/*$this->load->model("settings_model");
+		$this->load->model("settings_model");
 		$where = "";
-		if ( ! is_null($date) ) {
-			preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches);
+		if ( ! is_null($date) && preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches) ) {
 			$start_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["start"]));
 			$end_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["end"]));
 			if ( is_object($start_time) && is_object($end_time) ) {
-				$where = ' WHERE created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
+				$where = ' WHERE tweet_alert_strings.created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
 			}
 		} else if ( ! is_null($max_time) ) {
 			$max = time() - $max_time;
-			$where = ' WHERE created_at BETWEEN ' . $max . ' AND ' . time();
+			$where = ' WHERE tweet_alert_strings.created_at BETWEEN ' . $max . ' AND ' . time();
 		}
 
 		$limit = intval($limit);
-		$query = $this->db->query('SELECT
-    		ast.value as word,
-    		twast.*
+		/*$query = $this->db->query('
+			SELECT
+	    		ast.value as word,
+	    		twast.*
 	 		FROM alert_strings ast
 		 	INNER JOIN(
 			    SELECT
 			    	COUNT(alert_string_id) AS word_count,
 			   		GROUP_CONCAT(tweet_id) as tweets,
 			    	alert_string_id,
-			    	COUNT(DISTINCT tweet_id) as unique_tweets
 		    	FROM (
 		    		SELECT *
 		    		FROm tweet_alert_strings' . $where . '  ) wherestrings
 		    	GROUP BY alert_string_id
 		    )
 			twast ON ast.id = twast.alert_string_id ORDER BY word_count DESC LIMIT ?
+		', array($limit));*/
+		$query = $this->db->query('
+			SELECT
+			    COUNT(*) as word_count,
+			    alert_string_id as word_id,
+			    alert_strings.value as word
+			FROM tweet_alert_strings
+			JOIN alert_strings ON alert_strings.id = tweet_alert_strings.alert_string_id
+			' . $where . '
+			GROUP BY alert_string_id
+			ORDER BY word_count DESC
+			LIMIT ?
 		', array($limit));
 
-		if ( ! $query->num_rows() ) return false;*/
+		if ( ! $query->num_rows() ) return false;
 
 		$list = array();
 
-		/*foreach ( $query->result() as $row ) {
+		foreach ( $query->result() as $row ) {
 			$row->word = ucfirst($row->word);
-			$row->tweets = explode(",", $row->tweets);
-			$row->connected = $this->get_alert_connection_words($row->alert_string_id, $this->settings_model->fetch_setting("setting_alert_connection_words_shown", 3, "alerts"), $date);
+			$row->connected = $this->get_alert_connection_words($row->word_id, $this->settings_model->fetch_setting("setting_alert_connection_words_shown", 3, "alerts"), $date);
 			$list[] = $row;
-		}*/
+		}
 
 		return $list;
 	}

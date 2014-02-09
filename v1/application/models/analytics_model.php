@@ -255,17 +255,16 @@ class Analytics_model extends Base_model {
 	 * @return array<Objec>
 	 */
 	public function fetch_alert_box ( $word_limit = 50, $limit = 3, $date = null, $max_time = null ) {
-		/*$where = "";
-		if ( ! is_null($date) ) {
-			preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches);
+		$where = "";
+		if ( ! is_null($date) && preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches) ) {
 			$start_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["start"]));
 			$end_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["end"]));
 			if ( is_object($start_time) && is_object($end_time) ) {
-				$where = ' WHERE created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
+				$where = ' WHERE tweet_words.created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
 			}
 		} else if ( ! is_null($max_time) ) {
 			$max = time() - $max_time;
-			$where = ' WHERE created_at BETWEEN ' . $max . ' AND ' . time();
+			$where = ' WHERE tweet_words.created_at BETWEEN ' . $max . ' AND ' . time();
 		}
 
 		$hidden = $this->get_hidden_words(true);
@@ -277,74 +276,56 @@ class Analytics_model extends Base_model {
 
 		$limit = intval($limit);
 		$word_limit = intval($word_limit);
-		$query = $this->db->query("SELECT * FROM (
+
+		$query = $this->db->query('
+			SELECT * FROM (
 				SELECT * FROM (
 				    SELECT
-				        w.word,
-				        w.id as word_id,
-				        tw.created_at as created_at,
-				        tw.tweets,
-				        tw.word_count,
-				        tw.unique_tweets,
-				        'user_type_word' AS type
-				    FROM words w
-				    INNER JOIN
-				    (
-				        SELECT COUNT(word_id) AS word_count,
-				        GROUP_CONCAT(DISTINCT tweet_id ORDER BY tweet_id ASC) as tweets,
+				        COUNT(*) as word_count,
 				        word_id,
-				        created_at,
-				        COUNT(DISTINCT tweet_id) as unique_tweets
-				        FROM (
-		                    SELECT *
-		                    FROM tweet_words
-		                    " . $where . "
-                		) where_tweet_words
-						" . $hidden_string .  "
-				        GROUP BY word_id
-				    )tw
-				    ON w.id = tw.word_id
-				    UNION ALL
+				        word,
+				        tweet_words.created_at,
+				        "user_type_word" AS type
+				    FROM tweet_words
+				    JOIN words ON words.id = tweet_words.word_id
+				    ' . $where . '
+				    ' . $hidden_string . '
+				    GROUP BY word_id
+				    ORDER BY word_count DESC
+	    			LIMIT ?
+				) tweets
+				UNION ALL
+				SELECT * FROM (
 				    SELECT
-				        ast.value as word,
-				        ast.id as word_id,
-				        twast.created_at as created_at,
-				        twast.tweets,
-				        twast.word_count,
-				        twast.unique_tweets,
-				        'user_type_alert_string' as type
-				    FROM alert_strings ast
-				    INNER JOIN
-				    (
-				        SELECT
-		                    COUNT(alert_string_id) AS word_count,
-		                    GROUP_CONCAT(DISTINCT tweet_id ORDER BY tweet_id ASC) as tweets,
-		                    alert_string_id,
-		                    created_at,
-		                    COUNT(DISTINCT tweet_id) as unique_tweets
-				        FROM (
-                    SELECT *
-                    FROM tweet_alert_strings
-                    " . $where . "
-                ) where_alert_strings
-				        GROUP BY alert_string_id
-				    ) twast ON ast.id = twast.alert_string_id
-				) words ORDER BY word_count DESC LIMIT ?
-			) alerts WHERE type = 'user_type_alert_string'
+				        COUNT(*) as word_count,
+				        tweet_alert_strings.created_at,
+				        alert_strings.value as word,
+				        alert_strings.id as word_id,
+				        "user_type_alert_string" as type
+				    FROM tweet_alert_strings
+				    JOIN alert_strings ON alert_strings.id = tweet_alert_strings.alert_string_id
+				    ' . str_replace("tweet_words", "tweet_alert_strings", $where) . '
+				    GROUP BY alert_string_id
+				    ORDER BY word_count DESC
+	    			LIMIT ?
+				) strings
+				ORDER BY word_count DESC
+				LIMIT ?
+			) words
+			WHERE type = "user_type_alert_string"
 			ORDER BY word_count DESC
-			LIMIT ?"
-		, array($word_limit, $limit));
+			LIMIT ?
+		', array($word_limit, $word_limit, $word_limit, $limit));
 
-		if ( ! $query->num_rows() ) return false;*/
+		if ( ! $query->num_rows() ) return false;
 
 		$list = array();
 
-		/*foreach ( $query->result() as $row ) {
+		foreach ( $query->result() as $row ) {
 			$row->word = ucfirst($row->word);
-			$row->tweets = explode(",", $row->tweets);
 			$row->connected = $this->get_alert_connection_words($row->word_id, $this->settings_model->fetch_setting("setting_alert_connection_words_shown", 3, "alerts"), $date);
 			$list[] = $row;
-		}*/
+		}
 
 		return $list;
 	}

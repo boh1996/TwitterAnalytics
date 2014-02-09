@@ -8,7 +8,6 @@
 							<th>#</th>
 							<th><?= $this->lang->line("user_word"); ?></th>
 							<th><?= $this->lang->line("user_count"); ?></th>
-							<th><?= $this->lang->line("user_unique_tweets"); ?></th>
 							<th><?= $this->lang->line("user_connected_words"); ?></th>
 						</tr>
 					</thead>
@@ -21,7 +20,6 @@
 								<td><?= $index ?></td>
 								<td><?= $alert->word; ?></td>
 								<td><?= $alert->word_count; ?></td>
-								<td><?= $alert->unique_tweets; ?></td>
 								<td>
 									<?php if ( ! empty($alert->connected) ): ?>
 										<?php $connected = array(); ?>
@@ -42,7 +40,6 @@
 							<th>#</th>
 							<th><?= $this->lang->line("user_word"); ?></th>
 							<th><?= $this->lang->line("user_count"); ?></th>
-							<th><?= $this->lang->line("user_unique_tweets"); ?></th>
 							<th><?= $this->lang->line("user_connected_words"); ?></th>
 						</tr>
 					</tfoot>

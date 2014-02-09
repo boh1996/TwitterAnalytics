@@ -358,8 +358,7 @@ class Analytics_model extends Base_model {
 	 */
 	public function fetch_words ( $limit = 50, $date = null, $max_time = null ) {
 		$where = "";
-		if ( ! is_null($date) ) {
-			preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches);
+		if ( ! is_null($date) && preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches) ) {
 			$start_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["start"]));
 			$end_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["end"]));
 			if ( is_object($start_time) && is_object($end_time) ) {
@@ -379,69 +378,6 @@ class Analytics_model extends Base_model {
 
 		$limit = intval($limit);
 
-		/*$query = $this->db->query("SELECT * FROM (
-			SELECT
-				word,
-				word_id,
-				created_at,
-				unique_tweets,
-				word_count,
-				type
-			 FROM (
-			 	SELECT * FROM (
-				    SELECT
-				        w.word,
-				        w.id as word_id,
-				        tw.created_at,
-				        tw.word_count,
-				        tw.unique_tweets,
-				        'user_type_word' AS type
-				    FROM words w
-				    INNER JOIN
-				    (
-				        SELECT COUNT(word_id) AS word_count,
-				        word_id,
-				        created_at,
-				        COUNT(DISTINCT tweet_id) as unique_tweets
-				        FROM (
-				        	SELECT *
-				        	FROM tweet_words
-				       		" . $where . "
-				       	) wheretweets
-						" . $hidden_string . "
-				        GROUP BY word_id
-				    ) tw
-				    ON w.id = tw.word_id
-				) where1
-			    UNION ALL
-			    SELECT * FROM (
-				    SELECT
-				        ast.value as word,
-				        ast.id as word_id,
-				        twast.created_at,
-				        twast.word_count,
-				        twast.unique_tweets,
-				        'user_type_alert_string' as type
-				    FROM alert_strings ast
-				    INNER JOIN
-				    (
-				        SELECT COUNT(alert_string_id) AS word_count,
-				        alert_string_id,
-				        created_at,
-				        COUNT(DISTINCT tweet_id) as unique_tweets
-				        FROM (
-				        	SELECT *
-				        	FROM tweet_alert_strings
-				        	" . $where . "
-				        ) wherestring
-				        GROUP BY alert_string_id
-				    ) twast ON ast.id = twast.alert_string_id
-				) where2
-				ORDER BY type
-			) words GROUP BY word ) result
-			ORDER BY word_count DESC
-			LIMIT ?"
-		, array($limit));*/
 		$query = $this->db->query(
 			'SELECT * FROM (
 			    SELECT
@@ -456,7 +392,7 @@ class Analytics_model extends Base_model {
 			    ' . $hidden_string . '
 			    GROUP BY word_id
 			    ORDER BY word_count DESC
-    			LIMIT 50
+    			LIMIT ?
 			) tweets
 			UNION ALL
 			SELECT * FROM (
@@ -471,11 +407,11 @@ class Analytics_model extends Base_model {
 			    ' . str_replace("tweet_words", "tweet_alert_strings", $where) . '
 			    GROUP BY alert_string_id
 			    ORDER BY word_count DESC
-    			LIMIT 50
+    			LIMIT ?
 			) strings
 			ORDER BY word_count DESC
 			LIMIT ?
-		', array($limit));
+		', array($limit, $limit, $limit));
 
 		if ( ! $query->num_rows() ) return false;
 

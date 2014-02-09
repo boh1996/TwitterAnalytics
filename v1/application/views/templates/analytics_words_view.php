@@ -8,7 +8,6 @@
 							<th>#</th>
 							<th><?= $this->lang->line("user_word"); ?></th>
 							<th><?= $this->lang->line("user_count"); ?></th>
-							<th><?= $this->lang->line("user_unique_tweets"); ?></th>
 							<th><?= $this->lang->line("user_type"); ?></th>
 						</tr>
 					</thead>
@@ -21,7 +20,6 @@
 								<td><?= $index ?></td>
 								<td><?= $word->word; ?></td>
 								<td><?= $word->word_count; ?></td>
-								<td><?= $word->unique_tweets; ?></td>
 								<td><?= $this->lang->line($word->type); ?></td>
 							</tr>
 						<?php endforeach; ?>
@@ -32,7 +30,6 @@
 							<th>#</th>
 							<th><?= $this->lang->line("user_word"); ?></th>
 							<th><?= $this->lang->line("user_count"); ?></th>
-							<th><?= $this->lang->line("user_unique_tweets"); ?></th>
 							<th><?= $this->lang->line("user_type"); ?></th>
 						</tr>
 					</tfoot>

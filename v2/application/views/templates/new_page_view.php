@@ -2,7 +2,7 @@
 	<div style="display:inline-block;width:100%;">
 		<div class="col-sm-offset-1 col-sm-10">
 			<div class="col-sm-12">
-				<h2><span class="page-name create-page"><?= $this->lang->line("admin_create_page"); ?></span> <small><a href="#" class="edit-page">
+				<h2><span class="page-name create-page" data-value="<?= $this->lang->line("admin_create_page"); ?>"><?= $this->lang->line("admin_create_page"); ?></span> <small><a href="#" class="edit-page">
 					<?= $this->lang->line("admin_edit_page_name"); ?></a></small>
 					<small><a href="#" class="remove-page"><?= $this->lang->line("admin_remove_page"); ?></a></small>
 					<small><?= $this->lang->line("admin_page_login_control"); ?><input type="checkbox" class="checkbox access-control" /></small>
@@ -27,7 +27,7 @@
 					<div class="tab-pane" id="strings_create_new">
 						<div class="col-sm-offset-1 col-sm-10 list-container strings-container">
 							<?php foreach ( $this->config->item("categories") as $cat_id => $category ) : ?>
-								<h3><?= $this->lang->line($category["language_key"]); ?></h3>
+								<h3><?= $this->lang->line($category["name"]); ?></h3>
 								<div class="category" data-category-id="<?= $cat_id; ?>">
 									<!-- New String -->
 										<?= $this->user_control->LoadTemplate("new_string_view", array(
@@ -47,11 +47,6 @@
 						<h3><?= $this->lang->line("admin_embed_title"); ?></h3>
 
 						<textarea class="embed form-control"></textarea>
-					</div>
-
-					<div class="col-sm-12">
-						<h3><?= $this->lang->line("admin_page_email_change_value"); ?></h3>
-						<input type="text" class="form-control email-value" >
 					</div>
 				</div>
 				</div>

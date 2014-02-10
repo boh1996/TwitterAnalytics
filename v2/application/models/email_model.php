@@ -42,6 +42,52 @@ class Email_model extends Base_model {
 	}
 
 	/**
+	 *    Fetches the given interval with the desired value
+	 *
+	 *    @param integer $value The interval value
+	 *
+	 *    @return boolean|object
+	 */
+	public function get_interval ( $value ) {
+		$this->load->model("settings_model");
+		$intervals = $this->settings_model->get_intervals();
+
+		foreach ( $intervals as $key => $object ) {
+			if ( $object->value == $value ) {
+				return $object;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 *    Fetches all the categories and the associated words
+	 *
+	 *    @param integer $page_id The page to recieve strings for
+	 *
+	 *    @return array
+	 */
+	public function get_category_strings ( $page_id ) {
+		$query = $this->db->where(array(
+			"statistic_page_id" => $page_id
+		))->get("statistic_strings");
+
+		if ( ! $query->num_rows() ) return false;
+
+		$list = array();
+
+		foreach ( $query->result() as $row ) {
+			if ( ! isset($list["category_" . $row->category]) ) {
+				$list["category_" . $row->category] = array();
+			}
+			$list["category_" . $row->category][] = $row->value;
+		}
+
+		return $list;
+	}
+
+	/**
 	 *    Merges the custom variables with the default variables
 	 *
 	 *    @param array $custom A list of custom variables
@@ -113,14 +159,13 @@ class Email_model extends Base_model {
 		)), $page_id);
 		$page_id = (int)$page_id;
 		$difference = $calculations["newest"] - $calculations["second"];
-
-		if ( $difference == 0 or $calculations["second"] == 0 ) {
-			return false;
-		}
-
-		$percent_change = ($difference / $calculations["second"]) * 100;
+		$percent_change = 0;
 		$page = $this->page_model->get_statistic_page($page_id);
 		$min_change = $page->email_change_value;
+
+		if ( $difference != 0 and $calculations["second"] != 0 ) {
+			$percent_change = ($difference / $calculations["second"]) * 100;
+		}
 
 		$type = "increase";
 
@@ -130,12 +175,27 @@ class Email_model extends Base_model {
 			"tweet_count_now" => $calculations["newest"],
 			"tweet_count_last" => $calculations["second"],
 			"page_name" => $page->name,
-			"page_url" => $this->config->item("base_url") . "page/" . $page->id
+			"page_url" => $this->config->item("base_url") . "page/" . $page->id,
 		);
+
+		$category_strings = $this->get_category_strings($page_id);
+
+		if ( $category_strings !== "false" ) {
+			foreach ( $category_strings as $key => $value ) {
+				$settings[$key] = implode(",", $value);
+			}
+		}
+
+		if ( $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 200, "email") == 0 ) {
+			$this->create_message($settings, $type);
+			return true;
+		}
 
 		if ( $percent_change < 0 ) {
 			$type = "decrease";
 		}
+
+		$this->create_message($settings, $type);
 
 		if ( $calculations["second"] == 0 ) {
 			if ( abs($percent_change) >= $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 200, "email") and $this->mail_type_on($type) ) {

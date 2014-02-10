@@ -229,8 +229,8 @@ $(document).on("submit", ".pages-form", function ( event ) {
 
 	var data = {"pages" : []};
 
-	$(".page-object").each( function ( pageIndex, pageElement ) {
-		if ( $(pageElement).hasClass("add-page") === false ) {
+	$(".page-container").find(".page-object").each( function ( pageIndex, pageElement ) {
+		if ( ( $(pageElement).hasClass("add-page") == true && $(pageElement).find(".page-name").html() != $(pageElement).find(".page-name").attr("data-value") ) || ! $(pageElement).hasClass("add-page") ) {
 			var page = {
 				"urls" : [],
 				"strings" : [],
@@ -289,6 +289,7 @@ $(document).on("submit", ".pages-form", function ( event ) {
 			$(".notifications").css("display", "block");
 			alert(null, translations["admin_saved_successfully"], "alertsSuccessTemplate", $("#errors"), "append", function () {
 				$(".notifications").css("display", "none");
+				window.location = window.location;
 			} , 2000);
 			$.ajax({
 				url: base_url + "admin/template/pages"

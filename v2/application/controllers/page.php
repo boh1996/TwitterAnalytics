@@ -37,7 +37,8 @@ class Page extends CI_Controller {
 			"translations" => json_encode($this->lang->export()),
 			"page_string" => $unique,
 			"intervals" => $intervals,
-			"page" => $page
+			"page" => $page,
+			"categories" => $this->settings_model->get_categories()
 		);
 
 		$this->load->view("page_view", $this->user_control->ControllerInfo($data));

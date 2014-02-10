@@ -59,7 +59,6 @@ class Words_model extends Base_model {
 			    urls,
 			    strings,
 			    login,
-			    email_change_value,
 			    embed
 			FROM statistic_pages sp
 			LEFT JOIN (

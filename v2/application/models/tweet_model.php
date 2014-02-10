@@ -56,17 +56,15 @@ class Tweet_model extends Base_model {
 	 *
 	 *    @param integer $tweet_id  The tweet database id
 	 *    @param integer $string_id The string database id
-	 *    @param integer $category The string category
 	 *
 	 */
-	public function insert_tweet_string ( $tweet_id, $string_id, $category ) {
+	public function insert_tweet_string ( $tweet_id, $string_id ) {
 		if ( ! $this->exists("statistic_tweet_strings", array("tweet_id" => $tweet_id, "statistic_tweet_string_id" => $string_id)) ) {
 			$this->db->insert("statistic_tweet_strings", array(
 				"created_at" => time(),
 				"updated_at" => time(),
 				"tweet_id" => $tweet_id,
-				"statistic_tweet_string_id" => $string_id,
-				"category" => $category
+				"statistic_tweet_string_id" => $string_id
 			));
 		}
 	}
@@ -119,12 +117,23 @@ class Tweet_model extends Base_model {
 	 */
 	public function search_for_strings ( $tweet, $strings ) {
 		foreach ( $strings as $string ) {
-			$value = $string[0];
+			$value = strtolower($string[0]);
 			$id = $string[1];
 			$category = $string[2];
+			$exact_match = false;
 
-			if ( strpos($tweet["text"], $value) !== false ) {
-				$this->insert_tweet_string($tweet["id"], $id, $category);
+			$text = strtolower($tweet["text"]);
+
+			if ( $exact_match ) {
+				if ( preg_match_all("~\b(\s*)?" . $text . "\b(\s*)?~",$text, $matches) > 0 ) {
+					for ( $i=0;  $i < count($matches[0]) ;  $i++) {
+						$this->insert_tweet_string($tweet["id"], $id);
+					}
+				}
+			} else {
+				if ( strpos($text, $value) !== false ) {
+					$this->insert_tweet_string($tweet["id"], $id);
+				}
 			}
 		}
 	}

@@ -8,12 +8,12 @@
 
 	<tbody>
 		<?php $index = 0; ?>
-		<?php foreach ( $strings["categories"] as $key => $count ): ?>
+		<?php foreach ( $strings["categories"] as $key => $array ): ?>
 		<?php $index++; ?>
 			<tr>
 				<td><?= $index; ?></td>
-				<td><?= $key; ?></td>
-				<td><?= $count; ?></td>
+				<td><?= $array["category"]->name; ?></td>
+				<td><?= $array["count"]; ?></td>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>
@@ -41,7 +41,7 @@
 			<tr>
 				<td><?= $index; ?></td>
 				<td><?= $row->value; ?></td>
-				<td><?= $row->category; ?></td>
+				<td><?= $row->category_settings->name; ?></td>
 				<td><?= $row->string_count; ?></td>
 			</tr>
 		<?php endforeach; ?>

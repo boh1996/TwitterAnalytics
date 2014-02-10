@@ -191,6 +191,24 @@ class Settings_model extends Base_model {
 	}
 
 	/**
+	 *    Fetches the list of categories
+	 *
+	 *    @return array<Object>
+	 */
+	public function get_categories () {
+		$this->load->config("categories");
+		$categories = $this->config->item("categories");
+
+		$list = array();
+
+		foreach ( $categories as $key => $array ) {
+			$list[$array["key"]] = (object) $array;
+		}
+
+		return $list;
+	}
+
+	/**
 	 *    Returns the intervals, first priority is the db, next is the defaults config
 	 *
 	 *    @return array
@@ -230,6 +248,10 @@ class Settings_model extends Base_model {
 					$row->status = $intervals[$row->key]["status"];
 				}
 
+				if ( $row->email == "" ) {
+					$row->email = $intervals[$row->key]["email"];
+				}
+
 			}
 
 			$list[$row->key] = $row;
@@ -250,8 +272,6 @@ class Settings_model extends Base_model {
 				}
 			}
 		}
-
-		print_r($list);
 
 		uasort($list, function($a, $b)
 		{

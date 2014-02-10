@@ -5,7 +5,7 @@
 			<div class="col-sm-12">
 				<h2><span class="page-name create-page" data-value="<?= $object->name ?>"><?= $object->name ?></span> <small><a href="#" data-page-id="<?= $object->id; ?>" class="edit-page"><?= $this->lang->line("admin_edit_page_name"); ?></a></small>
 					<small><a href="#" class="remove-page" data-page-id="<?= $object->id; ?>"><?= $this->lang->line("admin_remove_page"); ?></a></small>
-					<small><?= $this->lang->line("admin_page_login_control"); ?><input type="checkbox" class="checkbox access-control" <?= ( $object->login == "login" ) ? 'checked="checked"' : "" ?> /></small>
+					<small><?= $this->lang->line("admin_page_login_control"); ?><input type="checkbox" class="checkbox access-control" <?= ( $object->login == "true" ) ? 'checked="checked"' : "" ?> /></small>
 				</h2>
 			</div>
 			<div class="form-group col-sm-12">
@@ -40,7 +40,7 @@
 					<div class="tab-pane" id="strings_<?= $object->id ?>">
 						<div class="col-sm-offset-1 col-sm-10 list-container strings-container">
 							<?php foreach ( $object->strings as $cat_id =>$category ) : ?>
-								<h3><?= $this->lang->line($category["config"]["language_key"]); ?></h3>
+								<h3><?= $this->lang->line($category["config"]["name"]); ?></h3>
 								<div class="category" data-category-id="<?= $cat_id; ?>">
 									<?php foreach ( $category["strings"] as $string ): ?>
 										<div class="form-group string-object" style="min-width:600px;" data-category-id="<?= $category["config"]["key"]; ?>" data-object-id="<?= $string["id"]; ?>">
@@ -72,12 +72,7 @@
 
 						<h3><?= $this->lang->line("admin_embed_title"); ?></h3>
 
-						<textarea class="embed form-control"></textarea>
-					</div>
-
-					<div class="col-sm-12">
-						<h3><?= $this->lang->line("admin_page_email_change_value"); ?></h3>
-						<input type="text" class="form-control email-value" >
+						<textarea class="embed form-control"><?= $object->embed; ?></textarea>
 					</div>
 				</div>
 			</div>

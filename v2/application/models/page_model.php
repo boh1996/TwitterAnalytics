@@ -113,24 +113,6 @@ class Page_model extends Base_model {
 	}
 
 	/**
-	 *    Returns the pages email change value
-	 *
-	 *    @param integer $page_id The page to fetch the value for
-	 *
-	 *    @return string
-	 */
-	public function get_email_change_value ( $page_id ) {
-		$this->db->select("email_change_value");
-		$this->db->from("statistic_pages");
-		$this->db->where(array(
-			"id" => $page_id
-		));
-		$query = $this->get();
-
-		return $query->row()->email_change_value;
-	}
-
-	/**
 	 *    Saves a list of pages
 	 *
 	 *    @param array $pages The list of pages
@@ -145,19 +127,17 @@ class Page_model extends Base_model {
 					"id" => $page["id"]
 				));
 				$this->db->update("statistic_pages",array(
-					"name" => $page["name"],
-					"login" => $page["login"],
-					"embed" => $page["embed"],
-					"email_change_value" => $page["email_change_value"]
+					"name" => ( isset($page["name"]) ) ? $page["name"] : "",
+					"login" => ( isset($page["login"]) ) ? $page["login"] : "",
+					"embed" => ( isset($page["embed"]) ) ? $page["embed"] : "",
 				));
 				$this->save_strings($page["strings"], $page["id"]);
 				$this->save_urls($page["urls"], $page["id"]);
 			} else {
 				$id = $this->insert("statistic_pages",array(
-					"name" => $page["name"],
-					"login" => $page["login"],
-					"embed" => $page["embed"],
-					"email_change_value" => $page["email_change_value"]
+					"name" => ( isset($page["name"]) ) ? $page["name"] : "",
+					"login" => ( isset($page["login"]) ) ? $page["login"] : "",
+					"embed" => ( isset($page["embed"]) ) ? $page["embed"] : "",
 				));
 				$this->save_strings($page["strings"], $id);
 				$this->save_urls($page["urls"], $id);

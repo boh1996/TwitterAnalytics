@@ -102,13 +102,15 @@ $config["intervals"] = array(
 		"language_key" => "sort_per_year",
 		"login" => "login",
 		"status" => true,
+        "email" => true
 	),
 	"per_month" => array(
 		"key" => "per_month",
 		"value" => 2678400,
 		"language_key" => "sort_per_month",
 		"login" => "login",
-		"status" => true
+		"status" => true,
+        "email" => true
 	),
 	"per_week" => array(
 		"key" => "per_week",
@@ -116,6 +118,7 @@ $config["intervals"] = array(
 		"language_key" => "sort_per_week",
 		"login" => "login",
 		"status" => true,
+        "email" => true
 	),
 	"per_day" => array(
 		"key" => "per_day",
@@ -123,6 +126,7 @@ $config["intervals"] = array(
 		"language_key" => "sort_per_day",
 		"login" => "login",
 		"status" => true,
+        "email" => true
  	),
  	"per_half_day" => array(
  		"key" => "per_half_day",
@@ -130,6 +134,7 @@ $config["intervals"] = array(
  		"language_key" => "sort_per_half_day",
  		"login" => "login",
 		"status" => true,
+        "email" => true
  	),
  	"per_quater_of_a_day" => array(
  		"key" => "per_quater_of_a_day",
@@ -137,6 +142,7 @@ $config["intervals"] = array(
  		"language_key" => "sort_per_quater_of_day",
  		"login" => "login",
 		"status" => true,
+        "email" => true
  	),
  	"per_tree_hour" => array(
  		"key" => "per_tree_hour",
@@ -144,6 +150,7 @@ $config["intervals"] = array(
  		"language_key" => "sort_per_tree_hours",
  		"login" => "login",
 		"status" => true,
+        "email" => true
  	),
  	"per_hour" => array(
  		"key" => "per_hour",
@@ -151,6 +158,7 @@ $config["intervals"] = array(
  		"language_key" => "sort_per_hour",
  		"login" => "login",
 		"status" => true,
+        "email" => true
  	),
  	"per_half_hour" => array(
  		"key" => "per_half_hour",
@@ -158,6 +166,7 @@ $config["intervals"] = array(
  		"language_key" => "sort_per_half_hour",
  		"login" => "login",
 		"status" => true,
+        "email" => true
  	),
  	"per_fifteen_minutes" => array(
  		"key" => "per_fifteen_minutes",
@@ -165,6 +174,7 @@ $config["intervals"] = array(
  		"language_key" => "sort_per_fifteen_minutes",
  		"login" => "login",
 		"status" => true,
+        "email" => true
  	),
  	"per_five_minutes" => array(
  		"key" => "per_five_minutes",
@@ -172,6 +182,7 @@ $config["intervals"] = array(
  		"language_key" => "sort_per_five_minutes",
  		"login" => "login",
 		"status" => true,
+        "email" => true
  	),
  	"per_minute" => array(
  		"key" => "per_minute",
@@ -179,6 +190,7 @@ $config["intervals"] = array(
  		"language_key" => "sort_per_minute",
  		"login" => "login",
 		"status" => true,
+        "email" => true
  	)
 );
 ?>

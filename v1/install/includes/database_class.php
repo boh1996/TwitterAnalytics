@@ -6,7 +6,7 @@ class Database {
 	function create_database($data)
 	{
 		// Connect to the database
-		$mysqli = new mysqli($data['hostname'],$data['username'],$data['password'],'');
+		$mysqli = new mysqli($data['hostname'],$data['username'],$data['password'], null, $data["port"]);
 
 		// Check for errors
 		if(mysqli_connect_errno())
@@ -25,7 +25,7 @@ class Database {
 	function create_tables($data)
 	{
 		// Connect to the database
-		$mysqli = new mysqli($data['hostname'],$data['username'],$data['password'],$data['database']);
+		$mysqli = new mysqli($data['hostname'],$data['username'],$data['password'],$data['database'], $data["port"]);
 
 		// Check for errors
 		if(mysqli_connect_errno())
@@ -35,6 +35,7 @@ class Database {
 		$query = file_get_contents('assets/install.sql');
 
 		$query = str_replace("%%DATABASE_NAME%%", $data["database"], $query);
+		$query = str_replace("%%PORT%%", $data["port"], $query);
 
 		// Execute a multi query
 		$mysqli->multi_query($query);

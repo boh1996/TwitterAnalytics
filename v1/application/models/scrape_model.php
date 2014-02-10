@@ -166,16 +166,20 @@ class Scrape_model extends Base_model {
 	 */
 	public function if_to_alert ( $text, $alert_strings ) {
 		$this->load->model("settings_model");
-		$exact_match = (bool) $this->settings_model->fetch_setting("setting_alert_exact_match", true, "alerts");
+		$exact_match = $this->settings_model->fetch_setting("setting_alert_exact_match", true, "alerts");
 		$alerts = array();
 
+		$text = strtolower($text);
+
 		foreach ( $alert_strings as $string ) {
-			if ( $exact_match ) {
-				if ( preg_match("~\b(\s*)?" . $string->value . "\b(\s*)?~",$text) > 0 ) {
-					$alerts[] = $string->id;
+			if ( $exact_match == true ) {
+				if ( preg_match_all("~\b(\s*)?" . strtolower($string->value) . "\b(\s*)?~",$text, $matches) > 0 ) {
+					for ( $i=0;  $i < count($matches[0]) ;  $i++) {
+						$alerts[] = $string->id;
+					}
 				}
 			} else {
-				if ( strpos($text, $string->value) !== false ) {
+				if ( strpos($text, strtolower($string->value)) !== false ) {
 					$alerts[] = $string->id;
 				}
 			}

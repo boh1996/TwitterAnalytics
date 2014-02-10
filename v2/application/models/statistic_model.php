@@ -73,16 +73,23 @@ class Statistic_model extends Base_model {
 				    GROUP_CONCAT(created_at) as created,
 				    COUNT(id) as tweet_count,
 				    GROUP_CONCAT(DISTINCT id) as tweets,
-				    GROUP_CONCAT(category, "@|", category_tweet_count SEPARATOR "@;" ) as categories
+				    GROUP_CONCAT(string_category, "@|", category_tweet_count SEPARATOR "@;" ) as categories,
+				    string_category
 				FROM statistic_tweets
 				LEFT JOIN (
 				    SELECT
 				        tweet_id,
 				        statistic_tweet_string_id,
-				        category,
-				        COUNT(id) as category_tweet_count
+				        COUNT(id) as category_tweet_count,
+				        string_category
 				    FROM statistic_tweet_strings
-				    GROUP BY category
+				    LEFT JOIN (
+				    	SELECT
+				    		category as string_category,
+				    		id as string_id
+				    	FROM statistic_strings
+				    ) category_strings ON category_strings.string_id = statistic_tweet_strings.statistic_tweet_string_id
+				    GROUP BY string_category
 				) strings ON strings.tweet_id = statistic_tweets.id
 				WHERE created_at BETWEEN ? AND ?
 			';
@@ -115,6 +122,8 @@ class Statistic_model extends Base_model {
 			$row->color = $this->settings_model->fetch_setting("setting_default_zero_color", "#D1E0E0" , "viewer");
 			$row->category = "NONE";
 
+			$category_settings = $this->settings_model->get_categories();
+
 			foreach ( $categories as $value ) {
 				$value = explode("@|", $value);
 				if ( is_array($value) && count($value) > 1 ) {
@@ -124,7 +133,7 @@ class Statistic_model extends Base_model {
 
 					if ( $count > $largest ) {
 						$largest = $count;
-						$row->category = $cat;
+						$row->category = $category_settings[$cat];
 						$row->color = $this->settings_model->config_array_find("categories", "categories", $cat, "color");
 					}
 				}
@@ -180,13 +189,14 @@ class Statistic_model extends Base_model {
 			SELECT
 			    COUNT(*) AS string_count,
 			    statistic_tweet_string_id,
-			    category,
-			    value
+			    value,
+			    category
 			FROM statistic_tweet_strings
 			INNER JOIN (
 			    SELECT
 			        value,
-			        id as  string_id
+			        id as  string_id,
+			        category
 			    FROM statistic_strings
 			) strings on strings.string_id = statistic_tweet_string_id
 			WHERE tweet_id IN (
@@ -204,13 +214,17 @@ class Statistic_model extends Base_model {
 		$categories = array();
 		$list = array();
 
+		$this->load->model("settings_model");
+		$category_settings = $this->settings_model->get_categories();
+
 		foreach ( $query->result() as $row ) {
+			$row->category_settings = $category_settings[$row->category];
 			$list[] = $row;
 
 			if ( isset($categories[$row->category]) ) {
-				$categories[$row->category] = $categories[$row->category] + $row->string_count;
+				$categories[$row->category]["count"] = $categories[$row->category]["count"] + $row->string_count;
 			} else {
-				$categories[$row->category] = $row->string_count;
+				$categories[$row->category] = array("count" => $row->string_count, "category" => $category_settings[$row->category]);
 			}
 		}
 

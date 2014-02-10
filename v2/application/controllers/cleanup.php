@@ -34,7 +34,9 @@ class Cleanup extends CI_Controller {
 			"history",
 			"scrape_statistics",
 			"statistic_tweets",
-			"statistic_tweet_strings"
+			"statistic_tweet_strings",
+			"page_stats",
+			"page_tweets",
 		);
 
 		$this->load->model("cleanup_model");

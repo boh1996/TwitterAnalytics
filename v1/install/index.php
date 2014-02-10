@@ -1,5 +1,14 @@
 <?php
 
+$redir = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+$redir .= "://".$_SERVER['HTTP_HOST'];
+$redir .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+$redir = str_replace('install/','',$redir);
+
+if ( file_exists("../setup.txt") ) {
+	header( 'Location: ' . $redir ) ;
+}
+
 //error_reporting(E_NONE); //Setting this to E_ALL showed that that cause of not redirecting were few blank lines added in some php files.
 
 $db_config_path = '../application/config/database.php';
@@ -16,7 +25,7 @@ if($_POST) {
 
 
 	// Validate the post data
-	if($core->validate_post($_POST) == true)
+	if($core->validate($_POST) == true)
 	{
 
 		// First create the database, then create tables, then write config file
@@ -30,11 +39,7 @@ if($_POST) {
 
 		// If no errors, redirect to registration page
 		if(!isset($message)) {
-			sleep(2);
-		  $redir = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
-      $redir .= "://".$_SERVER['HTTP_HOST'];
-      $redir .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
-      $redir = str_replace('install/','',$redir);
+			sleep(5);
 			header( 'Location: ' . $redir . 'setup' ) ;
 		}
 
@@ -98,16 +103,21 @@ if($_POST) {
 
 		  <?php if(isset($message)) {echo '<p class="error">' . $message . '</p>';}?>
 
-		  <form id="install_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-        <fieldset>
-          <legend>Database settings</legend>
-          <label for="hostname">Hostname</label><input type="text" id="hostname" value="localhost" class="input_text" name="hostname" value="localhost" />
-          <label for="username">Username</label><input type="text" id="username" class="input_text" name="username" value="root" />
-          <label for="password">Password</label><input type="password" id="password" class="input_text" name="password" />
-          <label for="database">Database Name</label><input type="text" id="database" class="input_text" name="database" value="twitter_analytics" />
-          <input type="submit" value="Install" id="submit" />
-        </fieldset>
-		  </form>
+		  	<form id="install_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+					<fieldset>
+						<legend>Database settings</legend>
+						<label for="hostname">Hostname</label><input type="text" id="hostname" value="localhost" class="input_text" name="hostname" value="localhost" />
+						<label for="username">Username</label><input type="text" id="username" class="input_text" name="username" value="root" />
+						<label for="password">Password</label><input type="password" id="password" class="input_text" name="password" />
+						<label for="database">Database Name</label><input type="text" id="database" class="input_text" name="database" value="twitter_analytics" />
+						<label for="port">Database port</label><input type="text" id="port" class="input_text" name="port" value="3306" />
+
+						<hr>
+						<legend>System settings</legend>
+						<label for="hostname">Base URL</label><input type="text" id="base_url" class="input_text" name="base_url" value="http://127.0.0.1/twa/" />
+						<input type="submit" value="Install" id="submit" />
+					</fieldset>
+			</form>
 
 	  <?php } else { ?>
       <p class="error">Please make the application/config/database.php file writable. <strong>Example</strong>:<br /><br /><code>chmod 777 application/config/database.php</code></p>

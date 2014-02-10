@@ -65,8 +65,8 @@ $config["languages"] = array("english");
 
 $config["https"] = false;
 
-$config["encrypt_key"] = "vLBLfhA6DNi1R2MFHO8IvFWr4Cn9665eHUF+L/sqAKM=";
-$config["encrypt_salt"] = "ea0jzpP58QY5LvLK58iNTbhEQHGlgUAPvHq0zXCQybwD83OQJuAXOojVMqCCaS0v";
+$config["encrypt_key"] = "gzIKjiQgEuHscg6ktbYdVnvOQptL9ngM";
+$config["encrypt_salt"] = "ZJ3mFS9Q7pjfbW2Kj8jlxi5oEvmo3p4d";
 
 /*
 |--------------------------------------------------------------------------
@@ -233,7 +233,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'abcdefghijklmnopqrstuvwxyzABCDEF';
+$config['encryption_key'] = 'wTGswEdKV6sF60BT';
 
 /*
 |--------------------------------------------------------------------------

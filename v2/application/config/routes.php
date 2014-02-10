@@ -46,6 +46,8 @@ $route["sign_out"] = "login/sign_out";
 $route["admin/access/control"] = "admin/access_control_view";
 $route["setup"] = "setup";
 
+$route["empty"] = "api/api_settings/empty";
+
 $route["admin"] = "admin/status_view";
 $route["admin/status"] = "admin/status_view";
 $route["admin/settings"] = "admin/settings_view";

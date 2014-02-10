@@ -42,6 +42,14 @@ $lang["admin_analytics_settings_description"] = "Settings regarding the analytic
 $lang["admin_urls_description"] = "Twitter URLs that will be analyzed for tweets!";
 $lang["admin_alerts_settings_description"] = "Settings regarded to the alerts viewer!";
 
+$lang["admin_databased_cleanup_script_finished"] = "Database cleanup finished";
+$lang["admin_empty_database"] = "Empty databases";
+$lang["admin_cleanup"] = "Cleanup";
+$lang["cleanup_description"] = "Removes to old data or totally empties the databases";
+$lang["admin_databased_empty_script_finished"] = "Databases emptied";
+$lang["admin_run_cleanup"] = "Cleanup";
+$lang["admin_error_occured"] = "An error occured!";
+
 $lang["admin_settings"] = "Settings";
 $lang["admin_scrapers_pages"] = "Pages";
 $lang["admin_intervals"] = "Intervals";
@@ -129,7 +137,7 @@ $lang["admin_remove_page"] = "Remove";
 $lang["pages_page_description"] = "Create pages and add urls and strings to them";
 $lang["admin_embed_title"] = "Embed text / HTML on page";
 $lang["admin_page_login_control"] = "Login:";
-$lang["admin_page_email_change_value"] = "Change value for email";
+$lang["admin_page_email_change_value"] = "Change value for email (only numbers)";
 $lang["admin_intervals_settings"] = "Intervals";
 $lang["admin_intervals_description"] = "Security settings for intervals";
 $lang["admin_page_intervals"] = "Intervals";
@@ -183,5 +191,9 @@ $lang["settings_variables_description"] = "These are the usable variables for th
 <b>{{page_url}}</b> : The URL for the page that launched the alert<br>
 <b>{{time}}</b> : The current time<br>
 <b>{{asset_url}}</b> : The URL for the site asset directory<br>
+
+Use <b>{{category_**}}</b> and then replace the stars with the name of the cateogry<br>
 ";
+$lang["admin_email_alert_interval"] = "Email";
+$lang["admin_email_setting_changed"] = "Email setting changed";
 ?>

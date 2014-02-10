@@ -39,7 +39,8 @@ class Base_model extends CI_Model {
 	 */
 	public function insert ( $table, $data ) {
 		$this->db->insert($table, $data);
-		return $this->db->insert_id();
+		$id = $this->db->insert_id();
+		return $id;
 	}
 
 	/**

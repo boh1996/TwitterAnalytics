@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://127.0.0.1/twa/';
+$config['base_url']	= '%BASE_URL%';
 
 /*
 |--------------------------------------------------------------------------
@@ -65,8 +65,8 @@ $config["languages"] = array("english");
 
 $config["https"] = false;
 
-$config["encrypt_key"] = "pJ0XdQdhTjCAKoZHdnwtNE3K2F6RXQoa";
-$config["encrypt_salt"] = "OrRaZ0enWNh5D9Ij9XedE0U8z632Nwzi";
+$config["encrypt_key"] = "%ENCRYPT_KEY%";
+$config["encrypt_salt"] = "%ENCRYPT_SALT%";
 
 /*
 |--------------------------------------------------------------------------
@@ -233,7 +233,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'DzQ6WNhSvun3FZIW';
+$config['encryption_key'] = '%SESSION_ENCRYPT_KEY%';
 
 /*
 |--------------------------------------------------------------------------

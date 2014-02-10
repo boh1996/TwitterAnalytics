@@ -106,6 +106,44 @@ class Analytics_model extends Base_model {
 	}
 
 	/**
+	 *    FInds the words id b words
+	 *
+	 *    @param string $word The word
+	 *
+	 *    @return integer The word id
+	 */
+	public function get_word ( $word ) {
+		$query = $this->db->select("id")->where(array(
+			"word" => $word
+		))->get("words");
+
+		if ( ! $query->num_rows() ) return false;
+
+		$row = $query->row();
+
+		return $row->id;
+	}
+
+	/**
+	 *    Fetches the alert value
+	 *
+	 *    @param integer $alert_id The alert string id
+	 *
+	 *    @return string
+	 */
+	public function get_alert_value ( $alert_id ) {
+		$query = $this->db->select("value")->where(array(
+			"id" => $alert_id
+		))->get("alert_strings");
+
+		if ( ! $query->num_rows() ) return false;
+
+		$row = $query->row();
+
+		return $row->value;
+	}
+
+	/**
 	 * Selects the connected word, to an alert string
 	 * @param  integer  $alert_id The alert string id
 	 * @param  integer $limit    The max number of words, returned
@@ -129,7 +167,14 @@ class Analytics_model extends Base_model {
 		$limit = intval($limit);
 		$alert_id = intval($alert_id);
 
+		$alert_word_id = $this->get_word($this->get_alert_value($alert_id));
+
 		$hidden = $this->get_hidden_connected_words(true);
+
+		if ( $alert_word_id !== false ) {
+			$hidden[] = $alert_word_id;
+		}
+
 		if ( $hidden !== false && count($hidden) > 0 ) {
 			$hidden_string = " AND word_id NOT IN (" . implode(",",$hidden) . ")";
 		} else {

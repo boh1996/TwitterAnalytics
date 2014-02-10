@@ -77,11 +77,17 @@ class API_Intervals extends T_API_Controller {
 			), 400);
 		}
 
-		$this->interval_model->change($this->post("key"), array(
-			"login" => $this->post("login"),
-			"name" => $this->post("name"),
-			"value" => $this->post("value")
-		));
+		$columns = array("login", "name", "value", "email");
+
+		$data = array();
+
+		foreach ( $columns as $key ) {
+			if ( $this->post($key) !== false ) {
+				$data[$key] = $this->post($key);
+			}
+		}
+
+		$this->interval_model->change($this->post("key"), $data);
 	}
 
 	/**
@@ -95,12 +101,17 @@ class API_Intervals extends T_API_Controller {
 			), 400);
 		}
 
+		$columns = array("login", "name", "value", "email");
+
 		foreach ( $this->post("intervals") as $interval ) {
-			$this->interval_model->change($interval->key, array(
-				"login" => $interval->login,
-				"name" => $interval->name,
-				"value" => $interval->value
-			));
+			$data = array();
+
+			foreach ( $columns as $key ) {
+				if ( $this->post($key) !== false ) {
+					$data[$key] = $this->post($key);
+				}
+			}
+			$this->interval_model->change($interval->key, $data);
 		}
 	}
 }

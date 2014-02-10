@@ -218,6 +218,8 @@ CREATE TABLE `page_tweets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tweet_id` varchar(45) DEFAULT NULL,
   `page_id` varchar(45) DEFAULT NULL,
+  `tweets_created` varchar(45) DEFAULT NULL,
+  `created_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

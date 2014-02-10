@@ -27,4 +27,5 @@ $lang["user_categories"] = "Categories";
 $lang["user_count_string"] = "Count";
 $lang["user_tweet_count"] = "<b>Interval Count</b>";
 $lang["user_interval_stats"] = "Interval";
+$lang["user_page_category"] = "Category";
 ?>

@@ -70,7 +70,7 @@ class User extends CI_Controller {
 		$this->lang->load("common");
 		$this->load->model("analytics_model");
 
-		$alert_strings = $this->analytics_model->fetch_alert_box($this->limit, $this->settings["alerts"]["setting_alert_words"]->value, $this->max);
+		$alert_strings = $this->analytics_model->fetch_alert_box($this->limit, $this->settings["alerts"]["setting_alert_words"]->value, $this->date, $this->max);
 
 		$data = array(
 			"current_section" => "user",
@@ -117,7 +117,7 @@ class User extends CI_Controller {
 			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
 		}
 
-		$alerts = $this->analytics_model->fetch_alert_words($this->limit, $this->max);
+		$alerts = $this->analytics_model->fetch_alert_words($this->limit, $this->date, $this->max);
 
 		$data = array(
 			"current_section" => "user",
@@ -141,7 +141,7 @@ class User extends CI_Controller {
 			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
 		}
 
-		$alerts = $this->analytics_model->fetch_alert_words($this->limit, $this->max);
+		$alerts = $this->analytics_model->fetch_alert_words($this->limit, $this->date, $this->max);
 
 		$data = array(
 			"current_section" => "user",
@@ -162,7 +162,7 @@ class User extends CI_Controller {
 
 		$this->load->model("analytics_model");
 
-		$words = $this->analytics_model->fetch_words($this->limit, $this->max);
+		$words = $this->analytics_model->fetch_words($this->limit, $this->date, $this->max);
 
 		$data = array(
 			"current_section" => "user",

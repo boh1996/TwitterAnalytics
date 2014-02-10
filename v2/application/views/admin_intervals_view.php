@@ -49,7 +49,7 @@
 					<?php else: foreach ( $objects as $object ):  ?>
 
 						<div class="form-group" data-key="<?= $object->key ?>" data-default="<?= ( isset( $object->default ) ) ? ( $object->default == 1 ) ? "true" : "false" : "false"; ?>">
-							<div class="col-sm-2 col-sm-offset-3">
+							<div class="col-sm-2 col-sm-offset-2">
 								<label class="control-label" for="<?= $object->key ?>">
 									<?= $object->name; ?>
 								</label>
@@ -62,7 +62,7 @@
 								</div>
 							</div>
 
-							<div class="col-sm-3">
+							<div class="col-sm-2">
 								<label class="control-label" for="<?= $object->key ?>">
 									<i><?= $this->lang->line("admin_interval_login"); ?></i>
 								</label>
@@ -78,6 +78,13 @@
 								<?php endif; ?>
 
 							</div>
+
+							<div class="col-sm-2">
+								<label class="control-label" for="<?= $object->key ?>">
+									<i><?= $this->lang->line("admin_email_alert_interval"); ?></i>
+								</label>
+								<input type="checkbox" class="checkbox email-alert" data-key="<?= $object->key ?>" <?= ( $object->email == "true" ) ? 'checked="checked"' : "" ?> />
+							</div>
 						</div>
 
 						<hr>
@@ -85,7 +92,7 @@
 					<?php endforeach; endif; ?>
 
 					<div class="form-group">
-						<div class="col-sm-offset-3 col-sm-7">
+						<div class="col-sm-offset-2 col-sm-8">
 							<button class="btn btn-lg btn-primary btn-block" id="access_control_save" type="submit"><?= $this->lang->line("admin_save"); ?></button>
 						</div>
 					</div>

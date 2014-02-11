@@ -199,7 +199,7 @@ class API_Scraper extends T_API_Controller {
 					$pages[$url->statistic_page_id]["tweets_created"] + $pages[$url->statistic_page_id]["tweets_created"] + $info["tweets_created"];
 
 					foreach ( $local_tweets as $tweet ) {
-						$this->tweet_model->search_for_strings($tweet, $strings[$url->statistic_page_id]->strings);
+						$this->tweet_model->search_for_strings($tweet, $strings[$url->statistic_page_id]->strings, $url->statistic_page_id);
 						$this->tweet_model->link_page_and_tweet($tweet["tweet_id"], $url->statistic_page_id);
 
 					}

@@ -237,7 +237,7 @@ $(document).on("submit", ".pages-form", function ( event ) {
 				"name" : $(pageElement).find(".page-name").html(),
 				"login" : $(pageElement).find(".access-control").attr("data-checked"),
 				"embed" : $(pageElement).find(".embed").val(),
-				"email_change_value" : $(pageElement).find(".email-value").val()
+				"exact_match" : $(pageElement).find(".exact-match").attr("data-checked"),
 			};
 
 			if ( $(pageElement).attr("data-page-object-id") !== undefined ) {

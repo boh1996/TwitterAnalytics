@@ -69,6 +69,16 @@ $config["pages"] = array(
 		"url"					=> "admin/email",
 		"type"					=> "page",
 		"header_language_key"	=> ""
+	),
+	"admin_email_recievers_page"	=> array(
+		"page"					=> "admin_email_recievers_page",
+		"mode" 					=> "login",
+		"language_key" 			=> "admin_email_recievers_header",
+		"section"				=> "admin",
+		"admin_language_key" 	=> "admin_page_email_recievers",
+		"url"					=> "admin/email/recievers",
+		"type"					=> "page",
+		"header_language_key"	=> ""
 	)
 );
 ?>

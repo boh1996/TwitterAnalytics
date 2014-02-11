@@ -7,6 +7,7 @@
 					<?= $this->lang->line("admin_edit_page_name"); ?></a></small>
 					<small><a href="#" class="remove-page"><?= $this->lang->line("admin_remove_page"); ?></a></small>
 					<small><?= $this->lang->line("admin_page_login_control"); ?><input type="checkbox" class="checkbox access-control" /></small>
+					<small><?= $this->lang->line("admin_exact_match"); ?><input type="checkbox" class="checkbox exact-match" /></small>
 				</h2>
 			</div>
 			<div class="form-group col-sm-12">

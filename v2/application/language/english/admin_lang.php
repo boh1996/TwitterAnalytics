@@ -156,6 +156,8 @@ $lang["setting_number_of_columns_help"] = "The numbeer of columns show in the gr
 $lang["admin_default_color"] = "Default column color";
 $lang["admin_default_zero_color"] = "No strings column color";
 $lang["setting_default_zero_color"] = "Default color";
+$lang["admin_exact_match"] = "Exact match";
+$lang["admin_category_difference"] = "Category";
 
 ###### Email ########
 $lang["admin_email_sender"] = "Email sender";
@@ -181,6 +183,14 @@ $lang["admin_email_decrease_alert_placeholder"] = "Email alert on decrease";
 $lang["setting_increase_alert_help"] = "Send an email if the number of tweets has decreased";
 $lang["admin_email"] = "Email";
 $lang["admin_page_email"] = "Email";
+$lang["admin_email_recievers"] = "Email Recievers";
+$lang["admin_email_recievers_description"] = "Add recievers of email alerts";
+$lang["admin_new_reciever"] = "Add reciever";
+$lang["admin_email_recievers_page"] = "Recievers";
+$lang["admin_page_email_recievers"] = "Email recievers";
+$lang["admin_email_reciever"] = "Email reciever";
+$lang["admin_email_recievers_header"] = "Recivers";
+$lang["admin_email_recievers"] = "Reciever";
 $lang["settings_email"] = "Email settings";
 $lang["email_Settings_description"] = "Settings related to the email alert system";
 $lang["settings_variables_description"] = "These are the usable variables for the different templates:<br>
@@ -195,5 +205,7 @@ $lang["settings_variables_description"] = "These are the usable variables for th
 Use <b>{{category_**}}</b> and then replace the stars with the name of the cateogry<br>
 ";
 $lang["admin_email_alert_interval"] = "Email";
+$lang["admin_email_alert_decrease"] = "Decrease";
+$lang["admin_email_alert_increase"] = "Increase";
 $lang["admin_email_setting_changed"] = "Email setting changed";
 ?>

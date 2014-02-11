@@ -6,6 +6,7 @@
 				<h2><span class="page-name create-page" data-value="<?= $object->name ?>"><?= $object->name ?></span> <small><a href="#" data-page-id="<?= $object->id; ?>" class="edit-page"><?= $this->lang->line("admin_edit_page_name"); ?></a></small>
 					<small><a href="#" class="remove-page" data-page-id="<?= $object->id; ?>"><?= $this->lang->line("admin_remove_page"); ?></a></small>
 					<small><?= $this->lang->line("admin_page_login_control"); ?><input type="checkbox" class="checkbox access-control" <?= ( $object->login == "true" ) ? 'checked="checked"' : "" ?> /></small>
+					<small><?= $this->lang->line("admin_exact_match"); ?><input type="checkbox" class="checkbox exact-match" <?= ( $object->exact_match == "true" ) ? 'checked="checked"' : "" ?> /></small>
 				</h2>
 			</div>
 			<div class="form-group col-sm-12">

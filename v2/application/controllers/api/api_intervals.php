@@ -77,7 +77,7 @@ class API_Intervals extends T_API_Controller {
 			), 400);
 		}
 
-		$columns = array("login", "name", "value", "email");
+		$columns = array("login", "name", "value", "email_change_value", "decrease_email", "increase_email", "category_difference", "category_change_value");
 
 		$data = array();
 
@@ -101,7 +101,7 @@ class API_Intervals extends T_API_Controller {
 			), 400);
 		}
 
-		$columns = array("login", "name", "value", "email");
+		$columns = array("login", "name", "value", "email_change_value", "decrease_email", "increase_email", "category_difference", "category_change_value");
 
 		foreach ( $this->post("intervals") as $interval ) {
 			$data = array();

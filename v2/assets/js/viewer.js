@@ -187,14 +187,14 @@ function refreshChart ( url ) {
 				     	if ( this.point.categories.length > 0 ) {
 				     		string += "<h4>" + translations.user_categories + "</h4>";
 					     	$(this.point.categories).each( function (index, element) {
-					     		string =  string + translations.user_category + ":" + element.name + " - " + translations.user_count + ":"  + element.count + "<br>";
+					     		string = string + translations.user_category + ":" + element.category.name + " - " + translations.user_count + ":"  + element.count + "<br>";
 					     	} );
 					     	string += "<hr>";
 				     	}
 				     	if ( this.point.strings != false ) {
 				     		string += "<h4>" + translations.user_strings + "</h4>";
 				     		$(this.point.strings.strings).each( function (index, element) {
-					     		string = string + translations.user_category + ":" + element.category + " - " + translations.user_tooltip_string + ":" + element.value + " - " + translations.user_count + ":"  + element.string_count + "<br>";
+					     		string = string + translations.user_category + ":" + element.category_settings.name + " - " + translations.user_tooltip_string + ":" + element.value + " - " + translations.user_count + ":"  + element.string_count + "<br>";
 					     	} );
 					     	string += "<hr>";
 				     	}
@@ -237,7 +237,7 @@ $(document).on("click", "#refresh", function () {
 
 $(document).on("change", "#intervals", function () {
 	var value = $("#intervals").val();
-	refresh("get/tweets/" + page + "/" + $('#intervals').find('option[value="' + value + '"]').attr("data-key"));
+	refreshChart("get/tweets/" + page + "/" + $('#intervals').find('option[value="' + value + '"]').attr("data-key"));
 } );
 
 function componentToHex(c) {

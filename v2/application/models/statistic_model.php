@@ -124,14 +124,30 @@ class Statistic_model extends Base_model {
 
 			$category_settings = $this->settings_model->get_categories();
 
-			foreach ( $categories as $value ) {
-				$value = explode("@|", $value);
+			if ( empty($categories[0]) and count($row->strings) > 0 ) {
+				unset($categories[0]);
+				if ( isset($row->strings["categories"]) && is_array($row->strings["categories"]) ) {
+					foreach ( $row->strings["categories"] as $category ) {
+						$categories[$category["category"]->key] = array(1 => $category["count"], 0 => $category["category"]->key);
+	 				}
+ 				}
+			}
+
+			foreach ( $categories as $key => $value ) {
+				if ( ! is_array($value) ) {
+					$value = explode("@|", $value);
+				}
+
 				if ( is_array($value) && count($value) > 1 ) {
 					$count = $value[1];
 					$cat = $value[0];
-					$row->categories[] = array("count" => $count, "name" => $cat);
+					$row->categories[] = array("count" => $count, "name" => $cat, "category" => $category_settings[$cat]);
 
-					if ( $count > $largest ) {
+					if ( $largest == 0 ) {
+						$largest = $count;
+						$row->category = $category_settings[$cat];
+						$row->color = $this->settings_model->config_array_find("categories", "categories", $cat, "color");
+					} else if ( $count > $largest ) {
 						$largest = $count;
 						$row->category = $category_settings[$cat];
 						$row->color = $this->settings_model->config_array_find("categories", "categories", $cat, "color");
@@ -232,6 +248,51 @@ class Statistic_model extends Base_model {
 			"strings" => $list,
 			"categories" => $categories
 		);
+	}
+
+	/**
+	 *    Returns the categories with the number of strings from a given timeframe
+	 *
+	 *    @param integer  $time_back The minimum time for the interval
+	 *    @param integer  $page_id   The page to fetch data from
+	 *    @param integer $max The max time for the interval
+	 *
+	 *    @return array
+	 */
+	public function cateogories_sum ( $min, $page_id, $max ) {
+
+		$query = $this->db->query('
+			SELECT
+			    COUNT(*) AS string_count,
+			    category
+			FROM statistic_tweet_strings
+			INNER JOIN (
+			    SELECT
+			        id as  string_id,
+			        category
+			    FROM statistic_strings
+			) strings on strings.string_id = statistic_tweet_string_id
+			WHERE tweet_id IN (
+			    SELECT id
+			    FROM statistic_tweets
+			    WHERE created_at BETWEEN ? AND ? AND id IN ( SELECT tweet_id FROM page_tweets WHERE page_id = ? )
+			)
+			GROUP BY statistic_tweet_string_id
+		', array($min, $max, $page_id));
+
+		if ( ! $query->num_rows() ) return false;
+
+		$categories = array();
+
+		foreach ( $query->result() as $row ) {
+			if ( isset($categories[$row->category]) ) {
+				$categories[$row->category]["count"] = $categories[$row->category]["count"] + $row->string_count;
+			} else {
+				$categories[$row->category] = array("count" => $row->string_count);
+			}
+		}
+
+		return $categories;
 	}
 
 	/**

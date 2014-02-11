@@ -248,8 +248,20 @@ class Settings_model extends Base_model {
 					$row->status = $intervals[$row->key]["status"];
 				}
 
-				if ( $row->email == "" ) {
-					$row->email = $intervals[$row->key]["email"];
+				if ( $row->email_change_value == "" ) {
+					$row->email_change_value = $intervals[$row->key]["email_change_value"];
+				}
+
+				if ( $row->decrease_email == "" ) {
+					$row->decrease_email = $intervals[$row->key]["decrease_email"];
+				}
+
+				if ( $row->increase_email == "" ) {
+					$row->increase_email = $intervals[$row->key]["increase_email"];
+				}
+
+				if (  $row->category_difference == "") {
+					$row->category_difference = $intervals[$row->key]["category_difference"];
 				}
 
 			}

@@ -108,19 +108,39 @@ class Tweet_model extends Base_model {
 	public function insert_tweet_data ( $tweet, $tweet_db_id ) {}
 
 	/**
+	 *    Retrieves exact match data
+	 *
+	 *    @param integer $page_id The page to retrieve settings for
+	 *
+	 *    @return boolean
+	 */
+	public function get_exact_match ( $page_id ) {
+		$query = $this->db->where(array(
+			"id" => $page_id
+		))->get("statistic_pages");
+
+		if ( ! $query->num_rows() ) return false;
+
+		$row = $query->row();
+
+		return $row->exact_match;
+	}
+
+	/**
 	 *    Loops through the list of strings, and inserts a link,
 	 *    if one of them are found in the tweet
 	 *
 	 *    @param array $tweet   The tweet data array
 	 *    @param array $strings An array of strings in the format array([0] => value, [1] => id)
+	 *    @param integer $ [description]
 	 *
 	 */
-	public function search_for_strings ( $tweet, $strings ) {
+	public function search_for_strings ( $tweet, $strings, $page_id ) {
 		foreach ( $strings as $string ) {
 			$value = strtolower($string[0]);
 			$id = $string[1];
 			$category = $string[2];
-			$exact_match = false;
+			$exact_match =  $this->get_exact_match($page_id);
 
 			$text = strtolower($tweet["text"]);
 

@@ -59,7 +59,8 @@ class Words_model extends Base_model {
 			    urls,
 			    strings,
 			    login,
-			    embed
+			    embed,
+			    exact_match
 			FROM statistic_pages sp
 			LEFT JOIN (
 			    SELECT

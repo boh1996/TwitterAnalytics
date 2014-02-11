@@ -130,6 +130,7 @@ class Page_model extends Base_model {
 					"name" => ( isset($page["name"]) ) ? $page["name"] : "",
 					"login" => ( isset($page["login"]) ) ? $page["login"] : "",
 					"embed" => ( isset($page["embed"]) ) ? $page["embed"] : "",
+					"exact_match" => ( isset($page["exact_match"]) ) ? $page["exact_match"] : false,
 				));
 				$this->save_strings($page["strings"], $page["id"]);
 				$this->save_urls($page["urls"], $page["id"]);
@@ -138,6 +139,7 @@ class Page_model extends Base_model {
 					"name" => ( isset($page["name"]) ) ? $page["name"] : "",
 					"login" => ( isset($page["login"]) ) ? $page["login"] : "",
 					"embed" => ( isset($page["embed"]) ) ? $page["embed"] : "",
+					"exact_match" => ( isset($page["exact_match"]) ) ? $page["exact_match"] : false,
 				));
 				$this->save_strings($page["strings"], $id);
 				$this->save_urls($page["urls"], $id);

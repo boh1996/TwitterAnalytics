@@ -49,16 +49,17 @@
 					<?php else: foreach ( $objects as $object ):  ?>
 
 						<div class="form-group" data-key="<?= $object->key ?>" data-default="<?= ( isset( $object->default ) ) ? ( $object->default == 1 ) ? "true" : "false" : "false"; ?>">
-							<div class="col-sm-2 col-sm-offset-2">
-								<label class="control-label" for="<?= $object->key ?>">
-									<?= $object->name; ?>
-								</label>
-							</div>
-
-							<div class="col-sm-3">
-								<div class="input-group">
-									<input type="text" <?= ( isset( $object->default ) && $object->default == 1 ) ? 'disabled="true"' : '' ?> value="<?= $object->value; ?>" placeholder="<?= ( isset( $object->default ) && $object->default == 1 ) ? $object->value : $this->lang->line("admin_intervals_value"); ?>" class="form-control">
-									<span class="input-group-addon"><b><?= $this->lang->line("admin_interval_seconds"); ?></b></span>
+							<div class="col-sm-4 col-sm-offset-1">
+								<div class="col-sm-4">
+									<p>
+										<b><?= $object->name; ?></b>
+									</p>
+								</div>
+								<div class="col-sm-8">
+									<div class="input-group">
+										<input id="<?= $object->key ?>" name="<?= $object->key ?>" type="text" <?= ( isset( $object->default ) && $object->default == 1 ) ? 'disabled="true"' : '' ?> value="<?= $object->value; ?>" placeholder="<?= ( isset( $object->default ) && $object->default == 1 ) ? $object->value : $this->lang->line("admin_intervals_value"); ?>" class="form-control">
+										<span class="input-group-addon"><b><?= $this->lang->line("admin_interval_seconds"); ?></b></span>
+									</div>
 								</div>
 							</div>
 
@@ -79,23 +80,27 @@
 
 							</div>
 
-							<div class="col-sm-2">
+							<div class="col-sm-4">
 								<label class="control-label" for="<?= $object->key ?>">
-									<i><?= $this->lang->line("admin_email_alert_interval"); ?></i>
+									<i><?= $this->lang->line("admin_email_alert_decrease"); ?></i>
 								</label>
-								<input type="checkbox" class="checkbox email-alert" data-key="<?= $object->key ?>" <?= ( $object->email == "true" ) ? 'checked="checked"' : "" ?> />
+								<input type="checkbox" class="checkbox decrease-alert" data-key="<?= $object->key ?>" <?= ( $object->decrease_email == "true" ) ? 'checked="checked"' : "" ?> />
+
+								<label class="control-label" for="<?= $object->key ?>">
+									<i><?= $this->lang->line("admin_email_alert_increase"); ?></i>
+								</label>
+								<input type="checkbox" class="checkbox increase-alert" data-key="<?= $object->key ?>" <?= ( $object->increase_email == "true" ) ? 'checked="checked"' : "" ?> />
+
+								<label class="control-label" for="<?= $object->key ?>">
+									<i><?= $this->lang->line("admin_category_difference"); ?></i>
+								</label>
+								<input type="checkbox" class="checkbox category-difference" data-key="<?= $object->key ?>" <?= ( $object->category_difference == "true" ) ? 'checked="checked"' : "" ?> />
 							</div>
 						</div>
 
 						<hr>
 
 					<?php endforeach; endif; ?>
-
-					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-8">
-							<button class="btn btn-lg btn-primary btn-block" id="access_control_save" type="submit"><?= $this->lang->line("admin_save"); ?></button>
-						</div>
-					</div>
 				</form>
 			</div>
 		</div>

@@ -42,15 +42,7 @@ class API_Email extends T_API_Controller {
 			), 400);
 		}
 
-		$email = true;
-
-		if ( $interval_object->email == "false" ) {
-			$email = false;
-		} else if ( $interval_object->email == "0" ) {
-			$email = false;
-		} else if ( $interval_object->email === false ) {
-			$email = false;
-		}
+		$email = $this->email_model->if_to_email($interval_object, $email_types);
 
 		if ( $email == false) {
 			$this->response(array(
@@ -61,7 +53,11 @@ class API_Email extends T_API_Controller {
 		$pages = $this->base_model->get_list("statistic_pages");
 
 		foreach ( $pages as $page ) {
-			$this->email_model->process($interval_object->value, $page->id);
+			$this->email_model->process($interval_object->value, $page->id, $email_types, $interval_object->email_change_value, $interval_object->category_change_value);
+
+			if ( in_array("category", $email_types) ) {
+				$this->email_model->category_alert($interval_object->value, $page->id, $interval_object->category_change_value);
+			}
 		}
 
 		$this->response(array(

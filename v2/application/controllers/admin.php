@@ -150,6 +150,26 @@ class Admin extends CI_Controller {
 		)));
 	}
 
+	/**
+	 * Shows the list of words, that will block a tweet view
+	 */
+	public function email_recievers_view () {
+		if ( ! $this->user_control->check_security("admin_topics") ) {
+			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));
+			die();
+		}
+
+		$this->lang->load("admin");
+
+		$objects = $this->base_model->get_list("email_alert_recievers");
+
+		$this->load->view("admin_email_recievers", $this->user_control->ControllerInfo(array(
+			"translations" => json_encode($this->lang->export()),
+			"current_section" => "admin",
+			"objects" => ( $objects !== false ) ? $objects : array()
+		)));
+	}
+
 	public function email_view () {
 		if ( ! $this->user_control->check_security("admin_email") ) {
 			redirect($this->user_control->CheckHTTPS(base_url() . "sign_in"));

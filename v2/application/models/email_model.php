@@ -62,16 +62,83 @@ class Email_model extends Base_model {
 	}
 
 	/**
+	 *    Checks if an email alert should be sent for this interval
+	 *
+	 *    @param Object $interval The interval database row object
+	 *    @param array &$type A container for the email type
+	 *
+	 *    @return boolean
+	 */
+	public function if_to_email ( $interval, &$type ) {
+		$result = false;
+		$type = array();
+
+		if ( $interval->increase_email == "true" ) {
+			$result = true;
+			$type[] = "increase";
+		} else if ( $interval->increase_email == "1" ) {
+			$result = true;
+			$type[] = "increase";
+		} else if ( $interval->increase_email === true ) {
+			$result = true;
+			$type[] = "increase";
+		}
+
+		if ( $interval->decrease_email == "true" ) {
+			$result = true;
+			$type[] = "decrease";
+		} else if ( $interval->decrease_email == "1" ) {
+			$result = true;
+			$type[] = "decrease";
+		} else if ( $interval->decrease_email === true ) {
+			$result = true;
+			$type[] = "decrease";
+		}
+
+		if ( $interval->category_difference == "true" ) {
+			$result = true;
+			$type[] = "category";
+		} else if ( $interval->category_difference == "1" ) {
+			$result = true;
+			$type[] = "category";
+		} else if ( $interval->category_difference === true ) {
+			$result = true;
+			$type[] = "category";
+		}
+
+		return $result;
+	}
+
+	/**
 	 *    Fetches all the categories and the associated words
 	 *
 	 *    @param integer $page_id The page to recieve strings for
 	 *
 	 *    @return array
 	 */
-	public function get_category_strings ( $page_id ) {
-		$query = $this->db->where(array(
-			"statistic_page_id" => $page_id
-		))->get("statistic_strings");
+	public function get_category_strings ( $page_id, $min, $max ) {
+		$query = $this->db->query('
+			SELECT
+			    COUNT(*) AS string_count,
+			    statistic_tweet_string_id,
+			    value,
+			    category
+			FROM statistic_tweet_strings
+			INNER JOIN (
+			    SELECT
+			        value,
+			        id as  string_id,
+			        category
+			    FROM statistic_strings
+			) strings on strings.string_id = statistic_tweet_string_id
+			WHERE tweet_id IN (
+			    SELECT id
+			    FROM statistic_tweets
+			    WHERE created_at BETWEEN ? AND ? AND id IN ( SELECT tweet_id FROM page_tweets WHERE page_id = ? )
+			)
+			GROUP BY statistic_tweet_string_id
+			ORDER BY string_count DESC
+		', array($min, $max, $page_id));
 
 		if ( ! $query->num_rows() ) return false;
 
@@ -120,24 +187,87 @@ class Email_model extends Base_model {
 
 		$this->load->helper('email');
 
-		mail(implode(",", $recievers), $settings["subject"], wordwrap($settings["message"], 70, "\r\n"), "From: " . $settings["sender_email"]);
+		@mail(implode(",", $recievers), $settings["subject"], wordwrap($settings["message"], 70, "\r\n"), "From: " . $settings["sender_email"]);
 	}
 
 	/**
-	 *    Returns if the selected types notifications are turend on
+	 *    Calculates the percentage difference between the two categories
 	 *
-	 *    @param string $type "increase" or "decrease"
+	 *    @param integer $min     The minimum time
+	 *    @param integer $max     Max time
+	 *    @param integer $page_id Page
 	 *
-	 *    @return boolean
+	 *    @return integer
 	 */
-	public function mail_type_on ( $type ) {
+	public function top_category ( $min, $max, $page_id ) {
+		$this->load->model("statistic_model");
+
+		$categories = $this->statistic_model->cateogories_sum($min, $page_id, $max );
+
+		$difference = 0;
+		$second = 0;
+		$percent_change = 0;
+
+		if ( $categories !== false & count($categories) < 2 ) {
+			$element = current($categories);
+			$key = key($categories);
+			$difference = $element["count"];
+		} else if ( $categories !== false ) {
+			$first = current($categories);
+			$last = end($categories);
+			$difference = $first["count"] - $last["count"];
+			$second = $last["count"];
+		}
+
+		if ( $difference != 0 and $second != 0 ) {
+			$percent_change = ($difference / $second) * 100;
+		}
+
+		return $percent_change;
+	}
+
+	/**
+	 *    Checks for the category alert
+	 *
+	 *    @param integer $interval   The interval to check for
+	 *    @param integer $page_id The page id
+	 *    @param integer $change_value Minimum change
+	 *
+	 */
+	public function category_alert ( $interval, $page_id, $change_value = 0 ) {
+		$this->load->model("statistic_model");
+		$this->load->model("page_model");
 		$this->load->model("settings_model");
 
-		if ( $type == "increase" ) {
-			return $this->settings_model->fetch_setting("setting_email_increase_alert", true, "email");
-		} else {
-			return $this->settings_model->fetch_setting("setting_email_decrease_alert", true, "email");
+		$page_id = (int)$page_id;
+		$page = $this->page_model->get_statistic_page($page_id);
+		$percent_change = $this->top_category(time() - $interval, time(), $page_id);
+		$type = "category";
+
+		$settings = array(
+			"change_value" => $percent_change,
+			"time" => time(),
+			"page_name" => $page->name,
+			"page_url" => $this->config->item("base_url") . "page/" . $page->id,
+			"type" => $type,
+		);
+
+		$category_strings = $this->get_category_strings($page_id, time() - $interval, time());
+
+		if ( $category_strings !== "false" ) {
+			foreach ( $category_strings as $key => $value ) {
+				$settings[$key] = implode(",", $value);
+			}
 		}
+
+		if ( $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 200, "email") == 0 ) {
+			$this->create_message($settings, $type);
+		}
+
+		if ( abs($percent_change) >= $change_value ) {
+			$this->create_message($settings, $type);
+		}
+
 	}
 
 	/**
@@ -146,10 +276,13 @@ class Email_model extends Base_model {
 	 *
 	 *    @param integer $interval The time between the newest and the next one
 	 *    @param integer $page_id  The page to search tweets for
+	 *    @param array $types The email types to send
+	 *    @param integer $min_change Minimum change to trigger
+	 *    @param integer $min_category_change Minimum category change before trigger is activated
 	 *
 	 *    @return boolean
 	 */
-	public function process ( $interval, $page_id ) {
+	public function process ( $interval, $page_id, $types, $min_change = 0, $min_category_change = 0 ) {
 		$this->load->model("statistic_model");
 		$this->load->model("page_model");
 		$this->load->model("settings_model");
@@ -161,13 +294,16 @@ class Email_model extends Base_model {
 		$difference = $calculations["newest"] - $calculations["second"];
 		$percent_change = 0;
 		$page = $this->page_model->get_statistic_page($page_id);
-		$min_change = $page->email_change_value;
 
 		if ( $difference != 0 and $calculations["second"] != 0 ) {
 			$percent_change = ($difference / $calculations["second"]) * 100;
 		}
 
 		$type = "increase";
+
+		if ( $percent_change < 0 ) {
+			$type = "decrease";
+		}
 
 		$settings = array(
 			"change_value" => $percent_change,
@@ -176,9 +312,10 @@ class Email_model extends Base_model {
 			"tweet_count_last" => $calculations["second"],
 			"page_name" => $page->name,
 			"page_url" => $this->config->item("base_url") . "page/" . $page->id,
+			"type" => $type
 		);
 
-		$category_strings = $this->get_category_strings($page_id);
+		$category_strings = $this->get_category_strings($page_id, time() - $interval, time());
 
 		if ( $category_strings !== "false" ) {
 			foreach ( $category_strings as $key => $value ) {
@@ -191,18 +328,13 @@ class Email_model extends Base_model {
 			return true;
 		}
 
-		if ( $percent_change < 0 ) {
-			$type = "decrease";
-		}
-
-		$this->create_message($settings, $type);
-
 		if ( $calculations["second"] == 0 ) {
-			if ( abs($percent_change) >= $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 200, "email") and $this->mail_type_on($type) ) {
+			if ( abs($percent_change) >= $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 200, "email") and in_array($type, $types) ) {
 				$this->create_message($settings, $type);
 			}
 		} else {
-			if ( abs($percent_change) >= $min_change and $this->mail_type_on($type) ) {
+			if ( in_array("category", $types) ) {
+			} else if ( abs($percent_change) >= $min_change and in_array($type, $types) ) {
 				$this->create_message($settings, $type);
 			}
 		}
@@ -216,7 +348,9 @@ class Email_model extends Base_model {
 	 *
 	 */
 	public function create_message ( $settings, $type ) {
-		$this->load->file("application/libraries/mustache.php");
+		if ( ! class_exists("Mustache") ) {
+			$this->load->file("application/libraries/mustache.php");
+		}
 
 		$message = $this->settings_model->fetch_setting("setting_email_message", "", "email");
 		$alt_message = $this->settings_model->fetch_setting("setting_email_alt_message", "", "email");

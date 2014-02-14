@@ -145,7 +145,7 @@ class Tweet_model extends Base_model {
 			$text = strtolower($tweet["text"]);
 
 			if ( $exact_match ) {
-				if ( preg_match_all("~\b(\s*)?" . $text . "\b(\s*)?~",$text, $matches) > 0 ) {
+				if ( preg_match_all("~\b(\s*)?" . $value . "\b(\s*)?~",$text, $matches) > 0 ) {
 					for ( $i=0;  $i < count($matches[0]) ;  $i++) {
 						$this->insert_tweet_string($tweet["id"], $id);
 					}

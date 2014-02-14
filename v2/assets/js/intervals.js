@@ -139,3 +139,49 @@ $(document).on("change", ".category-difference", function ( event ) {
 		alert(null, translations["admin_please_log_in"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
 	}
 } );
+
+$(document).on("change", ".email-change-value", function ( event ) {
+	event.preventDefault();
+	var that = $(this);
+
+	if ( ! localStorage.getItem("twa_token") === false ) {
+		$.ajax({
+			type : "POST",
+			data : JSON.stringify({
+				"key" : $(that).attr("data-key"),
+				"email_change_value" : $(that).val()
+			}),
+			contentType : "application/json",
+			url : base_url + "admin/interval/edit?key=" + $(that).attr("data-key") + "&token=" + localStorage.getItem("twa_token"),
+		}).success( function ( xhr, status, data ) {
+			alert(null, translations["admin_email_setting_changed"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
+		} ).error( function ( xhr, status, data ) {
+			alert(null, translations["admin_sorry_something_failed"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
+		} );
+	} else {
+		alert(null, translations["admin_please_log_in"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
+	}
+} );
+
+$(document).on("change", ".category-difference-value", function ( event ) {
+	event.preventDefault();
+	var that = $(this);
+
+	if ( ! localStorage.getItem("twa_token") === false ) {
+		$.ajax({
+			type : "POST",
+			data : JSON.stringify({
+				"key" : $(that).attr("data-key"),
+				"category_change_value" : $(that).val()
+			}),
+			contentType : "application/json",
+			url : base_url + "admin/interval/edit?key=" + $(that).attr("data-key") + "&token=" + localStorage.getItem("twa_token"),
+		}).success( function ( xhr, status, data ) {
+			alert(null, translations["admin_email_setting_changed"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
+		} ).error( function ( xhr, status, data ) {
+			alert(null, translations["admin_sorry_something_failed"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
+		} );
+	} else {
+		alert(null, translations["admin_please_log_in"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
+	}
+} );

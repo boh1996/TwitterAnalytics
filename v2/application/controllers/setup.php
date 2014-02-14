@@ -42,7 +42,8 @@ class Setup extends CI_Controller {
 		if ( ! $success ) {
 			redirect(base_url() . "setup");
 		} else {
-			file_put_contents("setup.txt", "true");;
+			file_put_contents("setup.txt", "true");
+			sleep(2);
 			redirect(base_url());
 		}
 	}

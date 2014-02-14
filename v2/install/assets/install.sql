@@ -19,7 +19,7 @@
 -- Current Database: `%%DATABASE_NAME%%`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `%%DATABASE_NAME%%` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `%%DATABASE_NAME%%` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
 USE `%%DATABASE_NAME%%`;
 
@@ -89,7 +89,7 @@ CREATE TABLE `ci_sessions` (
   `last_activity` text,
   `user_data` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,6 +98,7 @@ CREATE TABLE `ci_sessions` (
 
 LOCK TABLES `ci_sessions` WRITE;
 /*!40000 ALTER TABLE `ci_sessions` DISABLE KEYS */;
+INSERT INTO `ci_sessions` VALUES (1,'4f9872bc26c5adb60dc80ed00e46f4e6','127.0.0.1','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.91 Safari/537.36','1392338799','');
 /*!40000 ALTER TABLE `ci_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,6 +112,8 @@ DROP TABLE IF EXISTS `email_alert_recievers`;
 CREATE TABLE `email_alert_recievers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(255) DEFAULT NULL,
+  `created_at` varchar(45) DEFAULT NULL,
+  `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -356,7 +359,7 @@ CREATE TABLE `statistic_pages` (
   `name` varchar(255) DEFAULT NULL,
   `login` varchar(255) DEFAULT NULL,
   `embed` text,
-  `email_change_value` int(11) DEFAULT NULL,
+  `exact_match` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -408,7 +411,6 @@ CREATE TABLE `statistic_tweet_strings` (
   `statistic_tweet_string_id` int(11) DEFAULT NULL,
   `created_at` varchar(45) DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  `category` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -488,6 +490,11 @@ CREATE TABLE `statistic_view_intervals` (
   `status` varchar(45) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `value` int(11) DEFAULT NULL,
+  `decrease_email` varchar(45) DEFAULT NULL,
+  `increase_email` varchar(45) DEFAULT NULL,
+  `email_change_value` varchar(45) DEFAULT NULL,
+  `category_difference` varchar(45) DEFAULT NULL,
+  `category_change_value` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -536,4 +543,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-05 20:58:28
+-- Dump completed on 2014-02-14  1:49:06

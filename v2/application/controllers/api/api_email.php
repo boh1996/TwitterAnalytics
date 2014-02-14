@@ -52,10 +52,17 @@ class API_Email extends T_API_Controller {
 
 		$pages = $this->base_model->get_list("statistic_pages");
 
+		if ( $pages == false) {
+			$this->response(array(
+				"status" => false
+			), 400);
+		}
+
+
 		foreach ( $pages as $page ) {
 			$this->email_model->process($interval_object->value, $page->id, $email_types, $interval_object->email_change_value, $interval_object->category_change_value);
 
-			if ( in_array("category", $email_types) ) {
+			if ( in_array("category", $email_types) && ! ( in_array("increase", $email_types) || in_array("decrease", $email_types) ) ) {
 				$this->email_model->category_alert($interval_object->value, $page->id, $interval_object->category_change_value);
 			}
 		}

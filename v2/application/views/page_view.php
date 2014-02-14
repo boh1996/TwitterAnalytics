@@ -38,7 +38,7 @@
 								<label for="intervals"><?= $this->lang->line("user_interval"); ?></label>
 								<select class="selectpicker" id="intervals">
 									<?php foreach ( $intervals as $key => $object ): ?>
-										<option value="<?= $object->value; ?>" data-key="<?= $object->key; ?>"><?= $object->name; ?></option>
+										<option value="<?= $object->value; ?>" data-key="<?= $object->key; ?>"><?= $this->lang->line("user_per") . " " . ucfirst($object->name); ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>

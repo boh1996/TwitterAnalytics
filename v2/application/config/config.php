@@ -65,8 +65,8 @@ $config["languages"] = array("english");
 
 $config["https"] = false;
 
-$config["encrypt_key"] = "gzIKjiQgEuHscg6ktbYdVnvOQptL9ngM";
-$config["encrypt_salt"] = "ZJ3mFS9Q7pjfbW2Kj8jlxi5oEvmo3p4d";
+$config["encrypt_key"] = "azMlPkxwHYToGdiOyh38VxIxS9pPtRTP";
+$config["encrypt_salt"] = "RcZQBsySiv3x9yZs2lxiTV1Q6v6TxE2p";
 
 /*
 |--------------------------------------------------------------------------
@@ -189,7 +189,7 @@ $config['directory_trigger']	= 'd'; // experimental not currently in use
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 1;
 
 /*
 |--------------------------------------------------------------------------
@@ -211,7 +211,7 @@ $config['log_path'] = '';
 | codes to set your own date formatting
 |
 */
-$config['log_date_format'] = 'Y-m-d H:i:s';
+$config['log_date_format'] = 'd-m-Y H:i:s';
 
 /*
 |--------------------------------------------------------------------------
@@ -233,7 +233,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'wTGswEdKV6sF60BT';
+$config['encryption_key'] = 'JUVOvGyNBDxCDXIq';
 
 /*
 |--------------------------------------------------------------------------
@@ -274,7 +274,7 @@ $config['sess_time_to_update']	= 300;
 | 'cookie_secure' =  Cookies will only be set if a secure HTTPS connection exists.
 |
 */
-$config['cookie_prefix']	= "";
+$config['cookie_prefix']	= "tws_";
 $config['cookie_domain']	= "";
 $config['cookie_path']		= "/";
 $config['cookie_secure']	= FALSE;
@@ -288,7 +288,7 @@ $config['cookie_secure']	= FALSE;
 | COOKIE data is encountered
 |
 */
-$config['global_xss_filtering'] = FALSE;
+$config['global_xss_filtering'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------

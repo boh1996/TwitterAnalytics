@@ -4,3 +4,5 @@
 */cache/*
 */cache/!index.html
 *.sublime-*
+v1/application/libraries/cookie.txt
+v2/application/models/settings_model.php

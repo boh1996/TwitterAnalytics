@@ -264,6 +264,10 @@ class Settings_model extends Base_model {
 					$row->category_difference = $intervals[$row->key]["category_difference"];
 				}
 
+				if ( $row->category_change_value == "" ) {
+					$row->category_change_value = $intervals[$row->key]["category_change_value"];
+				}
+
 			}
 
 			$list[$row->key] = $row;

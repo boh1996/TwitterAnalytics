@@ -28,4 +28,6 @@ $lang["user_count_string"] = "Count";
 $lang["user_tweet_count"] = "<b>Interval Count</b>";
 $lang["user_interval_stats"] = "Interval";
 $lang["user_page_category"] = "Category";
+$lang["user_per"] = "Per";
+$lang["user_no_strings_found"] = "Sorry no strings have been found in this time range!";
 ?>

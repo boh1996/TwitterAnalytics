@@ -117,6 +117,8 @@ class Email_model extends Base_model {
 	 *    @return array
 	 */
 	public function get_category_strings ( $page_id, $min, $max ) {
+		$this->load->config("categories");
+		$categories = $this->config->item("categories");
 		$query = $this->db->query('
 			SELECT
 			    COUNT(*) AS string_count,
@@ -146,9 +148,9 @@ class Email_model extends Base_model {
 
 		foreach ( $query->result() as $row ) {
 			if ( ! isset($list["category_" . $row->category]) ) {
-				$list["category_" . $row->category] = array();
+				$list["category_" . $categories[$row->category]["name"]] = array();
 			}
-			$list["category_" . $row->category][] = $row->value;
+			$list["category_" . $categories[$row->category]["name"]][] = $row->value;
 		}
 
 		return $list;
@@ -196,10 +198,13 @@ class Email_model extends Base_model {
 	 *    @param integer $min     The minimum time
 	 *    @param integer $max     Max time
 	 *    @param integer $page_id Page
+	 *    @param string &$top_category The top scoring category
+	 *    @param integer &$top_category_percent The percent value the top scoring category has
+	 *    @param integer &$top_category_count The number of hits by the top category string
 	 *
 	 *    @return integer
 	 */
-	public function top_category ( $min, $max, $page_id ) {
+	public function top_category ( $min, $max, $page_id, &$top_category = "", &$top_category_percent = "", &$top_category_count = "" ) {
 		$this->load->model("statistic_model");
 
 		$categories = $this->statistic_model->cateogories_sum($min, $page_id, $max );
@@ -207,16 +212,32 @@ class Email_model extends Base_model {
 		$difference = 0;
 		$second = 0;
 		$percent_change = 0;
+		$sum = 0;
 
 		if ( $categories !== false & count($categories) < 2 ) {
 			$element = current($categories);
 			$key = key($categories);
+			$top_category_percent = $element["count"];
+			$top_category = $element["category"]->name;
 			$difference = $element["count"];
+			$top_category_count = $element["count"];
 		} else if ( $categories !== false ) {
 			$first = current($categories);
 			$last = end($categories);
 			$difference = $first["count"] - $last["count"];
 			$second = $last["count"];
+
+			$sum = $first["count"] + $second;
+
+			if ( ( $sum / $first["count"] * 100 ) >= 50 ) {
+				$top_category_percent = $first["count"] / $sum  * 100;
+				$top_category = $first["category"]->name;
+				$top_category_count = $first["count"];
+			} else {
+				$top_category = $last["category"]->name;
+				$top_category_percent = ($second / $sum * 100);
+				$top_category_count = $last["count"];
+			}
 		}
 
 		if ( $difference != 0 and $second != 0 ) {
@@ -241,7 +262,7 @@ class Email_model extends Base_model {
 
 		$page_id = (int)$page_id;
 		$page = $this->page_model->get_statistic_page($page_id);
-		$percent_change = $this->top_category(time() - $interval, time(), $page_id);
+		$percent_change = $this->top_category(time() - $interval, time(), $page_id, $top_category, $top_category_percent, $top_category_count);
 		$type = "category";
 
 		$settings = array(
@@ -250,6 +271,9 @@ class Email_model extends Base_model {
 			"page_name" => $page->name,
 			"page_url" => $this->config->item("base_url") . "page/" . $page->id,
 			"type" => $type,
+			"top_category" => $top_category,
+			"top_category_percent" => $top_category_percent,
+			"top_category_count" => $top_category_count
 		);
 
 		$category_strings = $this->get_category_strings($page_id, time() - $interval, time());
@@ -278,11 +302,11 @@ class Email_model extends Base_model {
 	 *    @param integer $page_id  The page to search tweets for
 	 *    @param array $types The email types to send
 	 *    @param integer $min_change Minimum change to trigger
-	 *    @param integer $min_category_change Minimum category change before trigger is activated
+	 *    @param integer $min_category_difference Minimum category difference before trigger is activated
 	 *
 	 *    @return boolean
 	 */
-	public function process ( $interval, $page_id, $types, $min_change = 0, $min_category_change = 0 ) {
+	public function process ( $interval, $page_id, $types, $min_change = 0, $min_category_difference = 0 ) {
 		$this->load->model("statistic_model");
 		$this->load->model("page_model");
 		$this->load->model("settings_model");
@@ -294,9 +318,12 @@ class Email_model extends Base_model {
 		$difference = $calculations["newest"] - $calculations["second"];
 		$percent_change = 0;
 		$page = $this->page_model->get_statistic_page($page_id);
+		$category_difference = $this->top_category(time() - $interval, time(), $page_id, $top_category, $top_category_percent, $top_category_count);
 
 		if ( $difference != 0 and $calculations["second"] != 0 ) {
 			$percent_change = ($difference / $calculations["second"]) * 100;
+		} else if ( $difference != 0 ) {
+			$percent_change = ($difference / $calculations["newest"]) * 100;
 		}
 
 		$type = "increase";
@@ -312,14 +339,19 @@ class Email_model extends Base_model {
 			"tweet_count_last" => $calculations["second"],
 			"page_name" => $page->name,
 			"page_url" => $this->config->item("base_url") . "page/" . $page->id,
-			"type" => $type
+			"type" => ( ! in_array("category", $types) ) ? $type : "multiple",
+			"top_category" => $top_category,
+			"top_category_percent" => $top_category_percent,
+			"top_category_count" => $top_category_count
 		);
 
 		$category_strings = $this->get_category_strings($page_id, time() - $interval, time());
 
-		if ( $category_strings !== "false" ) {
-			foreach ( $category_strings as $key => $value ) {
-				$settings[$key] = implode(",", $value);
+		if ( $category_strings !== false ) {
+			if ( $category_strings !== "false" ) {
+				foreach ( $category_strings as $key => $value ) {
+					$settings[$key] = implode(",", $value);
+				}
 			}
 		}
 
@@ -329,11 +361,14 @@ class Email_model extends Base_model {
 		}
 
 		if ( $calculations["second"] == 0 ) {
-			if ( abs($percent_change) >= $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 200, "email") and in_array($type, $types) ) {
+			if ( abs($percent_change) >= $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 100, "email") and in_array($type, $types) ) {
 				$this->create_message($settings, $type);
 			}
 		} else {
 			if ( in_array("category", $types) ) {
+				if ( abs($percent_change) >= $min_change and abs($category_difference) >= $min_category_difference and in_array($type, $types) ) {
+					$this->create_message($settings, $type);
+				}
 			} else if ( abs($percent_change) >= $min_change and in_array($type, $types) ) {
 				$this->create_message($settings, $type);
 			}

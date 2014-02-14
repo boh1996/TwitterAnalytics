@@ -171,6 +171,10 @@ class Scrape_model extends Base_model {
 
 		$text = strtolower($text);
 
+		if ( ! is_array($alert_strings) ) {
+			return false;
+		}
+
 		foreach ( $alert_strings as $string ) {
 			if ( $exact_match == true ) {
 				if ( preg_match_all("~\b(\s*)?" . strtolower($string->value) . "\b(\s*)?~",$text, $matches) > 0 ) {

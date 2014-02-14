@@ -284,11 +284,15 @@ class Statistic_model extends Base_model {
 
 		$categories = array();
 
+		$this->load->model("settings_model");
+		$category_settings = $this->settings_model->get_categories();
+
+
 		foreach ( $query->result() as $row ) {
 			if ( isset($categories[$row->category]) ) {
 				$categories[$row->category]["count"] = $categories[$row->category]["count"] + $row->string_count;
 			} else {
-				$categories[$row->category] = array("count" => $row->string_count);
+				$categories[$row->category] = array("count" => $row->string_count, "category" => $category_settings[$row->category]);
 			}
 		}
 

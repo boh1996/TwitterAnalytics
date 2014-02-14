@@ -7,7 +7,7 @@ function refresh () {
 	$('input[data-type="daterange"]').daterangepicker({
 		timePicker: true,
 		timePickerIncrement: 30,
-		format: 'DD/MM/YYYY hh:mm',
+		format: 'DD/MM/YYYY HH:mm',
 		timePicker12Hour : false,
 		dateLimit : 0
 	}, function () {

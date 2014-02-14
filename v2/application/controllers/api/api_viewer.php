@@ -97,9 +97,9 @@ class API_Viewer extends T_API_Controller {
 			"tweets" => $tweets,
 			"categories" => $categories,
 			"avg" => $avg,
-			"strings" => ( $strings !== false ) ? $this->load->view("templates/user_strings_view", $this->user_control->ControllerInfo(array(
+			"strings" => ( $strings !== false && count($strings) > 0 ) ? $this->load->view("templates/user_strings_view", $this->user_control->ControllerInfo(array(
 				"strings" => $strings
-			)), true) : ""
+			)), true) : $this->load->view("templates/strings_error_view", null, true)
 		),200);
 	}
 }

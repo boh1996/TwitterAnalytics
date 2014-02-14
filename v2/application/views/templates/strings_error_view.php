@@ -1,0 +1,1 @@
+<p><i><?= $this->lang->line("user_no_strings_found"); ?></i></p>

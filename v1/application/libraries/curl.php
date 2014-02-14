@@ -241,7 +241,7 @@ class Connection {
 	 * @param boolean $noBody         If no request body should be send(True)
 	 */
 	public function __construct ( $url, $followlocation = true, $timeOut = 30, $maxRedirecs = 4, $binaryTransfer = false, $includeHeader = false, $noBody = false ) {
-		$this->_url = $url;
+		$this->_url = urlencode($url);
 		$this->_followlocation = $followlocation;
 		$this->_timeout = $timeOut;
 		$this->_maxRedirects = $maxRedirecs;

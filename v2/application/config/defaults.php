@@ -56,17 +56,8 @@ $config["settings"] = array(
             "placeholder"       	=> "admin_email_message_placeholder",
             "help_text"             => "setting_email_message_help"
         ),
-        /*"setting_email_alt_message" => array(
-        	"value"                 => "There has been a change to {{page_name}} with {{tweet_count}} and a change of {{change_value}}%",
-            "key"                   => "setting_email_alt_message",
-            "section"               => "email",
-            "type"                  => "textarea",
-            "language_key"         	=> "admin_email_alt_message",
-            "placeholder"       	=> "admin_email_alt_message_placeholder",
-            "help_text"             => "setting_email_alt_message_help"
-        ),*/
         "setting_email_zero_minimum_change_amount" => array(
-            "value"                 => 200,
+            "value"                 => 100,
             "key"                   => "setting_email_zero_minimum_change_amount",
             "section"               => "email",
             "type"                  => "text",
@@ -105,7 +96,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
 	),
 	"per_month" => array(
 		"key" => "per_month",
@@ -116,7 +108,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
 	),
 	"per_week" => array(
 		"key" => "per_week",
@@ -127,7 +120,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
 	),
 	"per_day" => array(
 		"key" => "per_day",
@@ -138,7 +132,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
  	),
  	"per_half_day" => array(
  		"key" => "per_half_day",
@@ -149,7 +144,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
  	),
  	"per_quater_of_a_day" => array(
  		"key" => "per_quater_of_a_day",
@@ -160,7 +156,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
  	),
  	"per_tree_hour" => array(
  		"key" => "per_tree_hour",
@@ -171,7 +168,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
  	),
  	"per_hour" => array(
  		"key" => "per_hour",
@@ -182,7 +180,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
  	),
  	"per_half_hour" => array(
  		"key" => "per_half_hour",
@@ -193,7 +192,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
  	),
  	"per_fifteen_minutes" => array(
  		"key" => "per_fifteen_minutes",
@@ -204,7 +204,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
  	),
  	"per_five_minutes" => array(
  		"key" => "per_five_minutes",
@@ -215,7 +216,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
  	),
  	"per_minute" => array(
  		"key" => "per_minute",
@@ -226,7 +228,8 @@ $config["intervals"] = array(
         "increase_email" => true,
         "decrease_email" => true,
         "email_change_value" => 100,
-        "category_difference" => true
+        "category_difference" => true,
+        "category_change_value" => 70
  	)
 );
 ?>

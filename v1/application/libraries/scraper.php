@@ -80,7 +80,7 @@ class Scraper {
 	protected function _create_url ( $type, $data, $cursor = NULL) {
 		switch ( $type ) {
 			case 'search':
-				$url = 'https://twitter.com/i/search/timeline?q=' . $data["q"] . '&src=typd&f=realtime&include_available_features=1&include_entities=1&last_note_ts=0';
+				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) . '&src=typd&f=realtime&include_available_features=1&include_entities=1&last_note_ts=0';
 				if ( ! is_null($cursor) ) {
 					return  $url . '&scroll_cursor=' . $cursor;
 				}
@@ -89,7 +89,7 @@ class Scraper {
 				break;
 
 			case 'trends':
-				$url = 'https://twitter.com/i/search/timeline?q=' . $data["q"] .  '&src=tren&include_available_features=1&include_entities=1&last_note_ts=0';
+				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) .  '&src=tren&include_available_features=1&include_entities=1&last_note_ts=0';
 
 				if ( ! is_null($cursor) ) {
 					return  $url . '&scroll_cursor=TWEET-=' . $cursor;
@@ -99,7 +99,7 @@ class Scraper {
 				break;
 
 			case 'profile':
-				$url = 'https://twitter.com/i/profiles/show/' . $data["user"] . '/timeline?include_available_features=1&include_entities=1&last_note_ts=0';
+				$url = 'https://twitter.com/i/profiles/show/' . urlencode($data["user"]) . '/timeline?include_available_features=1&include_entities=1&last_note_ts=0';
 				if ( ! is_null($cursor) ) {
 					return  $url . '&max_id=' . $cursor;
 				}

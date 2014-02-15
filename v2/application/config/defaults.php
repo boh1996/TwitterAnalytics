@@ -64,25 +64,7 @@ $config["settings"] = array(
             "language_key"          => "setting_email_zero_minimum_change_amount",
             "placeholder"           => "admin_email_change_from_zero_placeholder",
             "help_text"             => "setting_email_minimum_change_from_zero_help"
-        ),
-        "setting_email_increase_alert" => array(
-            "value"                 => true,
-            "key"                   => "setting_email_increase_alert",
-            "section"               => "email",
-            "type"                  => "checkbox",
-            "language_key"          => "setting_email_increase_alert",
-            "placeholder"           => "admin_email_increase_alert_placeholder",
-            "help_text"             => "setting_increase_alert_help"
-        ),
-        "setting_email_decrease_alert" => array(
-            "value"                 => true,
-            "key"                   => "setting_email_decrease_alert",
-            "section"               => "email",
-            "type"                  => "checkbox",
-            "language_key"          => "setting_email_decrease_alert",
-            "placeholder"           => "admin_email_decrease_alert_placeholder",
-            "help_text"             => "setting_increase_alert_help"
-        ),
+        )
 );
 
 

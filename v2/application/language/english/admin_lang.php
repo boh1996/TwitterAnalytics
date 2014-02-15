@@ -206,8 +206,8 @@ $lang["settings_variables_description"] = "These are the usable variables for th
 <b>{{time}}</b> : The current time<br>
 <b>{{asset_url}}</b> : The URL for the site asset directory<br>
 
-Use <b>{{category_**}}</b> and then replace the stars with the name of the cateogry<br>
-<b>t{{type}}</b> : To get the alert type 'increase', 'decrease', 'category' or 'multiple'<br>
+Use <b>{{category_**}}</b> and then replace the stars with the name of the category<br>
+<b>{{type}}</b> : To get the alert type 'increase', 'decrease', 'category' or 'multiple'<br>
 <b>{{top_category}}<b> : To get the name of the top scoring category<br>
 <b>{{top_category_percent}}</b> : For the percentage of the top scroing category<br>
 <b>{{top_category_count}}</> : The number of hits for the top category<br>

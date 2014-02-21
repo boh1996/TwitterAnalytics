@@ -80,7 +80,7 @@ class Scraper {
 	protected function _create_url ( $type, $data, $cursor = NULL) {
 		switch ( $type ) {
 			case 'search':
-				$url = 'https://twitter.com/i/search/timeline?q=' . $data["q"] . '&src=typd&f=realtime&include_available_features=1&include_entities=1&last_note_ts=0';
+				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) . '&src=typd&f=realtime&include_available_features=1&include_entities=1&last_note_ts=0';
 				if ( ! is_null($cursor) ) {
 					return  $url . '&scroll_cursor=' . $cursor;
 				}
@@ -89,7 +89,7 @@ class Scraper {
 				break;
 
 			case 'trends':
-				$url = 'https://twitter.com/i/search/timeline?q=' . $data["q"] .  '&src=tren&include_available_features=1&include_entities=1&last_note_ts=0';
+				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) .  '&src=tren&include_available_features=1&include_entities=1&last_note_ts=0';
 
 				if ( ! is_null($cursor) ) {
 					return  $url . '&scroll_cursor=TWEET-=' . $cursor;
@@ -99,7 +99,7 @@ class Scraper {
 				break;
 
 			case 'profile':
-				$url = 'https://twitter.com/i/profiles/show/' . $data["user"] . '/timeline?include_available_features=1&include_entities=1&last_note_ts=0';
+				$url = 'https://twitter.com/i/profiles/show/' . urlencode($data["user"]) . '/timeline?include_available_features=1&include_entities=1&last_note_ts=0';
 				if ( ! is_null($cursor) ) {
 					return  $url . '&max_id=' . $cursor;
 				}
@@ -290,9 +290,9 @@ class Scraper {
 		}
 
 		// If more newer pages to load, load em
-		if ( $next_page_cursor !== false ) {
+		/*if ( $next_page_cursor !== false && $last_element["created_at"] >= time() - $max_timestamp  ) {
 			$tweets = array_merge($tweets, $this->scrapeTweets($meta, $old_refresh_cursor, $next_page_cursor, $type, $data, true, $latest_cursor, $max_timestamp ));
-		}
+		}*/
 
 		return $tweets;
 	}
@@ -310,7 +310,13 @@ class Scraper {
 		}
 
 		$newest_cursor_elements = $this->_get_cursor_elements($newest);
+
 		$oldest_cursor_elements = $this->_get_cursor_elements($oldest);
+
+		if ( $newest_cursor_elements["oldest"] > $oldest_cursor_elements["newest"] ) {
+			$smallest = $oldest;
+			return true;
+		}
 
 		if ( $newest_cursor_elements["newest"] == $oldest_cursor_elements["newest"] ) {
 			if ( $newest_cursor_elements["oldest"] > $oldest_cursor_elements["oldest"] ) {
@@ -339,6 +345,8 @@ class Scraper {
 				return false;
 			}
 		}
+
+		return false;
 	}
 
 	/**

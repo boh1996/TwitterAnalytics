@@ -89,7 +89,7 @@ CREATE TABLE `ci_sessions` (
   `last_activity` text,
   `user_data` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +98,6 @@ CREATE TABLE `ci_sessions` (
 
 LOCK TABLES `ci_sessions` WRITE;
 /*!40000 ALTER TABLE `ci_sessions` DISABLE KEYS */;
-INSERT INTO `ci_sessions` VALUES (1,'4f9872bc26c5adb60dc80ed00e46f4e6','127.0.0.1','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.91 Safari/537.36','1392338799','');
 /*!40000 ALTER TABLE `ci_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -438,6 +437,7 @@ CREATE TABLE `statistic_tweets` (
   `inserted_at` varchar(45) DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
   `user_title` varchar(255) DEFAULT NULL,
+  `page_id` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -543,4 +543,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-14  1:49:06
+-- Dump completed on 2014-02-15 18:13:39

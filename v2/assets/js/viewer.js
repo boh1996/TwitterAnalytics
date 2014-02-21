@@ -111,12 +111,12 @@ function refreshChart ( url ) {
 	url = url || window.url;
 	window.url = url;
 
-	if ( ! localStorage.getItem("twa_token") === false ) {
+	if ( ! localStorage.getItem("tws_token") === false ) {
 		$.ajax({
 			type : "GET",
 			dataType: 'json',
 			contentType : "application/json",
-			url : base_url + url + "?token=" + localStorage.getItem("twa_token"),
+			url : base_url + url + "?token=" + localStorage.getItem("tws_token"),
 		}).success( function ( data ) {
 
 			$("#strings").html(data.strings);

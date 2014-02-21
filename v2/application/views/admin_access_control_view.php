@@ -98,10 +98,10 @@
 					data["pages"].push({"page" : $(element).attr("data-page"), "mode" : mode});
 				} );
 
-				if ( ! localStorage.getItem("twa_token") === false ) {
+				if ( ! localStorage.getItem("tws_token") === false ) {
 					$.ajax({
 						type : "POST",
-						url : base_url + "admin/access/control/save?token=" + localStorage.getItem("twa_token"),
+						url : base_url + "admin/access/control/save?token=" + localStorage.getItem("tws_token"),
 						data : JSON.stringify(data),
 						contentType: "application/json",
 				  		dataType: "json"

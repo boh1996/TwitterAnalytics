@@ -165,8 +165,19 @@ class Scrape_model extends Base_model {
 	 * @return boolean|array                If array, create an alert
 	 */
 	public function if_to_alert ( $text, $alert_strings ) {
+		$regex_charset = "\w@+\\/#%\~_$";
+
 		$this->load->model("settings_model");
 		$exact_match = $this->settings_model->fetch_setting("setting_alert_exact_match", true, "alerts");
+
+		if ( $exact_match == "1" ) {
+			$exact_match = true;
+		} else if ( $exact_match == "0" ) {
+			$exact_match = false;
+		} else if ( $exact_match == "" ) {
+			$exact_match = false;
+		}
+
 		$alerts = array();
 
 		$text = strtolower($text);
@@ -176,15 +187,19 @@ class Scrape_model extends Base_model {
 		}
 
 		foreach ( $alert_strings as $string ) {
+			$value = strtolower($string->value);
 			if ( $exact_match == true ) {
-				if ( preg_match_all("~\b(\s*)?" . strtolower($string->value) . "\b(\s*)?~",$text, $matches) > 0 ) {
-					for ( $i=0;  $i < count($matches[0]) ;  $i++) {
+				//if ( preg_match_all("~\b" . $value . "\b~",$text, $matches) > 0 ) {
+				if ( preg_match_all("/(?<![" . $regex_charset . "])" .  $value . "(?![" . $regex_charset . "])/",$text, $matches) > 0 ) {
+					for ( $i = 0;  $i <= count($matches[0]) - 1 ;  $i++) {
 						$alerts[] = $string->id;
 					}
 				}
 			} else {
-				if ( strpos($text, strtolower($string->value)) !== false ) {
-					$alerts[] = $string->id;
+				if ( preg_match_all('/' . $value . '/' ,$text, $matches) > 0 ) {
+					for ( $i = 0;  $i <= count($matches[0]) - 1 ;  $i++) {
+						$alerts[] = $string->id;
+					}
 				}
 			}
 		}
@@ -197,6 +212,24 @@ class Scrape_model extends Base_model {
 	}
 
 	/**
+	 *    Matches words using regular expression
+	 *
+	 *    @param string $text Tweet text
+	 *
+	 *    @return array
+	 */
+	public function match_words_regex ( $text ) {
+		$words = array();
+		if ( preg_match_all("/(\w+)/",strtolower($text), $matches) > 0 ) {
+			for ( $i = 0;  $i <= count($matches[0]) - 1 ;  $i++) {
+				$words[] = $matches[0][$i];
+			}
+		}
+
+		return $words;
+	}
+
+	/**
 	 * Remoevs URLs from the strings and process the tweet to find the tweet word
 	 * @param  array $tweet The tweet data array
 	 * @param array &$alert Special alert data
@@ -204,9 +237,9 @@ class Scrape_model extends Base_model {
 	 * @return array
 	 */
 	public function process_tweet ( $tweet, &$alert, $alert_strings ) {
-		$processing = $this->remove_unwanted_strings($tweet["text"]);
+		$processing = strtolower($this->remove_unwanted_strings($tweet["text"]));
 
-		$words_list = str_word_count(preg_replace('/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i', '', $processing), 2 , $this->word_charlist() );
+		$words_list = str_word_count(preg_replace('/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i', '', $processing), 1 , $this->word_charlist() );
 		$words = array();
 
 		$alert_data = $this->if_to_alert($processing, $alert_strings);

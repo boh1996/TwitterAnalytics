@@ -92,8 +92,9 @@ class API_Scraper extends T_API_Controller {
 	 * @param  string $url  The URL object
 	 * @param string @$uuid A container for the current run UUID
 	 * @param array @info Returned statistic info
+	 * @param integer $page_id The current page_id
 	 */
-	private function _scrape ( $table, $scraper, $item_type, $url, &$uuid, &$info ) {
+	private function _scrape ( $table, $scraper, $item_type, $url, &$uuid, &$info, $page_id ) {
 		$start_global = microtime(true);
 
 		$uuid = $this->scrape_model->gen_uuid();
@@ -134,11 +135,12 @@ class API_Scraper extends T_API_Controller {
 
 		// Loop through the tweets and add them
 		foreach ( $local_tweets as $tweet ) {
-			if ( ! $this->tweet_model->create_tweet($tweet, $id, $error_type) ) {
+			if ( ! $this->tweet_model->create_tweet($tweet, $id, $error_type, $page_id) ) {
 				if ( count(array_intersect($error_type, array("tweet_exists", "to_old"))) == 0 ) {
 					$this->scrape_model->create_error(str_replace("{{tweet_id}}", $tweet["tweet_id"], $this->lang->line("error_inserting_tweet")), $url, $uuid, $item_type, $url->id );
 				}
 			} else {
+				$local_tweets_created = $local_tweets_created + 1;
 				$tweet["id"] = $id;
 				$tweet["source_url"] = $url->url;
 				$tweets[] = $tweet;
@@ -148,7 +150,7 @@ class API_Scraper extends T_API_Controller {
 		// Inserts local item analytics
 		$this->scrape_model->insert_statistic($uuid, $item_type, $url->id, $local_tweets_created , count($local_tweets), $item_start_time, $item_number, $url->url);
 
-		$tweets_created = $tweets_created + $local_tweets_created;
+		$tweets_created = $local_tweets_created;
 
 		// Set latest cursor
 		if ( ! empty($new_lastest_cursor) ) {
@@ -192,7 +194,7 @@ class API_Scraper extends T_API_Controller {
 
 				$pages[$url->statistic_page_id]["urls"][] = $url->url;
 
-				$local_tweets = $this->_scrape( "statistic_urls", $scraper, $item_type, $url, $uuid, $info );
+				$local_tweets = $this->_scrape( "statistic_urls", $scraper, $item_type, $url, $uuid, $info, $url->statistic_page_id );
 
 				if ( $local_tweets !== false ) {
 					$pages[$url->statistic_page_id]["tweets_fetched"] = $pages[$url->statistic_page_id]["tweets_fetched"] + $info["tweets_fetched"];

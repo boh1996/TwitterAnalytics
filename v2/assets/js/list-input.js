@@ -16,10 +16,10 @@ $(document).on("click", "button.remove-input", function () {
 	var element = $(this).parent("span").prev("input");
 	var form = $(element).parents(".list-input-form");
 	if ( $(element).attr("data-id") !== undefined ) {
-		if ( ! localStorage.getItem("twa_token") === false ) {
+		if ( ! localStorage.getItem("tws_token") === false ) {
 			$.ajax({
 				type : "DELETE",
-				url : base_url + $(form).attr("data-item-endpoint") + $(element).attr("data-id") + "?token=" + localStorage.getItem("twa_token"),
+				url : base_url + $(form).attr("data-item-endpoint") + $(element).attr("data-id") + "?token=" + localStorage.getItem("tws_token"),
 			}).success( function ( xhr, status, data ) {
 				alert(null, translations["admin_object_deleted"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
 			} ).error( function ( xhr, status, data ) {
@@ -65,13 +65,13 @@ $(document).on("submit", ".list-input-form", function ( event ) {
 	} );
 
 	if ( data.length > 0) {
-		if ( ! localStorage.getItem("twa_token") === false ) {
+		if ( ! localStorage.getItem("tws_token") === false ) {
 			var arrayName = $(this).attr("data-array-name");
 			var post = {};
 			post[arrayName] = data;
 			$.ajax({
 				type : "POST",
-				url : base_url + $(this).attr("data-save-endpoint") + "?token=" + localStorage.getItem("twa_token"),
+				url : base_url + $(this).attr("data-save-endpoint") + "?token=" + localStorage.getItem("tws_token"),
 				data : JSON.stringify(post),
 				contentType: "application/json",
 			  	dataType: "json"

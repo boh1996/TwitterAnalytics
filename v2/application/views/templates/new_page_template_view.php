@@ -32,7 +32,9 @@
 								<h3><?= $this->lang->line($category["name"]); ?></h3>
 								<div class="category" data-category-id="<?= $cat_id; ?>">
 									<!-- New String -->
-										<?= $this->user_control->LoadTemplate("new_string_view"); ?>
+										<?= $this->user_control->LoadTemplate("new_string_view", array(
+											"cat_id" => $cat_id
+										)); ?>
 									<!-- End new string -->
 								</div>
 

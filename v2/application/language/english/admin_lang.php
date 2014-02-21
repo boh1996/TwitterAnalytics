@@ -41,6 +41,7 @@ $lang["scraper_settings_description"] = "Settings that will affect the result of
 $lang["admin_analytics_settings_description"] = "Settings regarding the analytics viewer";
 $lang["admin_urls_description"] = "Twitter URLs that will be analyzed for tweets!";
 $lang["admin_alerts_settings_description"] = "Settings regarded to the alerts viewer!";
+$lang["admin_please_use_the_large_save"] = "Please use the large save button to create new pages";
 
 $lang["admin_databased_cleanup_script_finished"] = "Database cleanup finished";
 $lang["admin_empty_database"] = "Empty databases";

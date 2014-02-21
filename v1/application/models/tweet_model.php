@@ -82,30 +82,6 @@ class Tweet_model extends Base_model {
 	 * @param  integer $tweet_db_id The tweet database id
 	 */
 	public function insert_tweet_data ( $tweet, $tweet_db_id ) {
-		/*if ( count($tweet["urls"]) > 0 ) {
-			foreach ( $tweet["urls"] as $url ) {
-				$this->create_url($url, $tweet_db_id);
-			}
-		}
-
-		if ( count($tweet["media"]) > 0 ) {
-			foreach ( $tweet["media"] as $media ) {
-				$this->create_media($media, $tweet_db_id);
-			}
-		}
-
-		if ( count($tweet["hash_tags"]) > 0 ) {
-			foreach ( $tweet["hash_tags"] as $hash_tag ) {
-				$this->create_hashtag($hash_tag, $tweet_db_id);
-			}
-		}
-
-		if ( count($tweet["mentions"]) ) {
-			foreach ( $tweet["mentions"] as $mention ) {
-				$this->create_mention($mention, $tweet_db_id);
-			}
-		}*/
-
 		if ( count($tweet["words"]) ) {
 			foreach ( $tweet["words"] as $word ) {
 				$this->create_tweet_word($word, $tweet_db_id);

@@ -65,6 +65,8 @@ class Statistic_model extends Base_model {
 
 		$sum = 0;
 
+		$category_settings = $this->settings_model->get_categories();
+
 		foreach ( $ranges as $index => $value ) {
 			$min = $value[0];
 			$max = $value[1];
@@ -108,7 +110,7 @@ class Statistic_model extends Base_model {
 			$row->created = explode(",", $row->created);
 			$row->tweets = explode(",", $row->tweets);
 			$row->strings = $this->top_strings(null, 10, $page_id, $min, $max);
-			$categories = explode("@;", $row->categories);
+			$categories = array();
 
 			$row->categories = array();
 
@@ -122,16 +124,15 @@ class Statistic_model extends Base_model {
 			$row->color = $this->settings_model->fetch_setting("setting_default_zero_color", "#D1E0E0" , "viewer");
 			$row->category = "NONE";
 
-			$category_settings = $this->settings_model->get_categories();
-
-			if ( empty($categories[0]) and count($row->strings) > 0 ) {
-				unset($categories[0]);
+			if ( empty($categories) and count($row->strings) > 0 ) {
 				if ( isset($row->strings["categories"]) && is_array($row->strings["categories"]) ) {
 					foreach ( $row->strings["categories"] as $category ) {
 						$categories[$category["category"]->key] = array(1 => $category["count"], 0 => $category["category"]->key);
 	 				}
  				}
 			}
+
+			ksort($categories);
 
 			foreach ( $categories as $key => $value ) {
 				if ( ! is_array($value) ) {
@@ -268,7 +269,7 @@ class Statistic_model extends Base_model {
 			FROM statistic_tweet_strings
 			INNER JOIN (
 			    SELECT
-			        id as  string_id,
+			        id as string_id,
 			        category
 			    FROM statistic_strings
 			) strings on strings.string_id = statistic_tweet_string_id
@@ -277,7 +278,7 @@ class Statistic_model extends Base_model {
 			    FROM statistic_tweets
 			    WHERE created_at BETWEEN ? AND ? AND id IN ( SELECT tweet_id FROM page_tweets WHERE page_id = ? )
 			)
-			GROUP BY statistic_tweet_string_id
+			GROUP BY category
 		', array($min, $max, $page_id));
 
 		if ( ! $query->num_rows() ) return false;
@@ -286,7 +287,6 @@ class Statistic_model extends Base_model {
 
 		$this->load->model("settings_model");
 		$category_settings = $this->settings_model->get_categories();
-
 
 		foreach ( $query->result() as $row ) {
 			if ( isset($categories[$row->category]) ) {

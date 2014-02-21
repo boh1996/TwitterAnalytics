@@ -1,7 +1,7 @@
 $(document).on("submit", ".settings-form", function () {
 	event.preventDefault();
 
-	if ( ! localStorage.getItem("twa_token") === false ) {
+	if ( ! localStorage.getItem("tws_token") === false ) {
 		var data = [];
 
 		$(".settings-form").each( function ( index, form ) {
@@ -21,6 +21,11 @@ $(document).on("submit", ".settings-form", function () {
 					} else {
 						value = $(element).is(':checked');
 					}
+				} else if ( $(element).is("textarea") ) {
+					type = "textarea";
+					if ( $(element).val() != "" ) {
+						value = $(element).val();
+					}
 				}
 
 				if ( value !== null ) {
@@ -36,7 +41,7 @@ $(document).on("submit", ".settings-form", function () {
 
 		$.ajax({
 			type : "POST",
-			url : base_url + "admin/settings/save" + "?token=" + localStorage.getItem("twa_token"),
+			url : base_url + "admin/settings/save" + "?token=" + localStorage.getItem("tws_token"),
 			data : JSON.stringify({"keys" : data}),
 			contentType: "application/json",
 		  	dataType: "json"

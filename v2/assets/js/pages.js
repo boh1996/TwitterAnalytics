@@ -16,11 +16,10 @@ $(document).on("click", ".edit-page",  function ( event ) {
 		var value = $(this).parent().parent().find('.page-name').html();
 		var id = $(this).attr("data-page-id");
 
-
 		if ( value !== $(this).parent().parent().find('.page-name').attr("data-value") && page.hasClass("add-page") === false ) {
-			if ( ! localStorage.getItem("twa_token") === false ) {
+			if ( ! localStorage.getItem("tws_token") === false ) {
 				$.ajax({
-					url: base_url + "save/page/name?token=" + localStorage.getItem("twa_token") + "&name=" + value + "&id=" + id
+					url: base_url + "save/page/name?token=" + localStorage.getItem("tws_token") + "&name=" + value + "&id=" + id
 				}).success( function () {
 					alert(null, translations["admin_saved_successfully"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
 				} ).error( function () {
@@ -29,6 +28,9 @@ $(document).on("click", ".edit-page",  function ( event ) {
 			} else {
 				alert(null, translations["admin_please_log_in"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
 			}
+		} else {
+			console.log("HERE");
+			alert(null, translations["admin_please_use_the_large_save"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
 		}
 
 		$(that).parent().parent().find('.page-name').attr("contenteditable", "false");
@@ -38,6 +40,9 @@ $(document).on("click", ".edit-page",  function ( event ) {
 		if ( page.hasClass("add-page") ) {
 			page.removeClass("add-page");
 		}
+
+
+		createPage($(".page-container"));
 	}
 });
 
@@ -60,10 +65,10 @@ $(document).on("click", ".remove-page", function ( event ) {
 
 	var id = page.attr("data-page-object-id");
 
-	if ( ! localStorage.getItem("twa_token") === false ) {
+	if ( ! localStorage.getItem("tws_token") === false ) {
 		$.ajax({
 			type : "DELETE",
-			url: base_url + "page/" + id + "?token=" + localStorage.getItem("twa_token")
+			url: base_url + "page/" + id + "?token=" + localStorage.getItem("tws_token")
 		}).success( function () {
 			alert(null, translations["admin_deleted_successfully"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
 			console.log($(that).closest(".page-object"));
@@ -85,7 +90,7 @@ function createPage ( container ) {
 	var page = $("#newPageTemplate > div").clone();
 	$(page).attr("id", makeid(5));
 	container.append(page);
-	$('input[type="checkbox"]').checkbox();
+	$(".page-container").find('input[type="checkbox"]').checkbox();
 }
 
 // ############ String Section ############
@@ -104,10 +109,10 @@ $(document).on("click", ".remove-string", function ( event ) {
 		return;
 	}
 
-	if ( ! localStorage.getItem("twa_token") === false ) {
+	if ( ! localStorage.getItem("tws_token") === false ) {
 		$.ajax({
 			type : "DELETE",
-			url: base_url + "string/" + $(this).attr("data-object-id") + "?token=" + localStorage.getItem("twa_token")
+			url: base_url + "string/" + $(this).attr("data-object-id") + "?token=" + localStorage.getItem("tws_token")
 		}).success( function () {
 			alert(null, translations["admin_deleted_successfully"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
 			$(that).closest(".string-object").remove();
@@ -172,10 +177,10 @@ $(document).on("click", ".remove-url", function ( event ) {
 		return;
 	}
 
-	if ( ! localStorage.getItem("twa_token") === false ) {
+	if ( ! localStorage.getItem("tws_token") === false ) {
 		$.ajax({
 			type : "DELETE",
-			url: base_url + "url/" + $(this).attr("data-object-id") + "?token=" + localStorage.getItem("twa_token")
+			url: base_url + "url/" + $(this).attr("data-object-id") + "?token=" + localStorage.getItem("tws_token")
 		}).success( function () {
 			alert(null, translations["admin_deleted_successfully"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
 			$(that).closest(".url-object").remove();
@@ -279,9 +284,9 @@ $(document).on("submit", ".pages-form", function ( event ) {
 		}
 	} );
 
-	if ( ! localStorage.getItem("twa_token") === false ) {
+	if ( ! localStorage.getItem("tws_token") === false ) {
 		$.ajax({
-			url : base_url + "save/pages?token=" + localStorage.getItem("twa_token") ,
+			url : base_url + "save/pages?token=" + localStorage.getItem("tws_token") ,
 			type : "POST",
 			data: JSON.stringify(data),
 			contentType : "application/json"

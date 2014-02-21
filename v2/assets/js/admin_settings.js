@@ -25,10 +25,10 @@ $(document).on("submit", "#twitter_settings_form", function ( event ) {
 		}
 	} );
 	if ( data.length > 0 ) {
-		if ( ! localStorage.getItem("twa_token") === false ) {
+		if ( ! localStorage.getItem("tws_token") === false ) {
 			$.ajax({
 				type : "POST",
-				url : base_url + "admin/twitter/save?token=" + localStorage.getItem("twa_token"),
+				url : base_url + "admin/twitter/save?token=" + localStorage.getItem("tws_token"),
 				data : JSON.stringify({"twitter" : data}),
 				contentType: "application/json",
 		  		dataType: "json"
@@ -55,10 +55,10 @@ $(document).on("submit", "#twitter_settings_form", function ( event ) {
 $(document).on("click", "button.remove-button", function ( event ) {
 	event.preventDefault();
 
-	if ( ! localStorage.getItem("twa_token") === false ) {
+	if ( ! localStorage.getItem("tws_token") === false ) {
 		$.ajax({
 			type : "GET",
-			url : base_url + "admin/twitter/remove/" + $(this).attr("data-id") + "?token=" + localStorage.getItem("twa_token"),
+			url : base_url + "admin/twitter/remove/" + $(this).attr("data-id") + "?token=" + localStorage.getItem("tws_token"),
 		}).success( function ( xhr, status, data ) {
 			alert(null, translations["admin_twitter_removed"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
 

@@ -183,13 +183,14 @@ class Email_model extends Base_model {
 	 *
 	 */
 	public function send_email ( $settings ) {
+
 		$recievers = $this->get_email_recievers($settings["type"]);
 
 		if ( $recievers === false ) return false;
 
 		$this->load->helper('email');
 
-		@mail(implode(",", $recievers), $settings["subject"], wordwrap($settings["message"], 70, "\r\n"), "From: " . $settings["sender_email"]);
+		@mail(implode(",", $recievers), html_entity_decode($settings["subject"]), html_entity_decode(wordwrap($settings["message"], 70, "\r\n")), "From: " . $settings["sender_email"]);
 	}
 
 	/**
@@ -204,7 +205,7 @@ class Email_model extends Base_model {
 	 *
 	 *    @return integer
 	 */
-	public function top_category ( $min, $max, $page_id, &$top_category = "", &$top_category_percent = "", &$top_category_count = "" ) {
+	public function top_category ( $min, $max, $page_id, &$top_category = "", &$top_category_percent = "", &$top_category_count = "", &$sum ) {
 		$this->load->model("statistic_model");
 
 		$categories = $this->statistic_model->cateogories_sum($min, $page_id, $max );
@@ -221,6 +222,9 @@ class Email_model extends Base_model {
 			$top_category = $element["category"]->name;
 			$difference = $element["count"];
 			$top_category_count = $element["count"];
+			$sum = $top_category_count;
+			$top_category_percent = ($element["count"] / $sum) * 100;
+			$percent_change = 100;
 		} else if ( $categories !== false ) {
 			$first = current($categories);
 			$last = end($categories);
@@ -230,12 +234,12 @@ class Email_model extends Base_model {
 			$sum = $first["count"] + $second;
 
 			if ( ( $sum / $first["count"] * 100 ) >= 50 ) {
-				$top_category_percent = $first["count"] / $sum  * 100;
+				$top_category_percent = ($first["count"] / $sum)  * 100;
 				$top_category = $first["category"]->name;
 				$top_category_count = $first["count"];
 			} else {
 				$top_category = $last["category"]->name;
-				$top_category_percent = ($second / $sum * 100);
+				$top_category_percent = ($second / $sum) * 100;
 				$top_category_count = $last["count"];
 			}
 		}
@@ -262,18 +266,19 @@ class Email_model extends Base_model {
 
 		$page_id = (int)$page_id;
 		$page = $this->page_model->get_statistic_page($page_id);
-		$percent_change = $this->top_category(time() - $interval, time(), $page_id, $top_category, $top_category_percent, $top_category_count);
+		$percent_change = $this->top_category(time() - $interval, time(), $page_id, $top_category, $top_category_percent, $top_category_count, $category_sum);
 		$type = "category";
 
 		$settings = array(
-			"change_value" => $percent_change,
+			"change_value" => round($percent_change),
 			"time" => time(),
 			"page_name" => $page->name,
 			"page_url" => $this->config->item("base_url") . "page/" . $page->id,
 			"type" => $type,
 			"top_category" => $top_category,
-			"top_category_percent" => $top_category_percent,
-			"top_category_count" => $top_category_count
+			"top_category_percent" => round($top_category_percent) . "%",
+			"top_category_count" => round($top_category_count) . "%",
+			"category_sum" => $category_sum
 		);
 
 		$category_strings = $this->get_category_strings($page_id, time() - $interval, time());
@@ -318,7 +323,7 @@ class Email_model extends Base_model {
 		$difference = $calculations["newest"] - $calculations["second"];
 		$percent_change = 0;
 		$page = $this->page_model->get_statistic_page($page_id);
-		$category_difference = $this->top_category(time() - $interval, time(), $page_id, $top_category, $top_category_percent, $top_category_count);
+		$category_difference = $this->top_category(time() - $interval, time(), $page_id, $top_category, $top_category_percent, $top_category_count, $category_sum);
 
 		if ( $difference != 0 and $calculations["second"] != 0 ) {
 			$percent_change = ($difference / $calculations["second"]) * 100;
@@ -333,7 +338,7 @@ class Email_model extends Base_model {
 		}
 
 		$settings = array(
-			"change_value" => $percent_change,
+			"change_value" => round($percent_change),
 			"time" => time(),
 			"tweet_count_now" => $calculations["newest"],
 			"tweet_count_last" => $calculations["second"],
@@ -341,8 +346,9 @@ class Email_model extends Base_model {
 			"page_url" => $this->config->item("base_url") . "page/" . $page->id,
 			"type" => ( ! in_array("category", $types) ) ? $type : "multiple",
 			"top_category" => $top_category,
-			"top_category_percent" => $top_category_percent,
-			"top_category_count" => $top_category_count
+			"top_category_percent" => $top_category_percent . "%",
+			"top_category_count" => round($top_category_count),
+			"category_sum" => $category_sum
 		);
 
 		$category_strings = $this->get_category_strings($page_id, time() - $interval, time());

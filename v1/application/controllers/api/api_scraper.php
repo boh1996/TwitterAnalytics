@@ -121,6 +121,8 @@ class API_Scraper extends T_API_Controller {
 		$blocked_strings = $this->base_model->get_list("blocked_strings");
 		$alert_strings = $this->base_model->get_list("alert_strings");
 
+		$alerts = array();
+
 		foreach ( $objects as $object ) {
 			$item_start_time = microtime(true);
 			$item_number = $item_number+1;
@@ -155,6 +157,7 @@ class API_Scraper extends T_API_Controller {
 
 			// Loop through the tweets and add them
 			foreach ( $local_tweets as $tweet ) {
+				$alerts = array();
 				$tweet = $this->scrape_model->process_tweet($tweet, $alerts, $alert_strings);
 
 				if ( ! $this->scrape_model->if_to_block_tweet($blocked_strings, $tweet["text"]) ) {

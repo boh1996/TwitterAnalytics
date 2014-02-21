@@ -180,10 +180,14 @@ class Admin extends CI_Controller {
 		$this->lang->load("admin");
 		$this->load->model("settings_model");
 
+		$settings = $this->settings_model->check_defaults("email",$this->settings_model->get_settings("email"));
+
+		ksort($settings);
+
 		$this->load->view("admin_email_view", $this->user_control->ControllerInfo(array(
 			"current_section" => "admin",
 			"translations" => json_encode($this->lang->export()),
-			"settings" => $this->settings_model->check_defaults("email",$this->settings_model->get_settings("email")),
+			"settings" => $settings,
 		)));
 	}
 

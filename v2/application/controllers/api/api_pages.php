@@ -28,14 +28,28 @@ class API_Pages extends T_API_Controller {
 			$this->response();
 		}
 
-		$this->page_model->update_element("statistic_pages",array(
-			"name" => $this->get("name")
-		), array(
-			"id" => $this->get("id")
-		));
+		if ( $this->get("id") !== "undefined" ) {
+
+			$this->page_model->update_element("statistic_pages",array(
+				"name" => $this->get("name")
+			), array(
+				"id" => $this->get("id")
+			));
+
+			$id = $this->get("id");
+		} else {
+			$ids = $this->page_model->save_pages(array(array(
+				"name" => $this->get("name"),
+				"strings" => array(),
+				"urls" => array(),
+				"login" => true,
+				"exact_match" => false
+			)));
+		}
 
 		$this->response(array(
-			"status" => true
+			"status" => true,
+			"id" => $ids[0]
 		));
 	}
 
@@ -70,10 +84,11 @@ class API_Pages extends T_API_Controller {
 			),400);
 		}
 
-		$this->page_model->save_pages($this->post("pages"));
+		$ids = $this->page_model->save_pages($this->post("pages"));
 
 		$this->response(array(
-			"status" => true
+			"status" => true,
+			"id" => $ids[0]
 		),200);
 	}
 }

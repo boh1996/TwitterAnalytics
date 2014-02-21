@@ -46,7 +46,7 @@ $config["settings"] = array(
 		"help_text"		=> "admin_alert_connection_words_help"
 	),
 	"setting_alert_exact_match" => array(
-		"value" 		=> false,
+		"value" 		=> true,
 		"key" 			=> "setting_alert_exact_match",
 		"section" 		=> "alerts",
 		"type" 			=> "checkbox",

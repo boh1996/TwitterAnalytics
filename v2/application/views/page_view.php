@@ -70,7 +70,6 @@
 			</div>
 
 			<div class="bs-example col-sm-2" id="strings">
-				
 			</div>
 		</div>
 

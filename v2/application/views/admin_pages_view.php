@@ -33,7 +33,7 @@
 
 		<?= $this->user_control->LoadTemplate("nav_bar_view"); ?>
 
-		<div class="container">
+			<div class="container">
 			<div class="well" style="height:auto !important; min-height:150px;">
 				<div class="page-header text-center col-sm-10 col-sm-offset-1">
 					<h1><?= $this->lang->line("admin_pages_settings"); ?><small> <?= $this->lang->line("pages_page_description"); ?></small></h1>

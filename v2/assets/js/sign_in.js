@@ -30,7 +30,7 @@ $(document).on("submit", "#login_form", function ( event ) {
 	} ).success( function ( xhr, status, data ) {
 		var response = $.parseJSON(data.responseText);
 		if ( response.status == true ) {
-			localStorage.setItem("twa_token", response.token);
+			localStorage.setItem("tws_token", response.token);
 			window.location = base_url;
 		} else {
 			alert(null, translations["sign_in_error_occured"], "alertsErrorTemplate", $("#errors"), "append", null, 5000);

@@ -13,13 +13,13 @@ $(document).on("click", "#run_cleanup", function ( event ) {
 $(document).on("click", "#run_empty", function ( event ) {
 	event.preventDefault();
 
-	if ( localStorage.getItem("twa_token") === false ) {
+	if ( localStorage.getItem("tws_token") === false ) {
 		alert(null, translations["admin_please_log_in"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
 		return;
 	}
 
 	$.ajax( {
-		url: base_url + "empty?token=" + localStorage.getItem("twa_token"),
+		url: base_url + "empty?token=" + localStorage.getItem("tws_token"),
 	} ).success( function () {
 		alert(null, translations["admin_databased_empty_script_finished"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
 	} ).error( function () {

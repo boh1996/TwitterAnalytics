@@ -52,7 +52,7 @@
 							<?php if ( $object->type == "text" ): ?>
 								<input data-setting="<?= $key; ?>" type="text" id="<?= $key; ?>" value="<?= $object->value; ?>" name="<?= $key; ?>" class="form-control" placeholder="<?= $this->lang->line($object->placeholder); ?>">
 							<?php elseif ( $object->type == "textarea" ) : ?>
-								<textarea data-setting="<?= $key; ?>" id="<?= $key; ?>" name="<?= $key; ?>" class="form-control" placeholder="<?= $this->lang->line($object->placeholder); ?>"><?= $object->value; ?></textarea>
+								<textarea data-setting="<?= $key; ?>" id="<?= $key; ?>" name="<?= $key; ?>" class="form-control" id="<?= $key; ?>" placeholder="<?= $this->lang->line($object->placeholder); ?>" name="<?= $key; ?>"><?= $object->value; ?></textarea>
 							<?php elseif ( $object->type == "checkbox" ) : ?>
 							<div class="checkbox">
     							<label>

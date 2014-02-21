@@ -22,17 +22,19 @@ class Tweet_model extends Base_model {
 	 * @param  array $tweet The tweet data array
 	 * @param integer &$id The created database id
 	 * @param array &$error_types error_type
+	 * @param integer $page_id The current page id
 	 * @return boolean
 	 */
-	public function create_tweet ( $tweet, &$id, &$error_types ) {
-		$exists = $this->exists("statistic_tweets", array("tweet_id" => $tweet["tweet_id"]));
+	public function create_tweet ( $tweet, &$id, &$error_types, $page_id ) {
+		$exists = $this->exists("statistic_tweets", array("tweet_id" => $tweet["tweet_id"], "page_id" => $page_id));
 		if ( ! $exists ) {
 			$data = array(
 				"created_at" => $tweet["created_at"],
 				"tweet_id" => $tweet["tweet_id"],
 				"username" => $tweet["screen_name"],
 				"user_title" => $tweet["display_name"],
-				"inserted_at" => time()
+				"inserted_at" => time(),
+				"page_id" => $page_id
 			);
 
 			$this->db->insert("statistic_tweets", $data);
@@ -59,14 +61,12 @@ class Tweet_model extends Base_model {
 	 *
 	 */
 	public function insert_tweet_string ( $tweet_id, $string_id ) {
-		if ( ! $this->exists("statistic_tweet_strings", array("tweet_id" => $tweet_id, "statistic_tweet_string_id" => $string_id)) ) {
-			$this->db->insert("statistic_tweet_strings", array(
-				"created_at" => time(),
-				"updated_at" => time(),
-				"tweet_id" => $tweet_id,
-				"statistic_tweet_string_id" => $string_id
-			));
-		}
+		$this->db->insert("statistic_tweet_strings", array(
+			"created_at" => time(),
+			"updated_at" => time(),
+			"tweet_id" => $tweet_id,
+			"statistic_tweet_string_id" => $string_id
+		));
 	}
 
 	/**
@@ -132,27 +132,43 @@ class Tweet_model extends Base_model {
 	 *
 	 *    @param array $tweet   The tweet data array
 	 *    @param array $strings An array of strings in the format array([0] => value, [1] => id)
-	 *    @param integer $ [description]
+	 *    @param integer $page_id The page that the tweet is added to
 	 *
 	 */
 	public function search_for_strings ( $tweet, $strings, $page_id ) {
+		$regex_charset = "\w@+\\/#%\~_$";
+
 		foreach ( $strings as $string ) {
 			$value = strtolower($string[0]);
 			$id = $string[1];
 			$category = $string[2];
 			$exact_match =  $this->get_exact_match($page_id);
 
+			if ( $exact_match == "1" ) {
+				$exact_match = true;
+			} else if ( $exact_match == "0" ) {
+				$exact_match = false;
+			} else if ( $exact_match == "" ) {
+				$exact_match = false;
+			} else if ( $exact_match == "true" ) {
+				$exact_match = true;
+			} else if ( $exact_match == "false" ) {
+				$exact_match = false;
+			}
+
 			$text = strtolower($tweet["text"]);
 
 			if ( $exact_match ) {
-				if ( preg_match_all("~\b(\s*)?" . $value . "\b(\s*)?~",$text, $matches) > 0 ) {
-					for ( $i=0;  $i < count($matches[0]) ;  $i++) {
+				if ( preg_match_all("/(?<![" . $regex_charset . "])" .  $value . "(?![" . $regex_charset . "])/",$text, $matches) > 0 ) {
+					for ( $i = 0;  $i <= count($matches[0]) - 1 ;  $i++) {
 						$this->insert_tweet_string($tweet["id"], $id);
 					}
 				}
 			} else {
-				if ( strpos($text, $value) !== false ) {
-					$this->insert_tweet_string($tweet["id"], $id);
+				if ( preg_match_all("/" . $value . "/" ,$text, $matches) > 0 ) {
+					for ( $i = 0;  $i <= count($matches[0]) - 1 ;  $i++) {
+						$this->insert_tweet_string($tweet["id"], $id);
+					}
 				}
 			}
 		}

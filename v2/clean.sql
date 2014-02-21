@@ -1,0 +1,17 @@
+TRUNCATE api_tokens;
+TRUNCATE ci_sessions;
+TRUNCATE email_alert_recievers;
+TRUNCATE errors;
+TRUNCATE history;
+TRUNCATE page_stats;
+TRUNCATE page_tweets;
+TRUNCATE scrape_statistics;
+TRUNCATE scraper_runs;
+TRUNCATE settings;
+TRUNCATE statistic_pages;
+TRUNCATE statistic_strings;
+TRUNCATE statistic_tweet_strings;
+TRUNCATE statistic_tweets;
+TRUNCATE statistic_urls;
+TRUNCATE statistic_view_intervals;
+TRUNCATE users;

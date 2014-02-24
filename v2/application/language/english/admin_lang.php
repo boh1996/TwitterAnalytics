@@ -207,13 +207,18 @@ $lang["settings_variables_description"] = "These are the usable variables for th
 <b>{{time}}</b> : The current time<br>
 <b>{{asset_url}}</b> : The URL for the site asset directory<br>
 
-Use <b>{{category_**}}</b> and then replace the stars with the name of the category<br>
+Use <b>{{category_**}}</b> and then replace the stars with the name of the category to get the strings<br>
+Use <b>{{category_**_count}}</b> and then replace the stars with the name of the category to get the count of the category<br>
+Use <b>{{category_**_percentage}}</b> and then replace the stars with the name of the category to get the category percentage<br>
 <b>{{type}}</b> : To get the alert type 'increase', 'decrease', 'category' or 'multiple'<br>
 <b>{{top_category}}<b> : To get the name of the top scoring category<br>
 <b>{{top_category_percent}}</b> : For the percentage of the top scroing category<br>
 <b>{{top_category_count}}</> : The number of hits for the top category<br>
 <b>{{tweet_count_last}}</b> : For the tweet count of the oldest interval<br>
 <b>{{tweet_count_now}}</b> : For the tweet count of the newest interval<br>
+<b>{{category_sum}}</b> : The amount of strings found in the interval<br>
+<b>{{interval_start}}</b> : The lowest time for the interval<br>
+</b>{{interval_end}}</b> : The end of the interval<br>
 ";
 $lang["admin_email_alert_interval"] = "Email";
 $lang["admin_email_alert_decrease"] = "Decrease";

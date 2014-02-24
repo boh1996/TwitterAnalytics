@@ -65,8 +65,8 @@ $config["languages"] = array("english");
 
 $config["https"] = false;
 
-$config["encrypt_key"] = "wa2fbVP2Vc3rzMyPukoMaDfxtk9v0oHS";
-$config["encrypt_salt"] = "DMiHQtXcLKC0DBDrShP6XzgQbgzbghr1";
+$config["encrypt_key"] = "2snGevzQhQuQfVl7UkJofFjN0al0Psdy";
+$config["encrypt_salt"] = "Qi3CeACf5qri9qCBplyRbgOISC08pPVk";
 
 /*
 |--------------------------------------------------------------------------
@@ -233,7 +233,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'KuJCSlkoSw23gtF5';
+$config['encryption_key'] = '38VYbBxpiMFYsjda';
 
 /*
 |--------------------------------------------------------------------------
@@ -274,7 +274,7 @@ $config['sess_time_to_update']	= 300;
 | 'cookie_secure' =  Cookies will only be set if a secure HTTPS connection exists.
 |
 */
-$config['cookie_prefix']	= "tws_";
+$config['cookie_prefix']	= "";
 $config['cookie_domain']	= "";
 $config['cookie_path']		= "/";
 $config['cookie_secure']	= FALSE;

@@ -73,7 +73,7 @@ class Statistic_model extends Base_model {
 
 			$query_string = 'SELECT
 				    GROUP_CONCAT(created_at) as created,
-				    COUNT(id) as tweet_count,
+				    COUNT(*) as tweet_count,
 				    GROUP_CONCAT(DISTINCT id) as tweets,
 				    GROUP_CONCAT(string_category, "@|", category_tweet_count SEPARATOR "@;" ) as categories,
 				    string_category
@@ -93,7 +93,7 @@ class Statistic_model extends Base_model {
 				    ) category_strings ON category_strings.string_id = statistic_tweet_strings.statistic_tweet_string_id
 				    GROUP BY string_category
 				) strings ON strings.tweet_id = statistic_tweets.id
-				WHERE created_at BETWEEN ? AND ?
+				WHERE created_at BETWEEN ' . $min . ' AND ' . $max . '
 			';
 
 			if ( ! is_null($page_id) ) {
@@ -104,7 +104,7 @@ class Statistic_model extends Base_model {
 				)';
 			}
 
-			$query = $this->db->query($query_string , array($min, $max));
+			$query = $this->db->query($query_string);
 
 			$row = $query->row();
 			$row->created = explode(",", $row->created);
@@ -159,10 +159,11 @@ class Statistic_model extends Base_model {
 			$list[$min] = $row;
 			$sum = $sum + $row->tweet_count;
 		}
-		sort($list);
 
 		$last = null;
 		$last_key = null;
+
+		ksort($list);
 
 		foreach ( $list as $key => $object ) {
 			if ( ! is_null($last) ) {
@@ -175,9 +176,15 @@ class Statistic_model extends Base_model {
 			$last_key = $key;
 		}
 
+		$output = array();
+
+		foreach ( $list as $key => $value ) {
+			$output[] = $value;
+		}
+
 		$avg = $sum / count($list);
 
-		return $list;
+		return $output;
 	}
 
 	/**

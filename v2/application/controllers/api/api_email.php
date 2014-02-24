@@ -58,17 +58,24 @@ class API_Email extends T_API_Controller {
 			), 400);
 		}
 
+		$mail_send = false;
 
 		foreach ( $pages as $page ) {
-			$this->email_model->process($interval_object->value, $page->id, $email_types, $interval_object->email_change_value, $interval_object->category_change_value);
+			$intervals_difference = $this->email_model->process($interval_object->value, $page->id, $email_types, $interval_object->email_change_value, $interval_object->category_change_value);
+			if ( $intervals_difference == true ) {
+				$mail_send = true;
+			}
 
 			if ( in_array("category", $email_types) && ! ( in_array("increase", $email_types) || in_array("decrease", $email_types) ) ) {
-				$this->email_model->category_alert($interval_object->value, $page->id, $interval_object->category_change_value);
+				$category_mail = $this->email_model->category_alert($interval_object->value, $page->id, $interval_object->category_change_value);
+				if ( $category_mail == true ) {
+					$mail_send = true;
+				}
 			}
 		}
 
 		$this->response(array(
-			"status" => true
+			"status" => $mail_send
 		));
 	}
 }

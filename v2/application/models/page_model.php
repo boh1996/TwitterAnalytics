@@ -119,12 +119,10 @@ class Page_model extends Base_model {
 	 *
 	 */
 	public function save_pages ( $pages ) {
-		$ids = array();
 		foreach ( $pages as $page ) {
 			if ( isset($page["id"]) && $this->exists("statistic_pages", array(
 				"id" => $page["id"]
 			)) ) {
-				$ids[] = $page["id"];
 				$this->db->where(array(
 					"id" => $page["id"]
 				));
@@ -143,12 +141,9 @@ class Page_model extends Base_model {
 					"embed" => ( isset($page["embed"]) ) ? $page["embed"] : "",
 					"exact_match" => ( isset($page["exact_match"]) ) ? $page["exact_match"] : false,
 				));
-				$ids[] = $id;
 				$this->save_strings($page["strings"], $id);
 				$this->save_urls($page["urls"], $id);
 			}
 		}
-
-		return $ids;
 	}
 }

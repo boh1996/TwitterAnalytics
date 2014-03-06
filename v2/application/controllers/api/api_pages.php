@@ -28,15 +28,13 @@ class API_Pages extends T_API_Controller {
 			$this->response();
 		}
 
-		if ( $this->get("id") !== "undefined" ) {
+		if ( $this->get("id") != "undefined" ) {
 
 			$this->page_model->update_element("statistic_pages",array(
 				"name" => $this->get("name")
 			), array(
 				"id" => $this->get("id")
 			));
-
-			$id = $this->get("id");
 		} else {
 			$ids = $this->page_model->save_pages(array(array(
 				"name" => $this->get("name"),
@@ -49,7 +47,6 @@ class API_Pages extends T_API_Controller {
 
 		$this->response(array(
 			"status" => true,
-			"id" => $ids[0]
 		));
 	}
 
@@ -84,11 +81,10 @@ class API_Pages extends T_API_Controller {
 			),400);
 		}
 
-		$ids = $this->page_model->save_pages($this->post("pages"));
+		$this->page_model->save_pages($this->post("pages"));
 
 		$this->response(array(
-			"status" => true,
-			"id" => $ids[0]
+			"status" => true
 		),200);
 	}
 }

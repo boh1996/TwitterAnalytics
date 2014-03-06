@@ -23,6 +23,7 @@ class Words_model extends Base_model {
 	 *    @return array<Object>
 	 */
 	public function get_strings_grouped_in_pages () {
+		$query = $this->db->query("SET SESSION group_concat_max_len = 999999999;");
 		$query = $this->db->query('SELECT
 			    statistic_page_id,
 			    GROUP_CONCAT(value, "@|", id, "@|", category SEPARATOR "@;") AS strings
@@ -53,7 +54,9 @@ class Words_model extends Base_model {
 	 *    @return array<Object>
 	 */
 	public function get_pages_info () {
-		$query = $this->db->query('SELECT
+		$query = $this->db->query("SET SESSION group_concat_max_len = 999999999;");
+		$query_string = '
+			SELECT
 			    id,
 			    name,
 			    urls,
@@ -80,8 +83,8 @@ class Words_model extends Base_model {
 			        statistic_page_id as ss_page_id
 			    FROM statistic_strings
 			    GROUP BY ss_page_id
-			) string_list ON string_list.ss_page_id = sp.id'
-		);
+			) string_list ON string_list.ss_page_id = sp.id';
+		$query = $this->db->query($query_string);
 
 		if ( ! $query->num_rows() ) return false;
 

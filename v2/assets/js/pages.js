@@ -29,7 +29,6 @@ $(document).on("click", ".edit-page",  function ( event ) {
 				alert(null, translations["admin_please_log_in"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
 			}
 		} else {
-			console.log("HERE");
 			alert(null, translations["admin_please_use_the_large_save"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
 		}
 
@@ -235,7 +234,7 @@ $(document).on("submit", ".pages-form", function ( event ) {
 	var data = {"pages" : []};
 
 	$(".page-container").find(".page-object").each( function ( pageIndex, pageElement ) {
-		if ( ( $(pageElement).hasClass("add-page") == true && $(pageElement).find(".page-name").html() != $(pageElement).find(".page-name").attr("data-value") ) || ! $(pageElement).hasClass("add-page") ) {
+		if ( ( $(pageElement).hasClass("add-page") == true && $(pageElement).find(".page-name").html() != $(pageElement).find(".page-name").attr("data-value") ) ||$(pageElement).hasClass("add-page") == false ) {
 			var page = {
 				"urls" : [],
 				"strings" : [],
@@ -281,6 +280,10 @@ $(document).on("submit", ".pages-form", function ( event ) {
 				}
 			} );
 			data.pages.push(page);
+		} else {
+			if ( $(pageElement).find(".string-object input:not([value=''])").length == 0 && $(pageElement).find(".url-object input:not([value=''])") ) {
+				alert(null, translations["admin_sorry_please_give_the_page_a_name"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
+			}
 		}
 	} );
 
@@ -290,22 +293,26 @@ $(document).on("submit", ".pages-form", function ( event ) {
 			type : "POST",
 			data: JSON.stringify(data),
 			contentType : "application/json"
-		}).success( function () {
-			$(".notifications").css("display", "block");
-			alert(null, translations["admin_saved_successfully"], "alertsSuccessTemplate", $("#errors"), "append", function () {
-				$(".notifications").css("display", "none");
-				window.location = window.location;
-			} , 2000);
-			$.ajax({
-				url: base_url + "admin/template/pages"
-			}).success( function ( data ) {
-				$(".page-container").html(data);
-				$(".page-container").find(".checkbox").checkbox();
-			} ).error( function () {
-				window.location = window.location;
-			} );
-		} ).error( function () {
+		}).success( function ( data ) {
 
+			if ( data.status == true ) {
+				$(".notifications").css("display", "block");
+				alert(null, translations["admin_saved_successfully"], "alertsSuccessTemplate", $("#errors"), "append", function () {
+					$(".notifications").css("display", "none");
+					//window.location = window.location;
+				} , 2000);
+				$.ajax({
+					url: base_url + "admin/template/pages"
+				}).success( function ( data ) {
+					$(".page-container").html(data);
+					$(".page-container").find(".checkbox").checkbox();
+				} ).error( function () {
+					//window.location = window.location;
+				} );
+			} else {
+				alert(null, translations["admin_sorry_something_failed"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
+			}
+		} ).error( function () {
 			alert(null, translations["admin_sorry_something_failed"], "alertsErrorTemplate", $("#errors"), "append", null, 2000);
 		} );
 	} else {

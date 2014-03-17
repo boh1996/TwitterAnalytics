@@ -242,6 +242,7 @@ class Connection {
 	 */
 	public function __construct ( $url, $followlocation = true, $timeOut = 30, $maxRedirecs = 4, $binaryTransfer = false, $includeHeader = false, $noBody = false ) {
 		$this->_url = urlencode($url);
+		echo $url;
 		$this->_followlocation = $followlocation;
 		$this->_timeout = $timeOut;
 		$this->_maxRedirects = $maxRedirecs;

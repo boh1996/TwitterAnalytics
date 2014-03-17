@@ -73,6 +73,11 @@ class API_Scraper extends T_API_Controller {
 			$page = "discover";
 		} else  if ( strpos($url, "search?q=") !== false ) {
 			$page = "search";
+			$url = preg_replace("/\&src=(.*)/", '', $url);
+			preg_match("|(https)?(://)?(www\.)?twitter\.com/search\?q=(?P<query>.*)|", $url, $matches);
+			if ( isset($matches["query"]) ) {
+				$data["q"] = $matches["query"];
+			}
 		} else {
 			preg_match("|(https)?(://)?(www\.)?twitter\.com/(#!/)?@?(?P<name>[^/]*)|", $url, $matches);
 			if ( isset($matches["name"]) ) {
@@ -110,7 +115,7 @@ class API_Scraper extends T_API_Controller {
 		$item_start_time = microtime(true);
 		$item_number = $item_number+1;
 
-		$type = $this->_determine_page_type($url->url, $data);
+		$type = $this->_determine_page_type(urldecode($url->url), $data);
 
 		if ( $type == false ) {
 			return false;

@@ -75,7 +75,9 @@ class API_Scraper extends T_API_Controller {
 	 * @return string
 	 */
 	protected function _determine_page_type ( $url, &$data ) {
+		$url = trim($url);
 		$query_str = parse_url($url, PHP_URL_QUERY);
+		$page = false;
 		parse_str($query_str, $data);
 		if ( $url == "twitter.com" ) {
 			$page = "timeline";
@@ -85,10 +87,17 @@ class API_Scraper extends T_API_Controller {
 			$page = "discover";
 		} else  if ( strpos($url, "search?q=") !== false ) {
 			$page = "search";
+			$url = preg_replace("/\&src=(.*)/", '', $url);
+			preg_match("|(https)?(://)?(www\.)?twitter\.com/search\?q=(?P<query>.*)|", $url, $matches);
+			if ( isset($matches["query"]) ) {
+				$data["q"] = $matches["query"];
+			}
 		} else {
-			preg_match("|https?://(www\.)?twitter\.com/(#!/)?@?(?P<name>[^/]*)|", $url, $matches);
-			$data["user"] = $matches["name"];
-			$page = "profile";
+			preg_match("|(https)?(://)?(www\.)?twitter\.com/(#!/)?@?(?P<name>[^/]*)|", $url, $matches);
+			if ( isset($matches["name"]) ) {
+				$data["user"] = $matches["name"];
+				$page = "profile";
+			}
 		}
 
 		return $page;
@@ -120,6 +129,8 @@ class API_Scraper extends T_API_Controller {
 
 		$blocked_strings = $this->base_model->get_list("blocked_strings");
 		$alert_strings = $this->base_model->get_list("alert_strings");
+
+		$feed_url = urldecode($feed_url);
 
 		$alerts = array();
 

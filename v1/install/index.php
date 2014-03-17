@@ -39,7 +39,7 @@ if($_POST) {
 
 		// If no errors, redirect to registration page
 		if(!isset($message)) {
-			sleep(5);
+			sleep(10);
 			header( 'Location: ' . $redir . 'setup' ) ;
 		}
 

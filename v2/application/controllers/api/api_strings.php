@@ -35,7 +35,7 @@ class API_Strings extends T_API_Controller {
 			"id" => $this->get("id")
 		));
 
-		$this->db->delete(array(
+		$this->db->delete("statistic_tweet_strings", array(
 			"statistic_tweet_string_id" => $this->get("id")
 		));
 	}

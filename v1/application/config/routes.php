@@ -68,10 +68,16 @@ $route["admin/scrapers"] = "admin/scrapers_view";
 $route["admin/errors"] = "admin/errors_view";
 $route["admin/active/scrapers"] = "admin/active_scrapers_view";
 
+$route["user/history"] = "user/history_view";
+$route["user/scrapers"] = "user/scrapers_view";
+$route["user/errors"] = "user/errors_view";
+$route["user/active/scrapers"] = "user/active_scrapers_view";
+
 $route["user/words/temp"] = "user/words_view";
 $route["user/alerts/temp/list"] = "user/alerts_list_view";
 $route["user/alerts/temp"] = "user/alerts_box_view";
 $route["user/alerts"] = "user/alerts_view";
+$route["user/live"] = "user/live_view";
 
 #### API #####
 $route["admin/twitter/save"] = "api/api_settings/twitter";
@@ -101,8 +107,18 @@ $route["admin/blocked/strings/save"] = "api/api_list/save_list/db/blocked_string
 $route["admin/hide/word/(:num)"] = "api/api_list/object/id/$1/db/hidden_words";
 $route["admin/hide/words/save"] = "api/api_list/save_list/db/hidden_words";
 
+$route["export/(:any)/(:any)"] = "api/api_io/export/table/$1/filetype/$2/property/value/filename/$1";
+
+$route["import/(:any)/(:any)"] = "api/api_io/import/table/$1/filetype/$2/property/value";
+
+$route["scrape/live/launch"] = "api/api_scraper/live/launch/true";
+$route["scrape/topics/launch"] = "api/api_scraper/topics/launch/true";
+$route["scrape/urls/(:num)/launch"] = "api/api_scraper/urls/category/$1/launch/true";
+$route["scrape/users/launch"] = "api/api_scraper/users/launch/true";
+
 $route["scrape/topics"] = "api/api_scraper/topics";
-$route["scrape/urls"] = "api/api_scraper/urls";
+$route["scrape/live"] = "api/api_scraper/live";
+$route["scrape/urls/(:any)"] = "api/api_scraper/urls/category/$1";
 $route["scrape/users"] = "api/api_scraper/users";
 
 $route["admin/alerts/template/strings"] = "admin/alerts_strings_template_view";

@@ -27,8 +27,8 @@ class API_Scraper extends T_API_Controller {
 	 * Loads the neede dependencies
 	 */
 	public function __construct () {
-		set_time_limit(999999999999);
-		ini_set('max_execution_time', 999999999999);
+		set_time_limit(0);
+		ini_set('max_execution_time', 0);
 		parent::__construct();
 		$this->load->library("scraper");
 		$this->load->library("urls");
@@ -129,7 +129,7 @@ class API_Scraper extends T_API_Controller {
 		}
 
 		if ( ! isset($local_tweets) || ! is_array($local_tweets) ) {
-			$this->scrape_model->create_error("Scraping failed!", $url->url, $uuid, $item_type, $url->id );
+			$this->scrape_model->create_error("Scraping failed!" . $url->url, $url->url, $uuid, $item_type, $url->id );
 			$this->response(array(
 				"status" => false
 			), 500);
@@ -207,7 +207,7 @@ class API_Scraper extends T_API_Controller {
 
 					foreach ( $local_tweets as $tweet ) {
 						$this->tweet_model->search_for_strings($tweet, $strings[$url->statistic_page_id]->strings, $url->statistic_page_id);
-						$this->tweet_model->link_page_and_tweet($tweet["tweet_id"], $url->statistic_page_id);
+						$this->tweet_model->link_page_and_tweet($tweet["tweet_id"], $url->statistic_page_id, $tweet["created_at"]);
 
 					}
 				}

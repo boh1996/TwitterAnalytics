@@ -365,6 +365,34 @@ class Analytics_model extends Base_model {
 	}
 
 	/**
+	 *    Counts the number of tweets found in the range
+	 *
+	 *    @param string  $date     The date string
+	 *    @param integer  $max_time Max time int
+	 *
+	 *    @return integer
+	 */
+	public function get_tweet_count ( $date = null, $max_time = null ) {
+		$where = "";
+		if ( ! is_null($date) && preg_match("/(?P<start>.*) - (?P<end>.*)/", $date, $matches) ) {
+			$start_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["start"]));
+			$end_time = DateTime::createFromFormat("d/m/Y H:i", trim($matches["end"]));
+			if ( is_object($start_time) && is_object($end_time) ) {
+				$where = ' WHERE tweets.created_at BETWEEN ' . $this->db->escape($start_time->getTimestamp()) . ' AND ' . $this->db->escape($end_time->getTimestamp());
+			}
+		} else if ( ! is_null($max_time) ) {
+			$max = time() - intval($max_time);
+			$where = ' WHERE tweets.created_at BETWEEN ' . $max . ' AND ' . time();
+		}
+
+		$query = $this->db->query("SELECT id FROM tweets" . $where );
+
+		//echo $this->db->last_query();
+
+		return ( $query->num_rows() !== false ) ? $query->num_rows() : 0;
+	}
+
+	/**
 	 * Feches the list of top words, date
 	 * @param  integer $limit Th number of words to fetch
 	 * @param  string  $date  A date range, to fetch between

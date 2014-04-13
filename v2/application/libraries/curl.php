@@ -189,6 +189,8 @@ class Connection {
 	 */
 	public    $auth_pass      = '';
 
+	public $error = false;
+
 	/**
 	 * If Basic auth should be used
 	 * @param  integer $use 1 Means yes
@@ -319,6 +321,7 @@ class Connection {
 	 * @since 1.0
 	 */
 	public function createCurl ( $url = NULL ) {
+		$this->error = false;
 		if ( ! is_null($url) ) {
 		  $this->_url = $url;
 		}
@@ -332,6 +335,7 @@ class Connection {
 		}
 
 		curl_setopt($s,CURLOPT_TIMEOUT,$this->_timeout);
+		curl_setopt($s, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
 		curl_setopt($s,CURLOPT_MAXREDIRS,$this->_maxRedirects);
 		curl_setopt($s,CURLOPT_RETURNTRANSFER,true);
 		curl_setopt($s,CURLOPT_FOLLOWLOCATION,$this->_followlocation);
@@ -379,6 +383,13 @@ class Connection {
 		}
 
 		$response = curl_exec($s);
+		if ( curl_errno($s) ) {
+			$this->error = true;
+			file_put_contents("log" . time() . ".txt", curl_error($s) . ":" . curl_errno($s));
+			throw new Exception(curl_error($s) . ":" . curl_errno($s), 403);
+			curl_close($s);
+			return;
+		}
 		$this->_status = curl_getinfo($s,CURLINFO_HTTP_CODE);
 
 		$header_size = curl_getinfo($s, CURLINFO_HEADER_SIZE);

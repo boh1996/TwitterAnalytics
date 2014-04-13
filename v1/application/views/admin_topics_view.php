@@ -13,6 +13,11 @@
 
 	<body>
 
+		<form id="import_form" method="post" enctype="multipart/form-data">
+			<input type="file" name="file" id="import_file" style="visibility:hidden;position:absolute;top:0;left:0">
+			<input type="text" style="visibility:hidden;position:absolute;top:0;left:0" name="url" id="url">
+		</form>
+
 		<script type="text/javascript">
 			var base_url = "<?= $base_url; ?>";
 
@@ -38,6 +43,42 @@
 						<div class="col-sm-offset-3 col-sm-8" id="errors">
 						</div>
 					</div>
+
+					<div class="form-group">
+						<div class="col-sm-offset-4 col-sm-3">
+							<div class="btn-group export" data-type="topics">
+								<button type="button" class="btn btn-primary"><?= $this->lang->line("admin_export"); ?></button>
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+									<span class="sr-only"><?= $this->lang->line("admin_export"); ?></span>
+							  	</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#" data-value="csv"><?= $this->lang->line("admin_as_csv"); ?></a></li>
+									<li><a href="#" data-value="json"><?= $this->lang->line("admin_as_json"); ?></a></li>
+									<li><a href="#" data-value="xml"><?= $this->lang->line("admin_as_xml"); ?></a></li>
+									<li><a href="#" data-value="txt"><?= $this->lang->line("admin_as_txt"); ?></a></li>
+							  	</ul>
+							</div>
+
+							<div class="btn-group import" data-type="topics">
+								<button type="button" class="btn btn-primary"><?= $this->lang->line("admin_import"); ?></button>
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+									<span class="sr-only"><?= $this->lang->line("admin_export"); ?></span>
+							  	</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#" data-value="csv"><?= $this->lang->line("admin_from_csv"); ?></a></li>
+									<li><a href="#" data-value="txt"><?= $this->lang->line("admin_from_txt"); ?></a></li>
+							  	</ul>
+							</div>
+						</div>
+
+						<div class="col-sm-4">
+							<button class="btn btn-success" id="import_upload"><?= $this->lang->line("admin_upload"); ?></button>
+						</div>
+					</div>
+
+					<?php $index = 0; ?>
 
 					<?php foreach ( $topics as $topic ) : ?>
 						<div class="form-group">
@@ -79,5 +120,6 @@
 		<script src="<?= $asset_url; ?>js/nav.js"></script>
 		<script src="<?= $asset_url; ?>js/functions.js"></script>
 		<script src="<?= $asset_url; ?>js/list-input.js"></script>
+		<script src="<?= $asset_url; ?>js/io.js"></script>
 	</body>
 </html>

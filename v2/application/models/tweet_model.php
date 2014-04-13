@@ -60,10 +60,10 @@ class Tweet_model extends Base_model {
 	 *    @param integer $string_id The string database id
 	 *
 	 */
-	public function insert_tweet_string ( $tweet_id, $string_id ) {
+	public function insert_tweet_string ( $tweet_id, $string_id, $created_at ) {
 		$this->db->insert("statistic_tweet_strings", array(
-			"created_at" => time(),
-			"updated_at" => time(),
+			"created_at" => $created_at,
+			"updated_at" => $created_at,
 			"tweet_id" => $tweet_id,
 			"statistic_tweet_string_id" => $string_id
 		));
@@ -76,7 +76,7 @@ class Tweet_model extends Base_model {
 	 *    @param integer $page_id  The page id
 	 *
 	 */
-	public function link_page_and_tweet ( $tweet_id, $page_id ) {
+	public function link_page_and_tweet ( $tweet_id, $page_id, $created_at ) {
 		$row = $this->select("statistic_tweets", array(
 			"tweet_id" => $tweet_id
 		));
@@ -85,7 +85,9 @@ class Tweet_model extends Base_model {
 
 		$this->db->insert("page_tweets", array(
 			"tweet_id" => $row->id,
-			"page_id" => $page_id
+			"page_id" => $page_id,
+			"tweets_created" => $created_at,
+			"created_at" => $created_at
 		));
 	}
 
@@ -161,13 +163,13 @@ class Tweet_model extends Base_model {
 			if ( $exact_match ) {
 				if ( preg_match_all("/(?<![" . $regex_charset . "])" .  $value . "(?![" . $regex_charset . "])/",$text, $matches) > 0 ) {
 					for ( $i = 0;  $i <= count($matches[0]) - 1 ;  $i++) {
-						$this->insert_tweet_string($tweet["id"], $id);
+						$this->insert_tweet_string($tweet["id"], $id, $tweet["created_at"]);
 					}
 				}
 			} else {
 				if ( preg_match_all("/" . $value . "/" ,$text, $matches) > 0 ) {
 					for ( $i = 0;  $i <= count($matches[0]) - 1 ;  $i++) {
-						$this->insert_tweet_string($tweet["id"], $id);
+						$this->insert_tweet_string($tweet["id"], $id, $tweet["created_at"]);
 					}
 				}
 			}

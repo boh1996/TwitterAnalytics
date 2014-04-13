@@ -63,5 +63,6 @@
 		<script src="<?= $asset_url; ?>js/functions.js"></script>
 		<script src="<?= $asset_url; ?>js/list-input.js"></script>
 		<script src="<?= $asset_url; ?>js/settings.js"></script>
+		<script src="<?= $asset_url; ?>js/io.js"></script>
 	</body>
 </html>

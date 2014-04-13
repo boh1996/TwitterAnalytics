@@ -192,11 +192,12 @@ class Email_model extends Base_model {
 
 		$headers = array(
 			"From: " . $settings["sender_email"],
+			"Reply-To: ". strip_tags($_POST['req-email']),
 			"MIME-Version: 1.0",
 			"Content-Type: text/html;charset=utf-8"
 		);
 
-		@mail(implode(",", $recievers), html_entity_decode($settings["subject"]),'<html><head><meta charset="utf-8"> </head><body>' . html_entity_decode(wordwrap($settings["message"], 70, "\r\n")) . '</html></body>', implode("\r\n", $headerFields));
+		@mail(implode(",", $recievers), html_entity_decode($settings["subject"]),'<html><head><meta charset="utf-8"></head><body>' . html_entity_decode(wordwrap($settings["message"], 70, "\r\n")) . '</html></body>', implode("\r\n", $headers));
 	}
 
 	/**
@@ -222,30 +223,36 @@ class Email_model extends Base_model {
 		);
 		$top_category_percent = 0;
 
-		foreach ( $category_settings as $key => $object ) {
-			$info["category_" . $object->name . "_count" ] = 0;
+		if ( is_array($category_settings) ) {
+			foreach ( $category_settings as $key => $object ) {
+				$info["category_" . $object->name . "_count" ] = 0;
+			}
 		}
 
-		foreach ( $categories as $key => $array ) {
-			$sum = $sum + $array["count"];
-			$info["category_" . $array['category']->name . "_count" ] = $array["count"];
+		if ( is_array($categories) ) {
+			foreach ( $categories as $key => $array ) {
+				$sum = $sum + $array["count"];
+				$info["category_" . $array['category']->name . "_count" ] = $array["count"];
+			}
 		}
 
 		$info["category_sum"] = $sum;
 
-		foreach ( $categories as $key => $array ) {
-			$count = $array["count"];
-			$percent = round(($count / $sum) * 100);
+		if ( is_array($categories) ) {
+			foreach ( $categories as $key => $array ) {
+				$count = $array["count"];
+				$percent = round(($count / $sum) * 100);
 
-			if ( $percent >= 50 ) {
-				$top_category_percent = $percent;
-				$info["top_category"] = $array['category']->name;
-				$info["top_category_percent"] = $percent . "%";
-				$info["top_category_count"] = $count;
+				if ( $percent >= 50 ) {
+					$top_category_percent = $percent;
+					$info["top_category"] = $array['category']->name;
+					$info["top_category_percent"] = $percent . "%";
+					$info["top_category_count"] = $count;
+				}
+
+				$info["category_" . $array['category']->name . "_count" ] = $array["count"];
+				$info["category_" . $array['category']->name . "_percentage" ] = $percent;
 			}
-
-			$info["category_" . $array['category']->name . "_count" ] = $array["count"];
-			$info["category_" . $array['category']->name . "_percentage" ] = $percent;
 		}
 
 		return $top_category_percent;
@@ -289,7 +296,7 @@ class Email_model extends Base_model {
 			}
 		}
 
-		if ( $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 200, "email") == 0 ) {
+		if ( $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 100, "email") == 0 ) {
 			$this->create_message($settings, $type);
 			return true;
 		}
@@ -325,6 +332,13 @@ class Email_model extends Base_model {
 		)), $page_id);
 		$page_id = (int)$page_id;
 		$difference = $calculations["newest"] - $calculations["second"];
+
+		if ( $difference == 0 ) {
+			return false;
+		} else if ( $calculations["newest"] == $calculations["second"] ) {
+			return false;
+		}
+
 		$percent_change = 0;
 		$page = $this->page_model->get_statistic_page($page_id);
 		$top_category_percent = $this->top_category(time() - $interval, time(), $page_id, $category_info);
@@ -350,7 +364,8 @@ class Email_model extends Base_model {
 			"page_url" => $this->config->item("base_url") . "page/" . $page->id,
 			"type" => ( ! in_array("category", $types) ) ? $type : "multiple",
 			"interval_start" => gmdate("d-m-Y\TH:m:s", time() - $interval),
-			"interval_end" => gmdate("d-m-Y\TH:m:s", time())
+			"interval_end" => gmdate("d-m-Y\TH:m:s", time()),
+			"difference" => $difference
 		);
 
 		$settings = array_merge($settings, $category_info);
@@ -364,7 +379,7 @@ class Email_model extends Base_model {
 			}
 		}
 
-		if ( $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 200, "email") == 0 ) {
+		if ( $this->settings_model->fetch_setting("setting_email_zero_minimum_change_amount", 100, "email") == 0 ) {
 			$this->create_message($settings, $type);
 			return true;
 		}

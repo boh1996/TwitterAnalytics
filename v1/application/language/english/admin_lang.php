@@ -1,4 +1,5 @@
 <?php
+$lang["admin_upload"] = "Upload";
 $lang["enter_twitter_details"] = "Twitter credidentials";
 $lang["admin_save"] = "Save";
 $lang["admin_twitter"] = "Twitter";
@@ -127,6 +128,11 @@ $lang["admin_last_feched_time"] = "Last item fetched at";
 # Scrapers #
 $lang["admin_scraper_users"] = "Users";
 $lang["admin_scraper_urls"] = "URLs";
+$lang["admin_scraper_urls_1"] = "URLs 1";
+$lang["admin_scraper_urls_2"] = "URLs 2";
+$lang["admin_scraper_urls_3"] = "URLs 3";
+$lang["admin_scraper_urls_4"] = "URLs 4";
+$lang["admin_scraper_urls_5"] = "URLs 5";
 $lang["admin_scraper_topics"] = "Topics";
 
 # Setings #
@@ -151,4 +157,34 @@ $lang["admin_setting_viewer_max_time_help"] = "The max time of the shown tweets,
 $lang["admin_setting_timezone"] = "Timezone";
 $lang["admin_admin_setting_timezone_placeholder"] = "Timezone name";
 $lang["admin_admin_setting_timezone_help"] = "The name of the timezone, 'Europe/Copenhagen etc, find avaiable timezones here: http://php.net/manual/en/timezones.php'";
+
+$lang["admin_export"] = "Export as";
+$lang["admin_as_csv"] = "CSV";
+$lang["admin_as_json"] = "JSON";
+$lang["admin_as_xml"] = "XML";
+$lang["admin_as_txt"] = "Line Seperated";
+
+$lang["admin_import"] = "Import from";
+$lang["admin_from_csv"] = "CSV";
+$lang["admin_from_json"] = "JSON";
+$lang["admin_from_xml"] = "XML";
+$lang["admin_from_txt"] = "Line Seperated";
+$lang["admin_url_category"] = "Category";
+$lang["admin_scraper_urls_live"] = "Live";
+
+$lang["admin_page_live"] = "Live statistics";
+$lang["admin_url_live"] = "Live";
+
+$lang["admin_increase_alert"] = "Increase alert";
+$lang["admin_increase_alert_help"] = "If an alert must be shown, when the difference is positive";
+$lang["admin_increase_alert_placeholder"] = "Increase";
+$lang["admin_decline_alert"] = "Decrease alert";
+$lang["admin_decline_alert_help"] = "If an alert must be shown, when the difference is negative";
+$lang["admin_decline_alert_placeholder"] = "Decrease";
+$lang["admin_increase_value"] = "increase value";
+$lang["admin_increase_value_help"] = "increase amount, before alert";
+$lang["admin_increase_value_placeholder"] = "increase value";
+$lang["admin_decline_value"] = "Decrease value";
+$lang["admin_decline_value_help"] = "Decrease amount, before alert";
+$lang["admin_decline_value_placeholder"] = "Decrease value";
 ?>

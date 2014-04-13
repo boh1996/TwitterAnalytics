@@ -1,13 +1,13 @@
 <?php
-include "curl.php";
-include "urls.php";
-include "phpQuery-onefile.php";
+require_once "curl.php";
+require_once "urls.php";
+require_once "phpQuery-onefile.php";
 
 /**
  * @author Bo Thomsern <bo@illution.dk>
  * @version 1.0
  */
-class Scraper {
+class Live_Scraper {
 	/**
 	 * The standard request headers
 	 * @since 1.0
@@ -34,26 +34,8 @@ class Scraper {
 	 */
 	protected $_urls = null;
 
-	/**
-	 * Twitter username
-	 * @since 1.0
-	 * @access public
-	 * @var string
-	 */
-	public $username = "";
-
-	/**
-	 * Twitter password
-	 * @var string
-	 * @since 1.0
-	 * @access public
-	 */
-	public $password = "";
-
-	public function __construct ( $username = NULL, $password = NULL ) {
+	public function __construct () {
 		$this->_urls = new Urls();
-		$this->username = $username;
-		$this->password = $password;
 	}
 
 	/**
@@ -63,10 +45,6 @@ class Scraper {
 	 */
 	protected function _get_cursor_elements ( $cursor ) {
 		preg_match("/TWEET-(?P<oldest>.*)-(?P<newest>.*)/", $cursor, $matches);
-
-		if ( ! is_array($matches) ) {
-			return false;
-		}
 
 		return array(
 			"newest" => $matches["newest"],
@@ -84,7 +62,7 @@ class Scraper {
 	protected function _create_url ( $type, $data, $cursor = NULL) {
 		switch ( $type ) {
 			case 'search':
-				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) . '&src=typd&f=realtime&include_available_features=1&include_entities=1';
+				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) . '&src=typd&f=realtime';
 				if ( ! is_null($cursor) ) {
 					return  $url . '&scroll_cursor=' . $cursor;
 				}
@@ -93,7 +71,7 @@ class Scraper {
 				break;
 
 			case 'trends':
-				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) .  '&src=tren&include_available_features=1&include_entities=1';
+				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) .  '&src=tren';
 
 				if ( ! is_null($cursor) ) {
 					return  $url . '&scroll_cursor=TWEET-=' . $cursor;
@@ -103,27 +81,27 @@ class Scraper {
 				break;
 
 			case 'profile':
-				$url = 'https://twitter.com/i/profiles/show/' . urlencode($data["user"]) . '/timeline?include_available_features=1&include_entities=1';
+				$url = 'https://twitter.com/i/profiles/show/' . urlencode($data["user"]) . '/timeline';
 				if ( ! is_null($cursor) ) {
-					return  $url . '&max_id=' . $cursor;
+					return  $url . '?max_id=' . $cursor;
 				}
 
 				return $url;
 				break;
 
 			case 'timeline':
-				$url = 'https://twitter.com/i/timeline?include_available_features=1&include_entities=1';
+				$url = 'https://twitter.com/i/timeline';
 				if ( ! is_null($cursor) ) {
-					return  $url . '&max_id=' . $cursor;
+					return  $url . '?max_id=' . $cursor;
 				}
 
 				return $url;
 				break;
 
 			case 'discover':
-				$url = 'https://twitter.com/i/discover/timeline?include_available_features=1&include_entities=1';
+				$url = 'https://twitter.com/i/discover/timeline';
 				if ( ! is_null($cursor) ) {
-					return  $url . '&scroll_cursor=' . $cursor;
+					return  $url . '?scroll_cursor=' . $cursor;
 				}
 
 				return $url;
@@ -162,34 +140,27 @@ class Scraper {
 		// Create the URL, using type, requests data and a possible cursor
 		$url = $this->_create_url($type, $data, $cursor);
 
-		if ( $url == "" || is_null($url) ) {
-			throw new Exception("Empty URL!", 403);
-			return false;
-		}
-
 		$con = new Connection($url);
 		$con->setHeaders($this->_headers);
 		try {
 			$con->createCurl($url);
-		} catch ( Exception $e ) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 
 		if ( $con->error == True ) {
-			return false;
+			throw new Exception("Failed to load webpage!" . $url, 403);
+		}
+
+		if ( ! is_object($con) ) {
+			throw new Exception("Failed to load webpage!" . $url, 403);
 		}
 
 		// Get the response result
 		$object = json_decode(str_replace("\n\n\n\n\n\n\n\n\n\n\n      \u003c", "", $con->webpage()));
 
-		unset($con);
-
-		if ( $object === false ) {
-			return false;
-		}
-
-		if ( ! isset($object->items_html) ) {
-			return false;
+		if ( ! is_object($object) ) {
+			throw new Exception("Failed to parse webpage!" . $url . ": " . $con->webpage(), 403);
 		}
 
 		phpQuery::newDocumentHTML($object->items_html);
@@ -215,69 +186,11 @@ class Scraper {
 				}
 
 				$tweet_array = array(
-					"urls" => array(),
-					"mentions" => array(),
-					"media" => array(),
-					"hash_tags" => array(),
-					"item_id" => $tweet->attr("data-item-id"),
 					"tweet_id" => $tweet->attr("data-tweet-id"),
-					"mentions_string" => $tweet->attr("data-mentions"),
-					"feedback_key" => $tweet->attr("data-feedback-key"),
-					"user_id" => $tweet->attr("data-user-id"),
-					"screen_name" => $tweet->attr("data-screen-name"),
-					"display_name" => $tweet->attr("data-name"),
 					"created_at" => $time,
-					"uri" => $tweet->find(".js-details")->attr("href")
 				);
 
 				$tweet_id = $tweet->attr("data-tweet-id");
-
-				foreach ( $tweet->find(".media") as $link ) {
-					$link = pq($link);
-					$tweet_array["media"][] = array(
-						"media_url" => $link->attr("data-url"),
-						"status_media_url" => $link->attr("href"),
-						"large_media_url" => $link->attr("data-resolved-url-large")
-					);
-				}
-
-				foreach ( pq($tweet->find(".tweet-text"))->find("a") as $link ) {
-					$link = pq($link);
-
-					if (is_object($link) ) {
-						if ( $link->hasClass("twitter-atreply") ) {
-							$mention_screen_name = $link->find("b")->html();
-							$tweet_array["mentions"][] = array(
-								"screen_name" => strip_tags($mention_screen_name)
-							);
-							$link->replaceWith( "@" . $mention_screen_name );
-						} else if ( $link->hasClass("twitter-hashtag") ) {
-							$tweet_array["hash_tags"][] = array(
-								"hash_tag" => strip_tags($link->find("b")->html()),
-								"url" => $link->attr("href")
-							);
-							$link->replaceWith( "#" . $link->find("b")->html() );
-						} else if ( $link->hasClass("twitter-timeline-link") ) {
-							$url = $link->attr("data-expanded-url");
-
-							if ( empty($url) ) {
-								$url = strip_tags($link->html());
-							}
-
-							$tweet_array["urls"][] = array(
-								"url" => $url,
-								"title" => $link->attr("title"),
-								"tco" => $link->attr("href"),
-								"text" => strip_tags($link->html())
-							);
-							$link->replaceWith($link->attr("href"));
-						}
-					}
-				}
-
-				$text = $tweet->find(".tweet-text")->html();
-
-				$tweet_array["text"] = strip_tags($text);
 
 				// Append the tweet to the list
 				$tweets[$tweet_id] = array_merge($tweet_array, $meta);
@@ -314,7 +227,7 @@ class Scraper {
 		}
 
 		// If more newer pages to load, load em
-		if ( $next_page_cursor !== false && $last_element["created_at"] >= time() - $max_timestamp  ) {
+		if ( $next_page_cursor !== false && $last_element["created_at"] > ( time() - $max_timestamp ) ) {
 			$tweets = array_merge($tweets, $this->scrapeTweets($meta, $old_refresh_cursor, $next_page_cursor, $type, $data, true, $latest_cursor, $max_timestamp ));
 		}
 
@@ -334,13 +247,7 @@ class Scraper {
 		}
 
 		$newest_cursor_elements = $this->_get_cursor_elements($newest);
-
 		$oldest_cursor_elements = $this->_get_cursor_elements($oldest);
-
-		if ( $newest_cursor_elements["oldest"] > $oldest_cursor_elements["newest"] ) {
-			$smallest = $oldest;
-			return true;
-		}
 
 		if ( $newest_cursor_elements["newest"] == $oldest_cursor_elements["newest"] ) {
 			if ( $newest_cursor_elements["oldest"] > $oldest_cursor_elements["oldest"] ) {
@@ -369,51 +276,6 @@ class Scraper {
 				return false;
 			}
 		}
-
-		return false;
-	}
-
-	/**
-	 * Authenticates the user with Twitter and gets the session information
-	 * @return Connection The auth connection object
-	 * @since 1.0
-	 * @access public
-	 */
-	protected function _auth () {
-		$con = new Connection($this->_urls->TWITTER_LOGIN_URL);
-		$con->createCurl();
-
-		if ( $con->error == True ) {
-			return false;
-		}
-
-		phpQuery::newDocumentHTML($con->webpage());
-
-		if ( ! in_array($con->getHttpStatus(), array(200, 304)) ) {
-			throw new Exception("Loading of login site failed!", 403);
-		}
-
-		$authenticity_token = pq('input[name="authenticity_token"]')->attr("value");
-
-		$con = new Connection($this->_urls->TWITTER_LOGIN_POST_URL);
-		$con->setReferer("https://twitter.com/login");
-		$con->setHeaders(array_merge($this->_headers, array(":path" => "/sessions",":method" => "POST", "content-type" => "application/x-www-form-urlencoded")));
-
-		if ( ! is_null($this->username) ) {
-			$con->setPost(array(
-				$this->_urls->TWITTER_USERNAME_OR_EMAIL_FIELD_NAME => $this->username,
-				$this->_urls->TWITTER_PASSWORD_FIELD_NAME => $this->password,
-				$this->_urls->TWITTER_TOKEN_FIELD => $authenticity_token
-			));
-		}
-
-		$con->createCurl();
-
-		if ( ! in_array($con->getHttpStatus(), array(200, 304)) ) {
-			throw new Exception("Login failed!", 403);
-		}
-
-		return $con;
 	}
 }
 ?>

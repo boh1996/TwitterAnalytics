@@ -80,7 +80,7 @@ class Scraper {
 	protected function _create_url ( $type, $data, $cursor = NULL) {
 		switch ( $type ) {
 			case 'search':
-				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) . '&src=typd&f=realtime&include_available_features=1&include_entities=1&last_note_ts=0';
+				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) . '&src=typd&f=realtime';
 				if ( ! is_null($cursor) ) {
 					return  $url . '&scroll_cursor=' . $cursor;
 				}
@@ -89,7 +89,7 @@ class Scraper {
 				break;
 
 			case 'trends':
-				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) .  '&src=tren&include_available_features=1&include_entities=1&last_note_ts=0';
+				$url = 'https://twitter.com/i/search/timeline?q=' . urlencode($data["q"]) .  '&src=tren';
 
 				if ( ! is_null($cursor) ) {
 					return  $url . '&scroll_cursor=TWEET-=' . $cursor;
@@ -99,27 +99,27 @@ class Scraper {
 				break;
 
 			case 'profile':
-				$url = 'https://twitter.com/i/profiles/show/' . urlencode($data["user"]) . '/timeline?include_available_features=1&include_entities=1&last_note_ts=0';
+				$url = 'https://twitter.com/i/profiles/show/' . urlencode($data["user"]) . '/timeline';
 				if ( ! is_null($cursor) ) {
-					return  $url . '&max_id=' . $cursor;
+					return  $url . '?max_id=' . $cursor;
 				}
 
 				return $url;
 				break;
 
 			case 'timeline':
-				$url = 'https://twitter.com/i/timeline?include_available_features=1&include_entities=1&last_note_ts=0';
+				$url = 'https://twitter.com/i/timeline';
 				if ( ! is_null($cursor) ) {
-					return  $url . '&max_id=' . $cursor;
+					return  $url . '?max_id=' . $cursor;
 				}
 
 				return $url;
 				break;
 
 			case 'discover':
-				$url = 'https://twitter.com/i/discover/timeline?include_available_features=1&include_entities=1&last_note_ts=0';
+				$url = 'https://twitter.com/i/discover/timeline';
 				if ( ! is_null($cursor) ) {
-					return  $url . '&scroll_cursor=' . $cursor;
+					return  $url . '?scroll_cursor=' . $cursor;
 				}
 
 				return $url;
@@ -141,7 +141,6 @@ class Scraper {
 			try {
 				$login_con = $this->_auth();
 			} catch (Exception $e) {
-				echo "Login Failed!";
 				throw new Exception("Login failed!", 403);
 			}
 		}
@@ -161,10 +160,26 @@ class Scraper {
 
 		$con = new Connection($url);
 		$con->setHeaders($this->_headers);
-		$con->createCurl($url);
+		try {
+			$con->createCurl($url);
+		} catch (Exception $e) {
+			throw $e;
+		}
+
+		if ( $con->error == True ) {
+			throw new Exception("Failed to load webpage!" . $url, 403);
+		}
+
+		if ( ! is_object($con) ) {
+			throw new Exception("Failed to load webpage!" . $url, 403);
+		}
 
 		// Get the response result
 		$object = json_decode(str_replace("\n\n\n\n\n\n\n\n\n\n\n      \u003c", "", $con->webpage()));
+
+		if ( ! is_object($object) ) {
+			throw new Exception("Failed to parse webpage!" . $url . ": " . $con->webpage(), 403);
+		}
 
 		phpQuery::newDocumentHTML($object->items_html);
 
@@ -176,80 +191,91 @@ class Scraper {
 		foreach ( pq('.js-stream-tweet[data-tweet-id]') as $tweet ) {
 			$tweet = pq($tweet);
 
-			$time = "";
+			if ( is_object($tweet) ) {
 
-			$relative = $tweet->find(".js-relative-timestamp")->attr("data-time");
+				$time = "";
 
-			if ( ! empty($relative) ) {
-				$time = $tweet->find(".js-relative-timestamp")->attr("data-time");
-			} else {
-				$time = $tweet->find(".js-short-timestamp")->attr("data-time");
-			}
+				$relative = $tweet->find(".js-relative-timestamp")->attr("data-time");
 
-			$tweet_array = array(
-				"urls" => array(),
-				"mentions" => array(),
-				"media" => array(),
-				"hash_tags" => array(),
-				"item_id" => $tweet->attr("data-item-id"),
-				"tweet_id" => $tweet->attr("data-tweet-id"),
-				"mentions_string" => $tweet->attr("data-mentions"),
-				"feedback_key" => $tweet->attr("data-feedback-key"),
-				"user_id" => $tweet->attr("data-user-id"),
-				"screen_name" => $tweet->attr("data-screen-name"),
-				"display_name" => $tweet->attr("data-name"),
-				"created_at" => $time,
-				"uri" => $tweet->find(".js-details")->attr("href")
-			);
-
-			$tweet_id = $tweet->attr("data-tweet-id");
-
-			foreach ( $tweet->find(".media") as $link ) {
-				$link = pq($link);
-				$tweet_array["media"][] = array(
-					"media_url" => $link->attr("data-url"),
-					"status_media_url" => $link->attr("href"),
-					"large_media_url" => $link->attr("data-resolved-url-large")
-				);
-			}
-
-			foreach ( pq($tweet->find(".tweet-text"))->find("a") as $link ) {
-				$link = pq($link);
-				if ( $link->hasClass("twitter-atreply") ) {
-					$mention_screen_name = $link->find("b")->html();
-					$tweet_array["mentions"][] = array(
-						"screen_name" => strip_tags($mention_screen_name)
-					);
-					$link->replaceWith( "@" . $mention_screen_name );
-				} else if ( $link->hasClass("twitter-hashtag") ) {
-					$tweet_array["hash_tags"][] = array(
-						"hash_tag" => strip_tags($link->find("b")->html()),
-						"url" => $link->attr("href")
-					);
-					$link->replaceWith( "#" . $link->find("b")->html() );
-				} else if ( $link->hasClass("twitter-timeline-link") ) {
-					$url = $link->attr("data-expanded-url");
-
-					if ( empty($url) ) {
-						$url = strip_tags($link->html());
-					}
-
-					$tweet_array["urls"][] = array(
-						"url" => $url,
-						"title" => $link->attr("title"),
-						"tco" => $link->attr("href"),
-						"text" => strip_tags($link->html())
-					);
-					$link->replaceWith($link->attr("href"));
+				if ( ! empty($relative) ) {
+					$time = $tweet->find(".js-relative-timestamp")->attr("data-time");
+				} else {
+					$time = $tweet->find(".js-short-timestamp")->attr("data-time");
 				}
+
+				$tweet_array = array(
+					"urls" => array(),
+					"mentions" => array(),
+					"media" => array(),
+					"hash_tags" => array(),
+					"item_id" => $tweet->attr("data-item-id"),
+					"tweet_id" => $tweet->attr("data-tweet-id"),
+					"mentions_string" => $tweet->attr("data-mentions"),
+					"feedback_key" => $tweet->attr("data-feedback-key"),
+					"user_id" => $tweet->attr("data-user-id"),
+					"screen_name" => $tweet->attr("data-screen-name"),
+					"display_name" => $tweet->attr("data-name"),
+					"created_at" => $time,
+					"uri" => $tweet->find(".js-details")->attr("href")
+				);
+
+				$tweet_id = $tweet->attr("data-tweet-id");
+
+				foreach ( $tweet->find(".media") as $link ) {
+					$link = pq($link);
+					$tweet_array["media"][] = array(
+						"media_url" => $link->attr("data-url"),
+						"status_media_url" => $link->attr("href"),
+						"large_media_url" => $link->attr("data-resolved-url-large")
+					);
+				}
+
+				foreach ( pq($tweet->find(".tweet-text"))->find("a") as $link ) {
+					$link = pq($link);
+
+					if ( is_object($link) ) {
+
+						if ( $link->hasClass("twitter-atreply") ) {
+							$mention_screen_name = $link->find("b")->html();
+							$tweet_array["mentions"][] = array(
+								"screen_name" => strip_tags($mention_screen_name)
+							);
+							$link->replaceWith( "@" . $mention_screen_name );
+						} else if ( $link->hasClass("twitter-hashtag") ) {
+							$tweet_array["hash_tags"][] = array(
+								"hash_tag" => strip_tags($link->find("b")->html()),
+								"url" => $link->attr("href")
+							);
+							$link->replaceWith( "#" . $link->find("b")->html() );
+						} else if ( $link->hasClass("twitter-timeline-link") ) {
+							$url = $link->attr("data-expanded-url");
+
+							if ( empty($url) ) {
+								$url = strip_tags($link->html());
+							}
+
+							$tweet_array["urls"][] = array(
+								"url" => $url,
+								"title" => $link->attr("title"),
+								"tco" => $link->attr("href"),
+								"text" => strip_tags($link->html())
+							);
+							$link->replaceWith($link->attr("href"));
+						}
+					}
+				}
+
+				if ( $tweet->find(".tweet-text")->html() != "" ) {
+					$text = $tweet->find(".tweet-text")->html();
+				} else {
+					$text = $tweet->find(".js-tweet-text")->html();
+				}
+
+				$tweet_array["text"] = strip_tags($text);
+
+				// Append the tweet to the list
+				$tweets[$tweet_id] = array_merge($tweet_array, $meta);
 			}
-
-			$text = $tweet->find(".tweet-text")->html();
-
-			$tweet_array["text"] = strip_tags($text);
-
-			// Append the tweet to the list
-			$tweets[$tweet_id] = array_merge($tweet_array, $meta);
 		}
 
 		if ( $not_first == false && property_exists($object, "refresh_cursor") ) {
@@ -345,6 +371,10 @@ class Scraper {
 
 		phpQuery::newDocumentHTML($con->webpage());
 
+		if ( ! is_object($con) ) {
+			throw new Exception("Failed to load webpage in auth process!", 403);
+		}
+
 		if ( ! in_array($con->getHttpStatus(), array(200, 304)) ) {
 			throw new Exception("Loading of login site failed!", 403);
 		}
@@ -354,6 +384,10 @@ class Scraper {
 		$con = new Connection($this->_urls->TWITTER_LOGIN_POST_URL);
 		$con->setReferer("https://twitter.com/login");
 		$con->setHeaders(array_merge($this->_headers, array(":path" => "/sessions",":method" => "POST", "content-type" => "application/x-www-form-urlencoded")));
+
+		if ( ! is_object($con) ) {
+			throw new Exception("Failed to auth with Twitter!", 403);
+		}
 
 		if ( ! is_null($this->username) ) {
 			$con->setPost(array(

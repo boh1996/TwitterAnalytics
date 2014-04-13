@@ -55,6 +55,10 @@ class API_List extends T_API_Controller {
 
 		foreach ( $list as $key => $value ) {
 			$list[$key]["value"] = strtolower($value["value"]);
+
+			if ( isset($value["cateogry"]) ) {
+				$list[$key]["category"] = strtolower($value["category"]);
+			}
  		}
 
 		$this->base_model->save_list($this->get("db"), $list ,array("id", "value"));

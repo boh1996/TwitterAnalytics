@@ -189,6 +189,8 @@ class Connection {
 	 */
 	public    $auth_pass      = '';
 
+	public $error = false;
+
 	/**
 	 * If Basic auth should be used
 	 * @param  integer $use 1 Means yes
@@ -240,9 +242,8 @@ class Connection {
 	 * @param boolean $includeHeader  If the request should include headers
 	 * @param boolean $noBody         If no request body should be send(True)
 	 */
-	public function __construct ( $url, $followlocation = true, $timeOut = 30, $maxRedirecs = 4, $binaryTransfer = false, $includeHeader = false, $noBody = false ) {
+	public function __construct ( $url, $followlocation = true, $timeOut = 100, $maxRedirecs = 4, $binaryTransfer = false, $includeHeader = false, $noBody = false ) {
 		$this->_url = urlencode($url);
-		echo $url;
 		$this->_followlocation = $followlocation;
 		$this->_timeout = $timeOut;
 		$this->_maxRedirects = $maxRedirecs;
@@ -320,6 +321,7 @@ class Connection {
 	 * @since 1.0
 	 */
 	public function createCurl ( $url = NULL ) {
+		$this->error = false;
 		if ( ! is_null($url) ) {
 		  $this->_url = $url;
 		}
@@ -333,13 +335,15 @@ class Connection {
 		}
 
 		curl_setopt($s,CURLOPT_TIMEOUT,$this->_timeout);
+		curl_setopt($s, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
 		curl_setopt($s,CURLOPT_MAXREDIRS,$this->_maxRedirects);
 		curl_setopt($s,CURLOPT_RETURNTRANSFER,true);
-		curl_setopt($s,CURLOPT_FOLLOWLOCATION,$this->_followlocation);
+		//curl_setopt($s,CURLOPT_FOLLOWLOCATION,$this->_followlocation);
 
 		curl_setopt($s, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($s, CURLOPT_SSL_VERIFYHOST, false);
 		curl_setopt($s, CURLOPT_VERBOSE, 1);
+		curl_setopt($s, CURLOPT_SSLVERSION, 3);
 		curl_setopt($s,CURLOPT_COOKIEJAR,$this->_cookieFileLocation);
 		curl_setopt($s,CURLOPT_COOKIEFILE,$this->_cookieFileLocation);
 
@@ -367,8 +371,8 @@ class Connection {
 			curl_setopt($s,CURLOPT_NOBODY,true);
 		}
 
-		curl_setopt($s,CURLOPT_USERAGENT,$this->_useragent);
-		curl_setopt($s,CURLOPT_REFERER,$this->_referer);
+		//curl_setopt($s,CURLOPT_USERAGENT,$this->_useragent);
+		//curl_setopt($s,CURLOPT_REFERER,$this->_referer);
 
 		if ( ! is_null($this->_request_cookies) ) {
 			$cookie_string = "";
@@ -380,6 +384,17 @@ class Connection {
 		}
 
 		$response = curl_exec($s);
+		if ( curl_errno($s) ) {
+			if ( curl_errno($s) == 52 ) {
+				return $this->createCurl($url);
+			}
+			$this->error = true;
+			$error_string = curl_error($s) . ":" . curl_errno($s) . "|" . $url;
+			curl_close($s);
+			throw new Exception($error_string, 1);
+			return;
+		}
+
 		$this->_status = curl_getinfo($s,CURLINFO_HTTP_CODE);
 
 		$header_size = curl_getinfo($s, CURLINFO_HEADER_SIZE);

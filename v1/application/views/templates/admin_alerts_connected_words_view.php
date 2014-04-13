@@ -1,8 +1,47 @@
+<form id="import_form" method="post" enctype="multipart/form-data">
+	<input type="file" name="file" id="import_file" style="visibility:hidden;position:absolute;top:0;left:0">
+	<input type="text" style="visibility:hidden;position:absolute;top:0;left:0" name="url" id="url">
+</form>
+
 <form data-input-class="col-sm-offset-3 col-sm-6" data-ajax-url="admin/alerts/template/connected" class="form-signin form-horizontal list-input-form" role="form" data-array-name="list" data-placeholder-text="<?= $this->lang->line("admin_hidden_word"); ?>" data-item-endpoint="admin/hidden/word/" data-save-endpoint="admin/hidden/words/save">
 
 	<div class="col-sm-10 col-sm-offset-2">
 		<div class="page-header">
 			<h1><?= $this->lang->line("alert_hidden_connected_words"); ?><small> <?= $this->lang->line("alert_hidden_connected_words_description"); ?></small></h1>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-offset-3 col-sm-3">
+			<div class="btn-group export" data-type="hidden_connected_words">
+				<button type="button" class="btn btn-primary"><?= $this->lang->line("admin_export"); ?></button>
+				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+					<span class="sr-only"><?= $this->lang->line("admin_export"); ?></span>
+			  	</button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#" data-value="csv"><?= $this->lang->line("admin_as_csv"); ?></a></li>
+					<li><a href="#" data-value="json"><?= $this->lang->line("admin_as_json"); ?></a></li>
+					<li><a href="#" data-value="xml"><?= $this->lang->line("admin_as_xml"); ?></a></li>
+					<li><a href="#" data-value="txt"><?= $this->lang->line("admin_as_txt"); ?></a></li>
+			  	</ul>
+			</div>
+
+			<div class="btn-group import" data-type="hidden_connected_words">
+				<button type="button" class="btn btn-primary"><?= $this->lang->line("admin_import"); ?></button>
+				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+					<span class="sr-only"><?= $this->lang->line("admin_export"); ?></span>
+			  	</button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#" data-value="csv"><?= $this->lang->line("admin_from_csv"); ?></a></li>
+					<li><a href="#" data-value="txt"><?= $this->lang->line("admin_from_txt"); ?></a></li>
+			  	</ul>
+			</div>
+		</div>
+
+		<div class="col-sm-4">
+			<button class="btn btn-success" id="import_upload"><?= $this->lang->line("admin_upload"); ?></button>
 		</div>
 	</div>
 

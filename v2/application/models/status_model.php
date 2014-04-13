@@ -43,9 +43,9 @@ class Status_model extends Base_model {
 		$query = $this->db->query('SELECT runs.*, stats.*
 			FROM scraper_runs runs
 			INNER JOIN ( SELECT MAX(item_number) as max_item_number,
-			    scrape_statistics.created_at AS last_insert,
-			    tweets_created as stats_tweet_created,
-			    tweets_fetched as stats_tweet_fetched,
+			    SUM(created_at) AS last_insert,
+			    SUM(tweets_created) as stats_tweet_created,
+			    SUM(tweets_fetched) as stats_tweet_fetched,
 			    run_uuid,
 			    scrape_statistics.type as stats_type,
 			    item_id

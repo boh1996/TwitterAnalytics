@@ -1,6 +1,6 @@
 window.refreshRate = 20000;
 
-$(document).on('click', '[data-href]', function () {
+$(document).on('click', '#listscrapers [data-href]', function () {
 	var element = $(this);
 
 	alert(null, translations["admin_scraper_started"], "alertsSuccessTemplate", $("#errors"), "append", null, 2000);
@@ -38,25 +38,25 @@ $(document).ready( function () {
 
 function fetch_views () {
 	$.ajax({
-		url : base_url + "admin/history"
+		url : base_url + "user/history"
 	}).success( function ( data ) {
 		$("#history").html(data);
 	} );
 
 	$.ajax({
-		url : base_url + "admin/errors"
+		url : base_url + "user/errors"
 	}).success( function ( data ) {
 		$("#errors_list").html(data);
 	} );
 
 	$.ajax({
-		url : base_url + "admin/scrapers"
+		url : base_url + "user/scrapers"
 	}).success( function ( data ) {
 		$("#listscrapers").html(data);
 	} );
 
 	$.ajax({
-		url : base_url + "admin/active/scrapers"
+		url : base_url + "user/active/scrapers"
 	}).success( function ( data ) {
 		$("#active").html(data);
 	} );

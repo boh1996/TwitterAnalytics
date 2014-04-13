@@ -46,6 +46,10 @@ class Scrape_model extends Base_model {
 	 * @param string $end_microtime The micro timestamp when the scraping ended
 	 */
 	public function create_history_item ( $tweets_created, $scraper, $tweets_fetched, $tweets_blocked, $uuid, $end_microtime ) {
+		if ( $this->exists("history", array("run_uuid" => $uuid)) ) {
+			return false;
+		}
+
 		$this->db->insert("history", array(
 			"created_at" => time(),
 			"tweets_created" => $tweets_created,
@@ -130,6 +134,10 @@ class Scrape_model extends Base_model {
 	 * @param  integer $item_count The number of items to fetch
 	 */
 	public function insert_scraper_run ( $uuid, $type, $microtime, $item_count ) {
+		if ( $this->exists("scraper_runs", array("run_uuid" => $uuid)) ) {
+			return false;
+		}
+
 		$this->db->insert("scraper_runs", array(
 			"type" => $type,
 			"run_uuid" => $uuid,

@@ -16,8 +16,6 @@
 */
 $config['base_url']	= 'http://127.0.0.1/twa/';
 
-$config["clean_word_regex"] = "/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i";
-
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -67,8 +65,8 @@ $config["languages"] = array("english");
 
 $config["https"] = false;
 
-$config["encrypt_key"] = "pJ0XdQdhTjCAKoZHdnwtNE3K2F6RXQoa";
-$config["encrypt_salt"] = "OrRaZ0enWNh5D9Ij9XedE0U8z632Nwzi";
+$config["encrypt_key"] = "JE5xnc8ctCwDpqWLIsJ8W0I8E1vQeIBe";
+$config["encrypt_salt"] = "UMWtx3vimfrFC7I4tghF8G3PYAmeSGtX";
 
 /*
 |--------------------------------------------------------------------------
@@ -235,7 +233,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'DzQ6WNhSvun3FZIW';
+$config['encryption_key'] = '2YRoNnPQCmEwaiL0';
 
 /*
 |--------------------------------------------------------------------------

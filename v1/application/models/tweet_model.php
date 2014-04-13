@@ -67,6 +67,36 @@ class Tweet_model extends Base_model {
 	}
 
 	/**
+	 *    Inserts the live tweet statistics
+	 *
+	 *    @param array $tweet       The tweet array
+	 *    @param &array $error_types Errors
+	 *
+	 *    @return boolean
+	 */
+	public function insert_live_tweet ( $tweet, &$error_types  ) {
+		$exists = $this->exists("tweets", array("tweet_id" => $tweet["tweet_id"]));
+		$accepted_time = ( $tweet["created_at"] > ( time() - $this->maxTime() ) ) ? true : false;
+		if ( ! $exists && $accepted_time ) {
+			$data = array(
+				"created_at" => $tweet["created_at"],
+				"tweet_id" => $tweet["tweet_id"],
+			);
+			$this->db->insert("live_tweets", $data);
+
+			return true;
+		} else {
+			if ( $exists ) {
+				$error_types[] = "tweet_exists";
+			}
+			if ( ! $accepted_time ) {
+				$error_types[] = "to_old";
+			}
+			return false;
+		}
+	}
+
+	/**
 	 * The oldest tweets to store
 	 * @return integer
 	 */
@@ -84,7 +114,7 @@ class Tweet_model extends Base_model {
 	public function insert_tweet_data ( $tweet, $tweet_db_id ) {
 		if ( count($tweet["words"]) ) {
 			foreach ( $tweet["words"] as $word ) {
-				$this->create_tweet_word($word, $tweet_db_id);
+				$this->create_tweet_word($word, $tweet_db_id, $tweet["created_at"]);
 			}
 		}
 	}
@@ -157,7 +187,7 @@ class Tweet_model extends Base_model {
 	 * @param  string $word     The word array
 	 * @param  integer $tweet_id The parent tweet
 	 */
-	public function create_tweet_word ( $word, $tweet_id ) {
+	public function create_tweet_word ( $word, $tweet_id, $created_at ) {
 		if ( ! isset($GLOBALS["words"]) ) {
 			$GLOBALS["words"] = array();
 		}
@@ -165,14 +195,14 @@ class Tweet_model extends Base_model {
 		$word["word"] = strtolower($word["word"]);
 
 		if ( ! isset($GLOBALS["words"][$word["word"]]) ) {
-			$word_id = $this->create_word($word["word"]);
+			$word_id = $this->create_word($word["word"],$created_at);
 			$GLOBALS["words"][$word["word"]] = $word_id;
 		} else {
 			$word_id = $GLOBALS["words"][$word["word"]];
 		}
 
 		$this->db->insert("tweet_words", array(
-			"created_at" => time(),
+			"created_at" => $created_at,
 			"tweet_id" => $tweet_id,
 			"word_id" => $word_id,
 			"position" => $word["position"]
@@ -186,14 +216,14 @@ class Tweet_model extends Base_model {
 	 * @param  string $word The word to add
 	 * @return integer The word id
 	 */
-	public function create_word ( $word ) {
+	public function create_word ( $word, $created_at ) {
 		$id = $this->get_id("words", array(
 			"word" => $word
 		));
 		if ( $id === false ) {
 			$this->db->insert("words", array(
 				"word" => strtolower($word),
-				"created_at" => time()
+				"created_at" => $created_at
 			));
 
 			return $this->db->insert_id();
@@ -207,11 +237,11 @@ class Tweet_model extends Base_model {
 	 * @param  integer $tweet_id        The tweet database id
 	 * @param  integer $alert_string_id The alert string database id
 	 */
-	public function tweet_matched_alert ( $tweet_id, $alert_string_id ) {
+	public function tweet_matched_alert ( $tweet_id, $alert_string_id, $created_at ) {
 		$this->db->insert("tweet_alert_strings", array(
 			"tweet_id" => $tweet_id,
 			"alert_string_id" => $alert_string_id,
-			"created_at" => time()
+			"created_at" =>  $created_at
 		));
 	}
 }

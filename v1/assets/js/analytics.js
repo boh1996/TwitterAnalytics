@@ -1,3 +1,6 @@
+window.autoRefresh = true;
+window.refreshRate = 60000;
+
 function refresh () {
 	$(".table-scroll-header").floatThead({
 		scrollingTop : 52,
@@ -6,7 +9,7 @@ function refresh () {
 	$('.selectpicker').selectpicker();
 	$('input[data-type="daterange"]').daterangepicker({
 		timePicker: true,
-		timePickerIncrement: 30,
+		timePickerIncrement: 5,
 		format: 'DD/MM/YYYY HH:mm',
 		timePicker12Hour : false,
 		dateLimit : 0

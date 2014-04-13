@@ -1,6 +1,7 @@
 <div class="bs-example">
 	<?php if ( isset($alerts) && count($alerts) > 0 ): ?>
 		<div class='wrapper'>
+			<p><i><b><?= str_replace("{{number}}", $tweet_count, $this->lang->line("user_words_from_tweets")); ?></b></i></p>
 			<div class="table-responsive">
 				<table class="table table-striped table-hover">
 					<thead>
@@ -48,5 +49,6 @@
 		</div>
 	<?php else: ?>
 		<?= $this->lang->line("user_no_words_found"); ?>
+		<p><i><b><?= str_replace("{{number}}", $tweet_count, $this->lang->line("user_words_from_tweets")); ?></b></i></p>
 	<?php endif; ?>
 </div>

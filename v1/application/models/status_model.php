@@ -22,7 +22,11 @@ class Status_model extends Base_model {
 	 * @param  integer $limit The number of errors to return
 	 * @return array<Object>
 	 */
-	public function get_errors ( $limit = 10 ) {
+	public function get_errors ( $limit = 10, $where = null ) {
+		if ( ! is_null($where) ) {
+			$this->db->where($where);
+		}
+
 		$query = $this->db->limit($limit)->order_by("created_at", "DESC")->get("errors");
 
 		if ( ! $query->num_rows() ) return false;
@@ -39,19 +43,19 @@ class Status_model extends Base_model {
 	/**
 	 * Gets the list of running scrapers
 	 */
-	public function get_active_scrapers () {
+	public function get_active_scrapers ( $where = null ) {
 		$query = $this->db->query('SELECT runs.*, stats.*
 			FROM scraper_runs runs
-			INNER JOIN ( SELECT MAX(item_number) as max_item_number,
-			    scrape_statistics.created_at AS last_insert,
-			    tweets_created as stats_tweet_created,
-			    tweets_fetched as stats_tweet_fetched,
-			    tweets_blocked as stats_tweets_blocked,
+			INNER JOIN ( SELECT MAX(created_at) AS last_insert,
+            	MAX(item_number) as max_item_number,
+			    SUM(tweets_created) as stats_tweet_created,
+			    SUM(tweets_fetched) as stats_tweet_fetched,
+			    SUM(tweets_blocked) as stats_tweets_blocked,
 			    run_uuid,
 			    scrape_statistics.type as stats_type,
 			    item_id
 			FROM scrape_statistics GROUP BY run_uuid) stats ON runs.run_uuid = stats.run_uuid
-			WHERE runs.run_uuid NOT IN (SELECT history.run_uuid FROM `history`)'
+			WHERE runs.run_uuid NOT IN (SELECT history.run_uuid FROM `history`)' . $where
 		);
 
 		if ( ! $query->num_rows() ) return false;
@@ -70,7 +74,7 @@ class Status_model extends Base_model {
 	 * @param  integer $limit The number of scrapers to return
 	 * @return array<Object>
 	 */
-	public function get_history ( $limit = 10 ) {
+	public function get_history ( $limit = 10, $where = null ) {
 		$this->db->limit($limit);
 		$this->db->select("
 			errors.created_at as error_created_at,
@@ -85,6 +89,11 @@ class Status_model extends Base_model {
 			scraper_runs.item_count
 		");
 		$this->db->order_by("history.created_at", "DESC");
+
+		if ( ! is_null($where) ) {
+			$this->db->where($where);
+		}
+
 		$this->db->join("errors", "history.run_uuid = errors.run_uuid", "left");
 		$this->db->join("scraper_runs", "history.run_uuid = scraper_runs.run_uuid", "left");
 		$query = $this->db->get("history");
@@ -104,7 +113,7 @@ class Status_model extends Base_model {
 	 * Fetches the list of available scrapers
 	 * @return array
 	 */
-	public function get_scrapers () {
-		return $this->base_model->get_list("scrapers");
+	public function get_scrapers ( $where = null ) {
+		return $this->base_model->get_list("scrapers", $where);
 	}
 }

@@ -266,12 +266,22 @@ class Admin extends CI_Controller {
 
 		$this->lang->load("admin");
 
-		$objects = $this->base_model->get_list("urls");
+		$cat1 = $this->base_model->get_list("urls", array("category" => 1));
+		$cat2 = $this->base_model->get_list("urls", array("category" => 2));
+		$cat3 = $this->base_model->get_list("urls", array("category" => 3));
+		$cat4 = $this->base_model->get_list("urls", array("category" => 4));
+		$cat5 = $this->base_model->get_list("urls", array("category" => 5));
+		$live = $this->base_model->get_list("urls", array("category" => "live"));
 
 		$this->load->view("admin_urls_view", $this->user_control->ControllerInfo(array(
 			"translations" => json_encode($this->lang->export()),
 			"current_section" => "admin",
-			"objects" => ( $objects !== false ) ? $objects : array()
+			"cat1" => ( $cat1 !== false ) ? $cat1 : array(),
+			"cat2" => ( $cat2 !== false ) ? $cat2 : array(),
+			"cat3" => ( $cat3 !== false ) ? $cat3 : array(),
+			"cat4" => ( $cat4 !== false ) ? $cat4 : array(),
+			"cat5" => ( $cat5 !== false ) ? $cat5 : array(),
+			"live" => ( $live !== false ) ? $live : array(),
 		)));
 	}
 

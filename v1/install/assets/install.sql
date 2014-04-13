@@ -306,7 +306,7 @@ CREATE TABLE `scrape_statistics` (
   `created_at` varchar(45) DEFAULT NULL,
   `url` text,
   `microtime` varchar(45) DEFAULT NULL,
-  `item_number` varchar(255) DEFAULT NULL,
+  `item_number` int(11) DEFAULT NULL,
   `run_uuid` varchar(255) DEFAULT NULL,
   `tweets_created` varchar(255) DEFAULT NULL,
   `tweets_blocked` varchar(255) DEFAULT NULL,
@@ -372,7 +372,7 @@ CREATE TABLE `scrapers` (
 
 LOCK TABLES `scrapers` WRITE;
 /*!40000 ALTER TABLE `scrapers` DISABLE KEYS */;
-INSERT INTO `scrapers` VALUES (1,'admin_scraper_users','users_followers','scrape/users'),(2,'admin_scraper_urls','urls','scrape/urls'),(3,'admin_scraper_topics','topics','scrape/topics');
+INSERT INTO `scrapers` VALUES (1,'admin_scraper_users','users_followers','scrape/users'),(2,'admin_scraper_topics','topics','scrape/topics'), (3,'admin_scraper_urls_1','urls_1','scrape/urls/1'), (4,'admin_scraper_urls_2','urls_2','scrape/urls/2'), (5,'admin_scraper_urls_3','urls_3','scrape/urls/3'), (6,'admin_scraper_urls_4','urls_4','scrape/urls/4'), (7,'admin_scraper_urls_5','urls_5','scrape/urls/5');
 /*!40000 ALTER TABLE `scrapers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -656,6 +656,7 @@ CREATE TABLE `urls` (
   `created_at` varchar(45) DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   `latest_cursor` text,
+  `category` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `value_UNIQUE` (`value`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -120,5 +120,15 @@ $config["pages"] = array(
 		"type"					=> "page",
 		"header_language_key"	=> ""
 	),
+	"user_live" => array(
+		"page"					=> "user_live",
+		"mode" 					=> "login",
+		"language_key" 			=> "user_live",
+		"section"				=> "user",
+		"admin_language_key" 	=> "admin_page_live",
+		"url"					=> "user/live",
+		"type"					=> "page",
+		"header_language_key"	=> ""
+	),
 );
 ?>

@@ -60,11 +60,16 @@ class Base_model extends CI_Model {
 	 * @param  string $table The database tabel to fetch from
 	 * @param  array $where An optional where clause
 	 * @param  integer $limit The max number of rows to be returned
+	 * @param integer $offset The database offset
 	 * @return boolean|array<Object>
 	 */
-	public function get_list ( $table, $where = null, $limit = null ) {
-		if ( ! is_null($limit) ) {
+	public function get_list ( $table, $where = null, $limit = null, $offset = null ) {
+		if ( ! is_null($limit) && is_null($offset) ) {
 			$this->db->limit($limit);
+		}
+
+		if ( ! is_null($limit) && ! is_null($offset) ) {
+			$this->db->limit($limit, $offset);
 		}
 
 		if ( ! is_null($where) ) {
@@ -79,6 +84,24 @@ class Base_model extends CI_Model {
 
 		foreach ( $query->result() as $row ) {
 			$list[] = $row;
+		}
+
+		return $list;
+	}
+
+	public function get_list_property ( $table, $property, $where = null ) {
+		if ( ! is_null($where) ) {
+			$this->db->where($where);
+		}
+
+		$query = $this->db->get($table);
+
+		$list = array();
+
+		if ( ! $query->num_rows() ) return false;
+
+		foreach ( $query->result() as $row ) {
+			$list[] = $row->{$property};
 		}
 
 		return $list;

@@ -36,5 +36,6 @@
 		<script src="<?= $asset_url; ?>js/nav.js"></script>
 		<script src="<?= $asset_url; ?>js/functions.js"></script>
 		<script src="<?= $asset_url; ?>js/list-input.js"></script>
+		<script src="<?= $asset_url; ?>js/io.js"></script>
 	</body>
 </html>

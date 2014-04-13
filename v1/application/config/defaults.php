@@ -72,6 +72,42 @@ $config["settings"] = array(
 		"placeholder"	=> "admin_admin_setting_timezone_placeholder",
 		"help_text"		=> "admin_admin_setting_timezone_help"
 	),
+	"setting_increase_alert" => array(
+		"value" 		=> true,
+		"key" 			=> "setting_increase_alert",
+		"section" 		=> "scraper",
+		"type" 			=> "checkbox",
+		"language_key" 	=> "admin_increase_alert",
+		"placeholder"	=> "admin_increase_alert_placeholder",
+		"help_text"		=> "admin_increase_alert_help"
+	),
+	"setting_decline_alert" => array(
+		"value" 		=> true,
+		"key" 			=> "setting_decline_alert",
+		"section" 		=> "scraper",
+		"type" 			=> "checkbox",
+		"language_key" 	=> "admin_decline_alert",
+		"placeholder"	=> "admin_decline_alert_placeholder",
+		"help_text"		=> "admin_decline_alert_help"
+	),
+	"setting_increase_value" => array(
+		"value" 		=> 200,
+		"key" 			=> "setting_increase_value",
+		"section" 		=> "scraper",
+		"type" 			=> "text",
+		"language_key" 	=> "admin_increase_value",
+		"placeholder"	=> "admin_increase_value_placeholder",
+		"help_text"		=> "admin_increase_value_help"
+	),
+	"setting_decline_value" => array(
+		"value" 		=> 200,
+		"key" 			=> "setting_decline_value",
+		"section" 		=> "scraper",
+		"type" 			=> "text",
+		"language_key" 	=> "admin_decline_value",
+		"placeholder"	=> "admin_decline_value_placeholder",
+		"help_text"		=> "admin_decline_value_help"
+	),
 );
 
 $config["limit_values"] = array(

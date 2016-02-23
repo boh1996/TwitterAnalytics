@@ -147,7 +147,8 @@ class Scraper {
 
 		// If a cursor has been set, use it ofr the next request
 		$cursor = NULL;
-		if ( $not_first == true ) {
+		if ( $not_first == true 0) {
+
 			if ( ! empty($latest_cursor) ) {
 				$cursor = $latest_cursor;
 			}
@@ -162,8 +163,10 @@ class Scraper {
 		$con->setHeaders($this->_headers);
 		try {
 			$con->createCurl($url);
-		} catch (Exception $e) {
+		} catch (IOException $e) {
 			throw $e;
+		} catch ( NetException $e ) {
+
 		}
 
 		if ( $con->error == True ) {
